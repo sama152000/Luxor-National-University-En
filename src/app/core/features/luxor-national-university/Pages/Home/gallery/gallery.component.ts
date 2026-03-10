@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GalleryService } from '../../../Services/gallery.service';
-import { GalleryItem } from '../../../model/gallery.model';
+import { GalleryAttachment } from '../../../model/gallery.model';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -12,8 +12,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./gallery.component.css']
 })
 export class GalleryComponent implements OnInit, OnDestroy {
-  galleryItems: GalleryItem[] = [];
-  selectedImage: GalleryItem | null = null;
+  galleryItems: GalleryAttachment[] = [];
+  selectedImage: GalleryAttachment | null = null;
   currentImageIndex: number = 0;
   isLightboxOpen: boolean = false;
   private subscription = new Subscription();
@@ -29,7 +29,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
   }
 
   private loadGalleryImages(): void {
-    const sub = this.galleryService.getGalleryImages().subscribe({
+    const sub = this.galleryService.getAllGalleryAttachments().subscribe({
       next: (images) => {
         this.galleryItems = images;
         // Add staggered animation delay
@@ -53,7 +53,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     });
   }
 
-  openLightbox(image: GalleryItem): void {
+  openLightbox(image: GalleryAttachment): void {
     this.selectedImage = image;
     this.currentImageIndex = this.galleryItems.findIndex(item => item.id === image.id);
     this.isLightboxOpen = true;

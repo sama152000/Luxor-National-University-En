@@ -1,9 +1,10 @@
 export interface Service {
   id: string;
   title: string;
-  titleAr: string;
   description: string;
-  descriptionAr: string;
-  bulletPoints?: string[];
-  bulletPointsAr?: string[];
+  iconPath: string;   // مثال: "pi pi-book"
+  isActive: boolean;
+  pageId: string;
+  pageTitle: string;
+  slug: string;
 }

@@ -1,4 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://archaeologyar.runasp.net/api/v1/'  
+  apiUrl: 'https://lunar.runasp.net/api/v1/' ,
+  apiBase: 'https://lunar.runasp.net'
+
 };

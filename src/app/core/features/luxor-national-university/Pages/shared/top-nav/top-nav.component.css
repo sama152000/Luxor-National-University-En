@@ -48,6 +48,13 @@
   transition: var(--transition-fast);
 }
 
+.top-lang span {
+  color: #f5f1e6;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
 .top-lang a:hover {
   background: rgba(255, 255, 255, 0.1);
 }

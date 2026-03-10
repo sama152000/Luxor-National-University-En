@@ -41,17 +41,17 @@
               <div class="slide-content">
                 <div class="slide-header">
                   <span class="slide-number">{{ i + 1 }} / {{ services.length }}</span>
-                  <h2 class="service-title">{{ service.titleAr }}</h2>
-                  <h3 class="service-title-en">{{ service.title }}</h3>
+                  <h2 class="service-title">{{ service.title }}</h2>
                 </div>
 
                 <div class="slide-body">
-                  <p class="service-description">{{ service.descriptionAr }}</p>
+                  <p class="service-description" [innerHTML]="service.description | cleanHtml"></p>
                   <div class="service-action-container">
-                    <a routerLink="/contact-us" class="service-action-btn">
+                    <a [href]="service?.iconPath" class="service-action-btn">
                       اذهب الان
-                      <i class="pi pi-arrow-left"></i>
+                      <i class="pi pi-arrow-right"></i>
                     </a>
+                   
                   </div>
                   <!-- <div *ngIf="service.bulletPointsAr && service.bulletPointsAr.length > 0" class="service-features">
                     <h4 class="features-title">المزايا الرئيسية:</h4>

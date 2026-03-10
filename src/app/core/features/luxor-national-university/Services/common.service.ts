@@ -14,7 +14,8 @@ export class CommonService {
   getContactInfo(): ContactInfo {
     return {
       phone: '+20 88 123 4567',
-      email: 'info@lnu.edu.eg'
+      email: 'info@lnu.edu.eg',
+      website: 'www.lnu.edu.eg'
     };
   }
 

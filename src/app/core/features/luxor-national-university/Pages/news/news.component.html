@@ -10,14 +10,22 @@
     <div class="tabs-container slide-up animate-delay-1">
       <div class="tabs-wrapper">
         <div class="tabs-list">
+                   <button 
+    class="tab-item" 
+    [class.active]="selectedCategory === null" 
+    (click)="clearFilter()"
+  >
+    الكل
+  </button>
           <button
             *ngFor="let category of categories"
             class="tab-item"
-            [class.active]="isActiveCategory(category.id)"
-            (click)="setActiveCategory(category.id)"
+            [class.active]="selectedCategory === category.id"
+            (click)="filterByCategory(category.id)"
           >
             <span>{{ category.name }}</span>
           </button>
+
         </div>
       </div>
     </div>
@@ -36,17 +44,16 @@
           *ngFor="let news of paginatedNews; let i = index"
           class="news-card hover-lift"
           [class]="'animate-delay-' + (i % 4 + 1)"
-          (click)="viewNewsDetails(news.id)"
         >
           <!-- Card Image -->
           <div class="card-image">
             <img 
-              [src]="news.mainImage" 
+              [src]="news.featuredImagePath" 
               [alt]="news.title"
               loading="lazy"
             >
             <div class="category-badge">
-              {{ news.category }}
+              {{ news.postCategories[0]?.categoryName }}
             </div>
           </div>
 
@@ -55,17 +62,17 @@
             <div class="card-meta">
               <span class="date">
                 <i class="pi pi-calendar"></i>
-                {{ formatDate(news.date) }}
+                {{ news.publishedDate | date:'mediumDate' }}
               </span>
             </div>
 
             <h3 class="card-title">{{ news.title }}</h3>
             
-            <p class="card-description">{{ news.shortDescription }}</p>
+            <!-- Clean HTML Content -->
+            <div class="card-description" [innerHTML]="news.content | cleanHtml"></div>
             
             <div class="card-footer">
-              <button class="btn btn-primary">
-                اقرأ المزيد
+        <button class="btn btn-primary" [routerLink]="['/news', news?.slug]">                اقرأ المزيد
                 <i class="pi pi-arrow-left"></i>
               </button>
             </div>
@@ -74,57 +81,49 @@
       </div>
 
       <!-- No Results -->
-      <div *ngIf="!isLoading && paginatedNews.length === 0" class="no-results">
+      <div *ngIf="!isLoading && filteredNews.length === 0" class="no-results">
         <i class="pi pi-info-circle"></i>
         <h3>لا توجد أخبار متاحة</h3>
         <p>لا توجد أخبار في هذا القسم حالياً</p>
       </div>
-    </div>
 
-    <!-- Pagination -->
-    <div 
-      *ngIf="!isLoading && totalPages > 1" 
-      class="pagination-container slide-up animate-delay-3"
-    >
-      <div class="pagination">
-        <!-- Previous Button -->
-        <button 
-          class="pagination-btn"
-          [disabled]="currentPage === 1"
-          (click)="previousPage()"
-        >
-          <i class="pi pi-angle-right"></i>
-          السابق
-        </button>
-
-        <!-- Page Numbers -->
-        <div class="page-numbers">
-          <button
-            *ngFor="let pageNum of getPageNumbers()"
-            class="page-number"
-            [class.active]="pageNum === currentPage"
-            (click)="goToPage(pageNum)"
+      <!-- Pagination -->
+      <div *ngIf="!isLoading && totalItems > itemsPerPage" class="pagination-container">
+        <nav class="pagination">
+          <button 
+            class="pagination-btn prev-btn" 
+            [disabled]="!canGoPrev"
+            (click)="prevPage()"
           >
-            {{ pageNum }}
+            <i class="pi pi-angle-right"></i>
+            السابق
           </button>
+          
+          <div class="pagination-pages">
+            <button
+              *ngFor="let page of [].constructor(totalPages); let i = index"
+              class="pagination-page"
+              [class.active]="currentPage === i + 1"
+              (click)="goToPage(i + 1)"
+            >
+              {{ i + 1 }}
+            </button>
+          </div>
+
+          <button 
+            class="pagination-btn next-btn" 
+            [disabled]="!canGoNext"
+            (click)="nextPage()"
+          >
+            التالي
+            <i class="pi pi-angle-left"></i>
+          </button>
+        </nav>
+        
+        <div class="pagination-info">
+          صفحة {{ currentPage }} من {{ totalPages }}
+          ({{ totalItems }} خبر)
         </div>
-
-        <!-- Next Button -->
-        <button 
-          class="pagination-btn"
-          [disabled]="currentPage === totalPages"
-          (click)="nextPage()"
-        >
-          التالي
-          <i class="pi pi-angle-left"></i>
-        </button>
-      </div>
-
-      <!-- Pagination Info -->
-      <div class="pagination-info">
-        عرض {{ (currentPage - 1) * itemsPerPage + 1 }} إلى 
-        {{ getEndIndex() }} 
-        من أصل {{ filteredNews.length }} خبر
       </div>
     </div>
   </div>

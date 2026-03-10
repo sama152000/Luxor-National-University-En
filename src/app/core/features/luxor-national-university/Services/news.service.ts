@@ -1,208 +1,110 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { NewsSection,NewsItem, NewsCategory } from '../model/news.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { News } from '../model/news.model';
+import { environment } from '../../../../../environments/environment';
+import { slugify } from '../../../../utils/slugify';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsService {
+  private baseUrl = environment.apiUrl + 'posts';
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  // getNewsSection(): NewsSection {
-  //   return {
-  //     id: '1',
-  //     title: 'أحدث الأخبار',
-  //     articles: [
-  //       {
-  //         id: '1',
-  //         title: 'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-  //         excerpt: 'افتتحت جامعة الأقصر الوطنية مركز أبحاث متقدم جديد لدعم الابتكار والاستدامة والتميز العلمي عبر تخصصات متعددة.',
-  //         image: './assets/pic2.jpg',
-  //         category: 'عاجل',
-  //         date: '15 أكتوبر 2025',
-  //         link: '/news/research-center-launch',
-  //         featured: true
-  //       },
-  //       {
-  //         id: '2',
-  //         title: 'المؤتمر الدولي حول تغير المناخ',
-  //         image: './assets/pic1.jpg',
-  //         category: 'فعاليات',
-  //         date: '10 أكتوبر 2025',
-  //         link: '/news/climate-conference',
-  //         featured: false
-  //       },
-  //       {
-  //         id: '3',
-  //         title: 'طلاب يفوزون بجائزة الابتكار الوطنية',
-  //         image: './assets/pic3.jpg',
-  //         category: 'إنجاز',
-  //         date: '28 سبتمبر 2025',
-  //         link: '/news/innovation-award',
-  //         featured: false
-  //       },
-  //       {
-  //         id: '4',
-  //         title: 'كلية العلوم تحصل على اعتماد دولي',
-  //         image: './assets/pic4.jpg',
-  //         category: 'أكاديمي',
-  //         date: '18 سبتمبر 2025',
-  //         link: '/news/science-accreditation',
-  //         featured: false
-  //       }
-  //     ]
-  //   };
-  // }
-
-
-   private newsData: NewsItem[] = [
-    {
-      id: 1,
-         title: 'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-      shortDescription:'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-      fullContent: `
-        <p>'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد</p>
-              `,
-      date: new Date('2024-01-15'),
-      category: 'أخبار',
-      images: [
-        './assets/pic2.jpg',
-        './assets/pic3.jpg',
-        './assets/pic4.jpg'
-      ],
-      mainImage: './assets/pic2.jpg',
-      author: 'إدارة العلاقات العامة',
-      tags: ['ذكاء اصطناعي', 'تكنولوجيا', 'افتتاح'],
-      relatedNews: [2, 3, 4]
-    },
-    {
-      id: 3,
-         title: 'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-      shortDescription:'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-      fullContent: `
-        <p>'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد</p>
-              `,
-      date: new Date('2024-01-15'),
-      category: 'أخبار',
-      images: [
-        './assets/pic1.jpg',
-        './assets/pic1.jpg',
-        './assets/pic1.jpg'
-      ],
-      mainImage: './assets/pic1.jpg',
-      author: 'إدارة العلاقات العامة',
-      tags: ['ذكاء اصطناعي', 'تكنولوجيا', 'افتتاح'],
-      relatedNews: [2, 3, 4]
-    },
-    {
-      id: 4,
-         title: 'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-      shortDescription:'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد',
-      fullContent: `
-        <p>'جامعة الأقصر الوطنية تطلق مركز أبحاث جديد</p>
-              `,
-      date: new Date('2024-01-15'),
-      category: 'أخبار',
-      images: [
-        './assets/pic2.jpg',
-        './assets/pic3.jpg',
-        './assets/pic4.jpg'
-      ],
-      mainImage: './assets/pic4.jpg',
-      author: 'إدارة العلاقات العامة',
-      tags: ['ذكاء اصطناعي', 'تكنولوجيا', 'افتتاح'],
-      relatedNews: [2, 3, 4]
-    },
-    {
-      id: 2,
-      title: 'مجموعة من محاضرات كلية الفنون والتصميم',
-      shortDescription: 'مجموعة من محاضرات كلية الفنون والتصميم',
-      fullContent: `
-        <p>مجموعة من محاضرات كلية الفنون والتصميم</p>
-                
-        <p>مجموعة من محاضرات كلية الفنون والتصميم</p>
-      `,
-      date: new Date('2024-01-10'),
-      category: 'أنشطة',
-      images: [
-        './assets/activity1111.jpg',
-        './assets/activity111.jpg',
-        './assets/activity11.jpg',
-        './assets/activity.jpg'
-
-      ],
-      mainImage: './assets/activity1111.jpg',
-      author: 'إدارة شؤون الطلاب',
-      tags: ['محاضرات', 'مسابقة', 'طلاب', 'فوز'],
-      relatedNews: [1, 2, 5]
-    },
-
-  ];
-
-  private categories: NewsCategory[] = [
-    { id: 'أخبار', name: 'أخبار', count: 4 },
-    { id: 'أنشطة', name: 'أنشطة', count: 2 },
-    { id: 'فعاليات', name: 'فعاليات', count: 2 }
-  ];
-
-  getAllNews(): Observable<NewsItem[]> {
-    return of(this.newsData);
+  /** جلب كل الأخبار مع توليد slug */
+  getAllNews(): Observable<News[]> {
+    return this.http.get<{ success: boolean; data: News[] }>(`${this.baseUrl}/getall`)
+      .pipe(map(response => {
+        return response.data.map(post => ({
+          ...post,
+          slug: slugify(post.urlTitleEn || post.title)
+        }));
+      }));
   }
 
-  getNewsByCategory(category?: string): Observable<NewsItem[]> {
-    if (!category || category === 'الكل') {
-      return of(this.newsData);
-    }
-    const filtered = this.newsData.filter(news => news.category === category);
-    return of(filtered);
+  /** فلترة الأخبار حسب التصنيف */
+  getNewsByCategory(categoryName: string): Observable<News[]> {
+    return this.getAllNews().pipe(
+      map(posts => posts.filter(post =>
+        post.postCategories.some(cat => cat.categoryName === categoryName)
+      ))
+    );
   }
 
-  getNewsById(id: number): Observable<NewsItem | undefined> {
-    const news = this.newsData.find(item => item.id === id);
-    return of(news);
+  /** جلب خبر واحد بالـ slug */
+  getNewsBySlug(slug: string): Observable<News | undefined> {
+    return this.getAllNews().pipe(
+      map(posts => posts.find(post => post.slug === slug))
+    );
   }
 
-  getRelatedNews(newsId: number, limit: number = 4): Observable<NewsItem[]> {
-    const currentNews = this.newsData.find(item => item.id === newsId);
-    if (!currentNews || !currentNews.relatedNews) {
-      // Return random news if no related news specified
-      const filtered = this.newsData.filter(item => item.id !== newsId).slice(0, limit);
-      return of(filtered);
-    }
-    
-    const related = this.newsData.filter(item => 
-      currentNews.relatedNews!.includes(item.id)
-    ).slice(0, limit);
-    
-    return of(related);
+  /** باقي الميثودات (related, prev, next, latest) زي ما هي */
+
+
+  /** جلب خبر واحد بالـ id */
+  getNewsById(id: string): Observable<News | undefined> {
+    return this.getAllNews().pipe(
+      map(posts => posts.find(post => post.id === id))
+    );
   }
 
-  getCategories(): Observable<NewsCategory[]> {
-    return of(this.categories);
+  /** جلب الأخبار المرتبطة */
+  getRelatedNews(newsId: string, limit: number = 4): Observable<News[]> {
+    return this.getAllNews().pipe(
+      map(posts => {
+        const current = posts.find(p => p.id === newsId);
+        if (!current) return [];
+        const categoryIds = current.postCategories.map(c => c.categoryId);
+        return posts
+          .filter(p => p.id !== newsId && p.postCategories.some(c => categoryIds.includes(c.categoryId)))
+          .slice(0, limit);
+      })
+    );
   }
 
-  getPreviousNews(currentId: number): Observable<NewsItem | null> {
-    const currentIndex = this.newsData.findIndex(item => item.id === currentId);
-    if (currentIndex > 0) {
-      return of(this.newsData[currentIndex - 1]);
-    }
-    return of(null);
+  /** جلب الخبر السابق */
+  getPreviousNews(newsId: string): Observable<News | undefined> {
+    return this.getAllNews().pipe(
+      map(posts => {
+        const index = posts.findIndex(p => p.id === newsId);
+        return index > 0 ? posts[index - 1] : undefined;
+      })
+    );
   }
 
-  getNextNews(currentId: number): Observable<NewsItem | null> {
-    const currentIndex = this.newsData.findIndex(item => item.id === currentId);
-    if (currentIndex >= 0 && currentIndex < this.newsData.length - 1) {
-      return of(this.newsData[currentIndex + 1]);
-    }
-    return of(null);
+  /** جلب الخبر التالي */
+  getNextNews(newsId: string): Observable<News | undefined> {
+    return this.getAllNews().pipe(
+      map(posts => {
+        const index = posts.findIndex(p => p.id === newsId);
+        return index >= 0 && index < posts.length - 1 ? posts[index + 1] : undefined;
+      })
+    );
   }
 
-  // Get news for home page - featured (latest) and side articles
-  getHomeNews(): Observable<{ featured: NewsItem; side: NewsItem[] }> {
-    const sortedNews = [...this.newsData].sort((a, b) => b.date.getTime() - a.date.getTime());
-    const featured = sortedNews[0];
-    const side = sortedNews.slice(1, 4); // Get next 3 articles
-    return of({ featured, side });
+  /** جلب آخر 4 أخبار للـ Home حسب createdDate */
+  getLatestNews(limit: number = 4): Observable<News[]> {
+    return this.getAllNews().pipe(
+      map(posts =>
+        posts
+          .filter(p => p.type === 'News')
+          .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+          .slice(0, limit)
+      )
+    );
+  }
+
+  /** جلب آخر 4 أحداث (Events) */
+  getLatestEvents(limit: number = 4): Observable<News[]> {
+    return this.getAllNews().pipe(
+      map(posts =>
+        posts
+          .filter(p => p.type === 'Events')
+          .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+          .slice(0, limit)
+      )
+    );
   }
 }

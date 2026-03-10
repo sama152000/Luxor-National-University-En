@@ -1,3 +1,22 @@
-<p>
-  events works!
-</p>
+<section class="events-parallax" *ngIf="!isLoading">
+  <div class="container-custom">
+    <h2 class="section-title">الأحداث  القادمة</h2>
+
+    <div class="timeline-horizontal">
+      <div 
+        *ngFor="let event of latestEvents"
+        class="event-card hover-lift"
+        [routerLink]="['/news', event?.slug]"
+      >
+        <span class="event-date">{{ formatDate(event.publishedDate) }}</span>
+        <img [src]="event.featuredImagePath" [alt]="event.title">
+        <h4>{{ event.title }}</h4>
+        <p>{{ event.content | truncateHtml:100 | cleanHtml }}</p>
+      </div>
+    </div>
+
+    <div class="events-btn">
+      <a [routerLink]="['/news']" class="btn-events">عرض كل الفاعليات</a>
+    </div>
+  </div>
+</section>

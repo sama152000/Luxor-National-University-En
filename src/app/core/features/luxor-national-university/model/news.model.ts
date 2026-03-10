@@ -1,37 +1,41 @@
-export interface NewsArticle {
+export interface PostCategory {
   id: string;
-  title: string;
-  excerpt?: string;
-  content?: string;
-  image: string;
-  category: string;
-  date: string;
-  link: string;
-  featured: boolean;
+  postId: string;
+  categoryId: string;
+  categoryName: string;
 }
 
-export interface NewsSection {
+export interface PostAttachment {
   id: string;
-  title: string;
-  articles: NewsArticle[];
+  fileName: string;
+  isPublic: boolean;
+  relativePath: string;
+  folderName: string;
+  url: string;
+  postId: string;
 }
 
-export interface NewsItem {
-  id: number;
-  title: string;
-  shortDescription: string;
-  fullContent: string;
-  date: Date;
-  category: 'أخبار' | 'أنشطة' | 'فعاليات';
-  images: string[];
-  mainImage: string;
-  author?: string;
-  tags?: string[];
-  relatedNews?: number[];
-}
-
-export interface NewsCategory {
+export interface PostTag {
+  postId: string;
+  index: number;
   id: string;
   name: string;
-  count: number;
+}
+
+export interface News {
+  id: string;
+  title: string;
+  urlTitleEn: string;
+  content: string;
+  status: string;
+  type: string;
+  publishedDate: string;
+  featuredImagePath: string;
+  pageId: string;
+  pageTittle: string;
+  createdDate: string;
+  postCategories: PostCategory[];
+  postAttachments: PostAttachment[];
+  tags: PostTag[];
+  slug?: string; // مضاف حديثًا
 }

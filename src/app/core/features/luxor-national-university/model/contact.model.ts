@@ -1,22 +1,15 @@
-export interface ContactInfo {
+export interface Contact {
   id: string;
-  name: string;
-  position: string;
-  phone: string;
-  email?: string;
-}
-
-export interface ContactFormData {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
-
-export interface UniversityInfo {
-  name: string;
-  nameAr: string;
-  email: string;
   address: string;
-  addressAr: string;
+  phone: string;
+  email: string;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedIn: string;
+  youTube: string;
+  whatsApp: string;
+  mapLocation: string;
+  webSite: string;
+  fax: string;
 }

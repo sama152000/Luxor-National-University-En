@@ -3,31 +3,27 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FacultyService } from '../../Services/faculty.service';
-import { Faculty, FacultySearchFilter } from '../../model/faculty.model';
+import { Department } from '../../model/faculty.model';
+import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-faculties',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, CleanHtmlPipe],
   templateUrl: './faculties.component.html',
   styleUrls: ['./faculties.component.css']
 })
 export class FacultiesComponent implements OnInit {
-  allFaculties: Faculty[] = [];
-  filteredFaculties: Faculty[] = [];
-  paginatedFaculties: Faculty[] = [];
-  
-  searchFilter: FacultySearchFilter = {
-    searchText: '',
-    alphabetFilter: 'الكل'
-  };
-  
-  alphabetLetters: string[] = [];
-  
+  allFaculties: Department[] = [];
+  filteredFaculties: Department[] = [];
+  paginatedFaculties: Department[] = [];
+
+  searchText: string = '';
+  searchFilter: { searchText: string } = { searchText: '' };
   currentPage = 1;
   itemsPerPage = 6;
   totalPages = 1;
-  
+
   isLoading = false;
 
   constructor(
@@ -37,43 +33,39 @@ export class FacultiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFaculties();
-    this.loadAlphabetLetters();
   }
 
+  /** تحميل كل الكليات */
   loadFaculties(): void {
     this.isLoading = true;
-    this.facultyService.getAllFaculties().subscribe(faculties => {
+    this.facultyService.getAllDepartments().subscribe(faculties => {
       this.allFaculties = faculties;
       this.applyFilters();
       this.isLoading = false;
     });
   }
 
-  loadAlphabetLetters(): void {
-    this.alphabetLetters = this.facultyService.getAlphabetLetters();
-  }
-
+  /** تطبيق الفلترة */
   applyFilters(): void {
-    this.facultyService.searchFaculties(this.searchFilter).subscribe(filtered => {
-      this.filteredFaculties = filtered;
-      this.currentPage = 1;
-      this.updatePagination();
-    });
+    let filtered = this.allFaculties;
+
+    // فلترة بالبحث
+    if (this.searchFilter.searchText.trim() !== '') {
+      filtered = filtered.filter(f =>
+        f.name.toLowerCase().includes(this.searchFilter.searchText.toLowerCase())
+      );
+    }
+
+    this.filteredFaculties = filtered;
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
   onSearchTextChange(): void {
     this.applyFilters();
   }
 
-  setAlphabetFilter(letter: string): void {
-    this.searchFilter.alphabetFilter = letter;
-    this.applyFilters();
-  }
-
-  isActiveAlphabetFilter(letter: string): boolean {
-    return this.searchFilter.alphabetFilter === letter;
-  }
-
+  /** Pagination */
   updatePagination(): void {
     this.totalPages = Math.ceil(this.filteredFaculties.length / this.itemsPerPage);
     this.updatePaginatedFaculties();
@@ -108,16 +100,16 @@ export class FacultiesComponent implements OnInit {
     const pages: number[] = [];
     const startPage = Math.max(1, this.currentPage - 2);
     const endPage = Math.min(this.totalPages, this.currentPage + 2);
-    
+
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   }
 
-  viewFacultyDetails(facultyId: string | number): void {
-    const id = typeof facultyId === 'string' ? parseInt(facultyId, 10) : facultyId;
-    this.router.navigate(['/faculties', id]);
+  /** فتح صفحة تفاصيل الكلية بالـ slug */
+  viewFacultyDetails(slug: string): void {
+    this.router.navigate(['/faculties', slug]);
   }
 
   getMinValue(a: number, b: number): number {

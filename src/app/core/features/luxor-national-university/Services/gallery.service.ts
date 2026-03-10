@@ -1,56 +1,20 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { GalleryItem } from '../model/gallery.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { GalleryAttachment } from '../model/gallery.model';
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GalleryService {
+  private baseUrl = environment.apiUrl + 'gallaryattachments';
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
-  getGalleryImages(): Observable<GalleryItem[]> {
-    const galleryImages: GalleryItem[] = [
-      {
-        id: 1,
-        imageUrl: 'assets/activity.jpg',
-      },
-      {
-        id: 2,
-        imageUrl: 'assets/activity11.jpg',
-      },
-      {
-        id: 3,
-        imageUrl: 'assets/activity111.jpg',
-      
-      },
-      {
-        id: 4,
-        imageUrl: 'assets/activity1111.jpg',
-       
-      },
-      {
-        id: 5,
-        imageUrl: 'assets/pic1.jpg',
-       
-      },
-      {
-        id: 6,
-        imageUrl: 'assets/pic2.jpg',
-       
-      },
-      {
-        id: 7,
-        imageUrl: 'assets/pic3.jpg',
-       
-      },
-      {
-        id: 8,
-        imageUrl: 'assets/pic4.jpg',
-       
-      }
-    ];
-
-    return of(galleryImages);
+  getAllGalleryAttachments(): Observable<GalleryAttachment[]> {
+    return this.http.get<{ success: boolean; data: GalleryAttachment[] }>(`${this.baseUrl}/getall`)
+      .pipe(map(response => response.data));
   }
 }

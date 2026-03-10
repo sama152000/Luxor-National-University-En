@@ -1,18 +1,26 @@
 import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DeanSpeechService } from '../../../Services/dean-speech.service';
+import { DeanSpeech } from '../../../model/dean-speech.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-book',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,CleanHtmlPipe],
   templateUrl: './book.component.html',
-  styleUrl: './book.component.css'
+  styleUrls: ['./book.component.css']
 })
 export class BookComponent implements OnInit, AfterViewInit {
+  deanSpeech: DeanSpeech | null = null;
+  isLoading = true;
+  hasError = false;
 
-  constructor() {}
+  constructor(private deanSpeechService: DeanSpeechService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadDeanSpeech();
+  }
 
   ngAfterViewInit(): void {
     // Initialize scroll animations
@@ -20,6 +28,38 @@ export class BookComponent implements OnInit, AfterViewInit {
     
     // Add stagger animation delays
     this.addAnimationDelays();
+  }
+
+  /** تحميل خطاب العميد */
+  private loadDeanSpeech(): void {
+    this.isLoading = true;
+    this.hasError = false;
+    
+    this.deanSpeechService.getMainDeanSpeech().subscribe({
+      next: (speech) => {
+        this.deanSpeech = speech || null;
+        this.isLoading = false;
+        console.log('Dean Speech loaded:', this.deanSpeech);
+        
+        // Add animation class after data loads
+        setTimeout(() => this.triggerAnimation(), 100);
+      },
+      error: (err) => {
+        console.error('Error fetching dean speech', err);
+        this.hasError = true;
+        this.isLoading = false;
+        // Still trigger animation to show fallback content
+        setTimeout(() => this.triggerAnimation(), 100);
+      }
+    });
+  }
+
+  /** Trigger scroll animation */
+  private triggerAnimation(): void {
+    const book = document.querySelector('.book');
+    if (book) {
+      book.classList.add('in-view');
+    }
   }
 
   /**

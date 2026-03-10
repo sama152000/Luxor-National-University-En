@@ -10,17 +10,18 @@
     <div class="tabs-container slide-up animate-delay-1">
       <div class="tabs-wrapper">
         <div class="tabs-list" role="tablist">
-          <button
+          <a
             *ngFor="let tab of tabs"
+            [routerLink]="['/about', tab.id]"
+            routerLinkActive="active"
             class="tab-item"
             [class.active]="isActiveTab(tab.id)"
-            (click)="setActiveTab(tab.id)"
             role="tab"
             [attr.aria-selected]="isActiveTab(tab.id)"
           >
             <i [class]="tab.icon"></i>
             <span>{{ tab.title }}</span>
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -34,14 +35,32 @@
         </div>
 
         <!-- Content Display -->
-        <div 
-          *ngIf="!isLoading && activeSection" 
-          class="content-section fade-in"
-          [innerHTML]="activeSection.content"
-        ></div>
+        <div *ngIf="!isLoading && section" class="content-section fade-in">
+          <!-- Overview -->
+          <div *ngIf="isActiveTab('overview')" [innerHTML]="section?.content | cleanHtml"></div>
+
+          <!-- Vision -->
+          <div *ngIf="isActiveTab('vision')" [innerHTML]="section?.vision | cleanHtml"></div>
+
+          <!-- Mission -->
+          <div *ngIf="isActiveTab('mission')" [innerHTML]="section?.mission | cleanHtml"></div>
+
+          <!-- Goals -->
+          <div *ngIf="isActiveTab('goals')" class="goals-list">
+            <ul>
+              <li *ngFor="let goal of section?.goals">
+                <!-- <i class="pi pi-check-circle"></i> -->
+                {{ goal.goalName }}
+              </li>
+            </ul>
+          </div>
+
+          <!-- History -->
+          <div *ngIf="isActiveTab('history')" [innerHTML]="section?.history | cleanHtml"></div>
+        </div>
 
         <!-- No Content State -->
-        <div *ngIf="!isLoading && !activeSection" class="no-content">
+        <div *ngIf="!isLoading && !section" class="no-content">
           <i class="pi pi-info-circle"></i>
           <p>لا توجد محتويات متاحة</p>
         </div>

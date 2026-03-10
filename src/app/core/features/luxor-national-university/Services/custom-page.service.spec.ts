@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, async, inject } from '@angular/core/testing';
-import { HeroService } from './hero.service';
+import { CustomPageService } from './custom-page.service';
 
-describe('Service: Hero', () => {
+describe('Service: CustomPage', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [HeroService]
+      providers: [CustomPageService]
     });
   });
 
-  it('should ...', inject([HeroService], (service: HeroService) => {
+  it('should ...', inject([CustomPageService], (service: CustomPageService) => {
     expect(service).toBeTruthy();
   }));
 });

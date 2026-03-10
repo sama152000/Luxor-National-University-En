@@ -1,3 +1,16 @@
-<p>
-  stats works!
-</p>
+<section class="stats-section" #statsSectionElement *ngIf="stats.length > 0">
+  <div class="container-custom">
+    <h2 class="stats-title">إحصائيات الجامعة</h2>
+
+    <div class="stats-grid">
+      <div 
+        *ngFor="let stat of stats; let i = index"
+        class="stat-card"
+      >
+        <i [class]="stat.iconPath"></i>
+        <h3 class="counter">{{stat.value}}</h3>
+        <p>{{ stat.title }}</p>
+      </div>
+    </div>
+  </div>
+</section>

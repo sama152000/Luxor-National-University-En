@@ -1,57 +1,24 @@
 import { Injectable } from '@angular/core';
-import { NavigationItem } from '../model/common.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment';
+import { Observable, map } from 'rxjs';
+import { NavigationItem, NavigationData } from '../model/navigation.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavigationService {
+  constructor(private http: HttpClient) {}
 
-  constructor() {}
-
-  getNavigationItems(): NavigationItem[] {
-    return [
-      {
-        id: '1',
-        label: 'الرئيسية',
-        icon: 'fa-solid fa-house',
-        route: '/home',
-        active: true
-      },
-      {
-        id: '2',
-        label: 'عن الجامعة',
-        icon: 'fa-solid fa-building-columns',
-        route: '/about',
-        active: false
-      },
-      {
-        id: '3',
-        label: 'الكليات',
-        icon: 'fa-solid fa-graduation-cap',
-        route: '/faculties',
-        active: false
-      },
-      {
-        id: '4',
-        label: 'الخدمات',
-        icon: 'fa-solid fa-flask',
-        route: '/services',
-        active: false
-      },
-      {
-        id: '5',
-        label: 'الأخبار',
-        icon: 'fa-solid fa-newspaper',
-        route: '/news',
-        active: false
-      },
-      {
-        id: '6',
-        label: 'اتصل بنا',
-        icon: 'fa-solid fa-envelope',
-        route: '/contactInfo',
-        active: false
-      }
-    ];
+  getNavigationItems(): Observable<NavigationItem[]> {
+    return this.http.get<NavigationData>(`${environment.apiUrl}menus/getall`).pipe(
+      map(res => {
+        // ✅ تصفية العناصر التي لها parentId (التي هي عناصر فرعية) وإبقاء فقط العناصر الرئيسية + العناصر الفرعية المضافة كأولاد
+        const filteredItems = res.data.filter(item => !item.parentId);
+        
+        // ✅ ترتيب العناصر حسب الـ order
+        return filteredItems.sort((a, b) => a.order - b.order);
+      })
+    );
   }
 }

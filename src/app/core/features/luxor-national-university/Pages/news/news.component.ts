@@ -1,126 +1,127 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NewsService } from '../../Services/news.service';
-import { NewsItem } from '../../model/news.model';
+import { CategoriesService } from '../../Services/categories.service';
+import { News } from '../../model/news.model';
+import { Category } from '../../model/category.model';
+import { CleanHtmlPipe } from "../../../../pipes/clean-html.pipe";
 
 @Component({
   selector: 'app-news',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CleanHtmlPipe, RouterLink],
   templateUrl: './news.component.html',
   styleUrls: ['./news.component.css']
 })
 export class NewsComponent implements OnInit {
-  allNews: NewsItem[] = [];
-  filteredNews: NewsItem[] = [];
-  paginatedNews: NewsItem[] = [];
-  
-  currentCategory = 'الكل';
-  currentPage = 1;
-  itemsPerPage = 6;
-  totalPages = 1;
-  
-  isLoading = false;
+  news: News[] = [];
+  filteredNews: News[] = [];
+  categories: Category[] = [];
+  selectedCategory: string | null = null;
+  isLoading: boolean = true;
 
-  categories = [
-    { id: 'الكل', name: 'الكل' },
-    { id: 'أخبار', name: 'أخبار' },
-    { id: 'أنشطة', name: 'أنشطة' },
-    { id: 'فعاليات', name: 'فعاليات' }
-  ];
+  // Pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 6; // عدد الأخبار في الصفحة
+  totalItems: number = 0;
+  paginatedNews: News[] = [];
+  usePagination: boolean = true; // دايمًا نستخدم pagination
 
   constructor(
     private newsService: NewsService,
-    private router: Router
+    private categoriesService: CategoriesService
   ) {}
 
   ngOnInit(): void {
+    this.loadCategories();
     this.loadNews();
   }
 
-  loadNews(): void {
-    this.isLoading = true;
-    this.newsService.getAllNews().subscribe(news => {
-      this.allNews = news.sort((a, b) => b.date.getTime() - a.date.getTime());
-      this.filterByCategory(this.currentCategory);
-      this.isLoading = false;
+  /** تحميل التصنيفات من الـ API */
+  loadCategories(): void {
+    this.categoriesService.getCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => console.error('Error fetching categories', err)
     });
   }
 
-  setActiveCategory(categoryId: string): void {
-    this.currentCategory = categoryId;
-    this.currentPage = 1;
-    this.filterByCategory(categoryId);
+  /** تحميل الأخبار من الـ API */
+  loadNews(): void {
+    this.isLoading = true;
+    this.newsService.getAllNews().subscribe({
+      next: (data) => {
+        this.news = data;
+        this.filteredNews = data; 
+        this.currentPage = 1;
+        this.updatePagination();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching news', err);
+        this.isLoading = false;
+      }
+    });
   }
 
-  filterByCategory(category: string): void {
-    if (category === 'الكل') {
-      this.filteredNews = [...this.allNews];
-    } else {
-      this.filteredNews = this.allNews.filter(news => news.category === category);
-    }
+  /** فلترة الأخبار حسب التصنيف */
+  filterByCategory(categoryId: string): void {
+    this.selectedCategory = categoryId;
+    this.filteredNews = this.news.filter(post =>
+      post.postCategories.some(cat => cat.categoryId === categoryId)
+    );
+    this.currentPage = 1;
     this.updatePagination();
   }
 
-  updatePagination(): void {
-    this.totalPages = Math.ceil(this.filteredNews.length / this.itemsPerPage);
-    this.updatePaginatedNews();
+  /** إلغاء الفلترة */
+  clearFilter(): void {
+    this.selectedCategory = null;
+    this.filteredNews = this.news;
+    this.currentPage = 1;
+    this.updatePagination();
   }
 
-  updatePaginatedNews(): void {
+  /** تحديث التقسيم على الصفحات */
+  updatePagination(): void {
+    this.totalItems = this.filteredNews.length;
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedNews = this.filteredNews.slice(startIndex, endIndex);
   }
 
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedNews();
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.goToPage(this.currentPage - 1);
-    }
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
-      this.goToPage(this.currentPage + 1);
+      this.currentPage++;
+      this.updatePagination();
     }
   }
 
-  getPageNumbers(): number[] {
-    const pages: number[] = [];
-    const startPage = Math.max(1, this.currentPage - 2);
-    const endPage = Math.min(this.totalPages, this.currentPage + 2);
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
+  prevPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePagination();
     }
-    return pages;
   }
 
-  viewNewsDetails(newsId: number): void {
-    this.router.navigate(['/news', newsId]);
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagination();
+    }
   }
 
-  formatDate(date: Date): string {
-    return new Intl.DateTimeFormat('ar-SA', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    }).format(date);
+  get canGoNext(): boolean {
+    return this.currentPage < this.totalPages;
   }
 
-  getEndIndex(): number {
-    return Math.min(this.currentPage * this.itemsPerPage, this.filteredNews.length);
-  }
-
-  isActiveCategory(categoryId: string): boolean {
-    return this.currentCategory === categoryId;
+  get canGoPrev(): boolean {
+    return this.currentPage > 1;
   }
 }

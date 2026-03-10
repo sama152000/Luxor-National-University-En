@@ -5,7 +5,7 @@
         <!-- University Logo -->
         <div class="logo-section">
           <div class="logo-box hover-lift">
-            <img src="./assets/lnu.logo.png" 
+            <img [src]="logo" 
                  alt="جامعة الأقصر الأهلية" 
                  class="logo-img">
           </div>
@@ -23,19 +23,31 @@
               <div class="phone-section">
                 <h3 class="section-subtitle">التواصل</h3>
                 <div class="contact-list">
-                  <div *ngFor="let contact of contactInfo; trackBy: trackByContact" class="contact-item slide-right" [class.animate-delay-1]="contact.id === '1'" [class.animate-delay-2]="contact.id === '2'" [class.animate-delay-3]="contact.id === '3'" [class.animate-delay-4]="contact.id === '4'">
-                    <span class="contact-name">{{ contact.name }}</span>
-                    <span class="contact-phone">{{ contact.phone }}</span>
+                  <div class="contact-item slide-right">
+                    <!-- <i class="pi pi-phone"></i> -->
+                    <span class="contact-phone">{{ contacts[0]?.phone }}</span>
+                  </div>
+                  <div class="contact-item slide-right animate-delay-2">
+                    <!-- <i class="pi pi-whatsapp"></i> -->
+                    <span class="contact-phone">{{ contacts[0]?.whatsApp }}</span>
+                  </div>
+                  <div class="contact-item slide-right animate-delay-3">
+                    <!-- <i class="pi pi-youtube"></i> -->
+                    <span class="contact-phone">{{ contacts[0]?.youTube }}</span>
+                  </div>
+                  <div class="contact-item slide-right animate-delay-4">
+                    <!-- <i class="pi pi-linkedin"></i> -->
+                    <span class="contact-phone">{{ contacts[0]?.linkedIn }}</span>
                   </div>
                 </div>
               </div>
 
               <!-- Email Section -->
-              <div class="email-section slide-right animate-delay-4">
+              <div class="email-section slide-right animate-delay-5">
                 <h3 class="section-subtitle">البريد الإلكتروني</h3>
                 <div class="email-item">
                   <i class="pi pi-envelope email-icon"></i>
-                  <span class="email-text">{{ universityInfo?.email || 'info.lnu@luxor.edu.eg' }}</span>
+                  <span class="email-text">{{ contacts[0]?.email }}</span>
                 </div>
               </div>
             </div>
@@ -70,6 +82,7 @@
       </div>
     </div>
   </section>
+</div>
 
   <!-- Contact Form Section -->
   <!-- <section class="contact-form-section">
@@ -158,4 +171,3 @@
       </div>
     </div>
   </section> -->
-</div>

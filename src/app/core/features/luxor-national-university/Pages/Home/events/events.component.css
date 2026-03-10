@@ -69,6 +69,7 @@
   z-index: 2;
   transition: var(--transition-smooth);
   border: 1px solid rgba(0,0,0,0.1); /* حدود خفيفة غامقة */
+  cursor: pointer;
 }
 
 .event-card h4 {

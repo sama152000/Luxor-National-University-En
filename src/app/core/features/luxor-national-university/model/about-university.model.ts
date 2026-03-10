@@ -1,14 +1,19 @@
-export interface AboutUniversitySection {
+export interface AboutUniversityGoal {
   id: string;
-  title: string;
-  content: string;
-  icon?: string;
+  index: number;
+  goalName: string;
+  aboutId: string;
 }
 
-export interface AboutUniversityData {
-  overview: AboutUniversitySection;
-  vision: AboutUniversitySection;
-  mission: AboutUniversitySection;
-  goals: AboutUniversitySection;
-  history: AboutUniversitySection;
+export interface AboutUniversitySection {
+  id: string;
+  content: string;
+  mission: string;
+  vision: string;
+  history: string;
+  goals: AboutUniversityGoal[];
+  pageId: string;
+  pageType: string;
+  pageName: string;
+  pageNameEn: string;
 }

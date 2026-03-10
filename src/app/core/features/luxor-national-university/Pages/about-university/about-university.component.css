@@ -63,6 +63,7 @@
   transition: var(--transition-smooth);
   white-space: nowrap;
   min-height: 60px;
+  text-decoration: none;
 }
 
 .tab-item i {

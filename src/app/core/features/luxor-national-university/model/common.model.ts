@@ -1,6 +1,7 @@
 export interface ContactInfo {
   phone: string;
   email: string;
+  website: string;
 }
 
 export interface Language {

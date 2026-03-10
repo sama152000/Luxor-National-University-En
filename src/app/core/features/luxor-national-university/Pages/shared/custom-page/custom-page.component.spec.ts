@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DeansWordComponent } from './deans-word.component';
+import { CustomPageComponent } from './custom-page.component';
 
-describe('DeansWordComponent', () => {
-  let component: DeansWordComponent;
-  let fixture: ComponentFixture<DeansWordComponent>;
+describe('CustomPageComponent', () => {
+  let component: CustomPageComponent;
+  let fixture: ComponentFixture<CustomPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DeansWordComponent ]
+      declarations: [ CustomPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeansWordComponent);
+    fixture = TestBed.createComponent(CustomPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

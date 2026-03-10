@@ -136,6 +136,16 @@
   transition: var(--transition-smooth);
 }
 
+/* Department Image as background */
+.orbit-item .dept-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
 .orbit-item:hover {
   transform: scale(1.2);
   z-index: 10;

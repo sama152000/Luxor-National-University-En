@@ -46,7 +46,7 @@
     transition: transform 1s ease;
     backface-visibility: hidden;
     position: relative;
-    color: #2c2c2c;
+    /* color: #2c2c2c; */
 }
 
 /* darker inner edges */
@@ -88,13 +88,20 @@
 
 .page-content h4 {
     margin-top: 20px;
-    color: #4a2f0f;
+    color: var(--primary-color);
     font-weight: 700;
 }
 
 .page-content span {
     font-size: 0.95rem;
     color: #555;
+}
+
+/* Bold text styling */
+.page-content b,
+.page-content strong {
+    font-weight: 700;
+    color: #4a2f0f !important;
 }
 
 /* IMAGE */

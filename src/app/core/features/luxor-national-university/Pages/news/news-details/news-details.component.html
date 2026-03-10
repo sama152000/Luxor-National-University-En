@@ -18,23 +18,19 @@
 
       <!-- News Header -->
       <div class="news-header slide-up animate-delay-1">
-        <div class="category-badge">{{ news.category }}</div>
+        <div class="category-badge">{{ news.postCategories[0]?.categoryName }}</div>
         <h1 class="news-title">{{ news.title }}</h1>
         
         <div class="news-meta">
           <div class="meta-item">
             <i class="pi pi-calendar"></i>
-            <span>{{ formatDate(news.date) }}</span>
-          </div>
-          <div class="meta-item" *ngIf="news.author">
-            <i class="pi pi-user"></i>
-            <span>{{ news.author }}</span>
+            <span>{{ formatDate(news.publishedDate) }}</span>
           </div>
         </div>
       </div>
 
       <!-- Image Slider -->
-      <div class="image-slider slide-up animate-delay-2" *ngIf="news.images.length > 0">
+      <div class="image-slider slide-up animate-delay-2" *ngIf="news.postAttachments.length > 0">
         <div class="slider-container">
           <div class="main-image">
             <img 
@@ -64,7 +60,7 @@
           <!-- Image Indicators -->
           <div class="slider-indicators" *ngIf="hasMultipleImages()">
             <button
-              *ngFor="let image of news.images; let i = index"
+              *ngFor="let image of news.postAttachments; let i = index"
               class="indicator"
               [class.active]="i === currentImageIndex"
               (click)="goToImage(i)"
@@ -75,13 +71,13 @@
 
       <!-- News Content -->
       <div class="article-content slide-up animate-delay-3">
-        <div class="content-wrapper" [innerHTML]="news.fullContent"></div>
+        <div class="content-wrapper" [innerHTML]="news.content | cleanHtml"></div>
         
         <!-- Tags -->
         <div class="tags-container" *ngIf="news.tags && news.tags.length > 0">
           <h4>الكلمات المفتاحية:</h4>
           <div class="tags">
-            <span *ngFor="let tag of news.tags" class="tag">{{ tag }}</span>
+            <span *ngFor="let tag of news.tags" class="tag">{{ tag.name }}</span>
           </div>
         </div>
       </div>
@@ -122,16 +118,15 @@
             *ngFor="let related of relatedNews; let i = index"
             class="related-card hover-lift"
             [class]="'animate-delay-' + (i % 4 + 1)"
-            (click)="viewRelatedNews(related.id)"
+            (click)="viewRelatedNews(related?.slug)"
           >
             <div class="related-image">
-              <img [src]="related.mainImage" [alt]="related.title">
+              <img [src]="related.featuredImagePath" [alt]="related.title">
             </div>
             
             <div class="related-content">
               <h4>{{ related.title }}</h4>
-              <p>{{ related.shortDescription }}</p>
-              <span class="related-date">{{ formatDate(related.date) }}</span>
+              <div class="related-date">{{ formatDate(related.publishedDate) }}</div>
             </div>
           </div>
         </div>

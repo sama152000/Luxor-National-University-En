@@ -1,3 +1,42 @@
-<p>
-  footer works!
-</p>
+<footer class="site-footer" *ngIf="footerData">
+      <div class="container-custom footer-grid">
+        <!-- Column 1: Logo & About -->
+        <div class="footer-col">
+          <img [src]="logo.src" [alt]="logo.alt" [width]="250" [height]="80" class="footer-logo">
+          <p>{{ footerData.description }}</p>
+        </div>
+
+        <!-- Dynamic Columns -->
+        <div *ngFor="let section of footerData.sections" class="footer-col">
+          <h4>{{ section.title }}</h4>
+          <ul>
+            <li *ngFor="let link of section.links">
+              <a *ngIf="isInternalLink(link.url)" [routerLink]="link.url">{{ link.label }}</a>
+              <a *ngIf="!isInternalLink(link.url)" [href]="link.url" target="_blank">{{ link.label }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Social Column -->
+        <div class="footer-col">
+          <h4>Follow Us</h4>
+          <div class="footer-social">
+            <a 
+              *ngFor="let social of footerData.socialLinks"
+              [href]="social.url"
+              [title]="social.platform"
+              class="hover-lift"
+            >
+              <i [class]="social.icon"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-bottom">
+        <div class="container-custom">
+          <p>© {{ footerData.year }} {{ footerData.copyright }}</p>
+        </div>
+      </div>
+    </footer>

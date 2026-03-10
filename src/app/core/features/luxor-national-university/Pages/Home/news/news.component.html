@@ -1,3 +1,33 @@
-<p>
-  news works!
-</p>
+<section class="news-paper" dir="rtl">
+  <div class="container-custom">
+    <h2 class="news-title">أحدث الأخبار</h2>
+
+    <div class="news-layout">
+      <!-- الخبر الرئيسي -->
+      <article class="news-main hover-lift" *ngIf="latestNews.length > 0">
+        <img [src]="latestNews[0].featuredImagePath" [alt]="latestNews[0].title">
+        <div class="news-content">
+          <span class="news-category">{{ latestNews[0].postCategories[0]?.categoryName }}</span>
+          <h3>{{ latestNews[0].title }}</h3>
+          <a [routerLink]="['/news', latestNews[0].slug]">اقرأ المزيد ←</a>
+        </div>
+      </article>
+
+      <!-- الأخبار الجانبية -->
+      <div class="news-side">
+        <article 
+          *ngFor="let article of latestNews.slice(1)" 
+          class="news-item hover-lift"
+          [routerLink]="['/news', article.slug]"
+        >
+          <img [src]="article.featuredImagePath" [alt]="article.title">
+          <div>
+            <span class="news-date">{{ formatDate(article.createdDate) }}</span>
+            <h4>{{ article.title }}</h4>
+            <a [routerLink]="['/news', article.slug]">عرض ←</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>

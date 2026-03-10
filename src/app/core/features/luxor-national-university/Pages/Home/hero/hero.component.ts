@@ -1,27 +1,35 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HeroService } from '../../../Services/hero.service';
-import { HeroSlide, HeroDot } from '../../../model/hero.model';
+import { HeroSectionsService } from '../../../Services/hero-sections.service';
+import { HeroSection, HeroDot } from '../../../model/hero-section.model';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
   imports: [CommonModule],
- templateUrl: './hero.component.html',
-  styleUrl: './hero.component.css'
+  templateUrl: './hero.component.html',
+  styleUrls: ['./hero.component.css']
 })
 export class HeroComponent implements OnInit, OnDestroy {
-  slides!: HeroSlide[];
-  dots!: HeroDot[];
+  slides: HeroSection[] = [];
+  dots: HeroDot[] = [];
   currentSlideIndex = 0;
   slideInterval: any;
 
-  constructor(private heroService: HeroService) {}
+  constructor(private heroService: HeroSectionsService) {}
 
   ngOnInit() {
-    this.slides = this.heroService.getHeroSlides();
-    this.dots = this.heroService.getHeroDots();
-    this.startSlideShow();
+    this.heroService.getAllHeroSections().subscribe({
+      next: (data) => {
+        this.slides = data;
+        this.dots = this.slides.map((s, i) => ({
+          label: s.title,
+          active: i === this.currentSlideIndex
+        }));
+        this.startSlideShow();
+      },
+      error: (err) => console.error('Error fetching hero sections', err)
+    });
   }
 
   ngOnDestroy() {
@@ -37,30 +45,26 @@ export class HeroComponent implements OnInit, OnDestroy {
   }
 
   nextSlide() {
-    this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
-    this.updateActiveSlide();
+    if (this.slides.length > 0) {
+      this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
+      this.updateDots();
+    }
   }
 
   switchSlide(index: number) {
     this.currentSlideIndex = index;
-    this.updateActiveSlide();
-    
-    // Reset interval
+    this.updateDots();
+
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
       this.startSlideShow();
     }
   }
 
-  updateActiveSlide() {
-    this.slides = this.slides.map((slide, index) => ({
-      ...slide,
-      active: index === this.currentSlideIndex
-    }));
-
-    this.dots = this.dots.map((dot, index) => ({
+  updateDots() {
+    this.dots = this.dots.map((dot, i) => ({
       ...dot,
-      active: index === this.currentSlideIndex
+      active: i === this.currentSlideIndex
     }));
   }
 }

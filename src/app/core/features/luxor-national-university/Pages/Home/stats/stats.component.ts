@@ -1,45 +1,32 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StatsService } from '../../../Services/stats.service';
-import { StatsSection } from '../../../model/stats.model';
+import { Stat } from '../../../model/stats.model';
 
 @Component({
   selector: 'app-stats',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <section class="stats-section" #statsSectionElement>
-      <div class="container-custom">
-        <h2 class="stats-title">{{ statsSection.title }}</h2>
-
-        <div class="stats-grid">
-          <div 
-            *ngFor="let stat of statsSection.statistics; let i = index"
-            class="stat-card"
-            [style.animation-delay]="stat.animationDelay + 's'"
-          >
-            <i [class]="stat.icon"></i>
-            <h3 class="counter" #counterElement [attr.data-target]="stat.value">0</h3>
-            <p>{{ stat.label }}</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  `,
-  styleUrl: './stats.component.css'
+  templateUrl: './stats.component.html',
+  styleUrls: ['./stats.component.css']
 })
 export class StatsComponent implements OnInit, OnDestroy {
   @ViewChildren('counterElement') counterElements!: QueryList<ElementRef>;
   
-  statsSection!: StatsSection;
+  stats: Stat[] = [];
   private observer!: IntersectionObserver;
   private hasAnimated = false;
 
   constructor(private statsService: StatsService) {}
 
   ngOnInit() {
-    this.statsSection = this.statsService.getStatsSection();
-    this.setupIntersectionObserver();
+    this.statsService.getAllStats().subscribe({
+      next: (data) => {
+        this.stats = data;
+        this.setupIntersectionObserver();
+      },
+      error: (err) => console.error('Error fetching stats', err)
+    });
   }
 
   ngOnDestroy() {
@@ -71,7 +58,7 @@ export class StatsComponent implements OnInit, OnDestroy {
   }
 
   animateCounters() {
-    this.counterElements.forEach((element, index) => {
+    this.counterElements.forEach((element) => {
       const target = parseInt(element.nativeElement.getAttribute('data-target'));
       const duration = 2000; // 2 seconds
       const increment = target / (duration / 16); // 60fps

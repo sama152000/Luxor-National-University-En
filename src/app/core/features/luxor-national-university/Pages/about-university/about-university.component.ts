@@ -1,18 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AboutUniversityService } from '../../Services/about-university.service';
 import { AboutUniversitySection } from '../../model/about-university.model';
+import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-about-university',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, CleanHtmlPipe],
   templateUrl: './about-university.component.html',
   styleUrls: ['./about-university.component.css']
 })
 export class AboutUniversityComponent implements OnInit {
-  sections: AboutUniversitySection[] = [];
-  activeSection: AboutUniversitySection | null = null;
+  section: AboutUniversitySection | null = null;
+  activeTab: string = 'overview';
   isLoading = false;
 
   tabs = [
@@ -23,30 +25,34 @@ export class AboutUniversityComponent implements OnInit {
     { id: 'history', title: 'تاريخ الجامعة', icon: 'pi pi-clock' }
   ];
 
-  constructor(private aboutService: AboutUniversityService) {}
+  constructor(
+    private aboutService: AboutUniversityService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
-    this.setActiveTab('overview');
+    this.route.url.subscribe(urlSegments => {
+      const tab = urlSegments[1]?.path || 'overview';
+      this.setActiveTab(tab);
+    });
   }
 
   loadData(): void {
     this.aboutService.getAboutData().subscribe(data => {
-      this.sections = Object.values(data);
+      this.section = data;
     });
   }
 
-  setActiveTab(sectionId: string): void {
+  setActiveTab(tabId: string): void {
     this.isLoading = true;
-    
     setTimeout(() => {
-      const section = this.sections.find(s => s.id === sectionId);
-      this.activeSection = section || null;
+      this.activeTab = tabId;
       this.isLoading = false;
     }, 200);
   }
 
-  isActiveTab(sectionId: string): boolean {
-    return this.activeSection?.id === sectionId;
+  isActiveTab(tabId: string): boolean {
+    return this.activeTab === tabId;
   }
 }

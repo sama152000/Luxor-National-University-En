@@ -1,10 +1,50 @@
-<section class="book-section">
+<!-- Loading State -->
+<section class="book-section" *ngIf="isLoading">
+  <div class="container">
+    <p>جاري التحميل...</p>
+  </div>
+</section>
+
+<!-- Error State -->
+<section class="book-section" *ngIf="hasError && !isLoading">
+  <div class="container">
+    <p>عذراً، حدث خطأ في تحميل البيانات</p>
+  </div>
+</section>
+
+<!-- Main Content - Show when data is loaded -->
+<section class="book-section" *ngIf="!isLoading && !hasError && deanSpeech">
   <div class="container book animate-on-scroll book-closed">
 
     <!-- الصفحة اليسرى -->
     <div class="book-page left-page">
-      <!-- <img src="assets/pic2.jpg" alt="رئيس الجامعة" class="page-image"> -->
+      <div class="page-content" [innerHTML]="deanSpeech.speech|cleanHtml"></div>
+    </div>
 
+    <!-- الصفحة اليمنى -->
+    <div class="book-page right-page">
+      <h3>اكتشف جامعتنا</h3>
+      <div class="video-wrapper" *ngIf="deanSpeech.deanSpeechAttachments && deanSpeech.deanSpeechAttachments.length > 0">
+        <video
+          controls
+          muted
+          loop
+          playsinline  
+          class="video-element">
+          <source [src]="deanSpeech.deanSpeechAttachments[0].url" type="video/mp4">
+          متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fallback - Show when no data but not loading/error -->
+<section class="book-section" *ngIf="!isLoading && !hasError && !deanSpeech">
+  <div class="container book animate-on-scroll book-closed">
+
+    <!-- الصفحة اليسرى -->
+    <div class="book-page left-page">
       <div class="page-content">
         <h3>رسالة ترحيب</h3>
         <p>
@@ -26,14 +66,12 @@
           controls
           muted
           loop
-          playsinline
-          
+          playsinline  
           class="video-element">
           <source src="./assets/vid.mp4" type="video/mp4">
           متصفحك لا يدعم تشغيل الفيديو.
         </video>
       </div>
     </div>
-
   </div>
 </section>

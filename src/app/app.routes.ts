@@ -8,24 +8,32 @@ import { FacultyDetailsComponent } from './core/features/luxor-national-universi
 import { LuxorNationalUniversityComponent } from './core/features/luxor-national-university/luxor-national-university.component';
 import { ServicesComponent } from './core/features/luxor-national-university/Pages/services/services.component';
 import { ContactUsComponent } from './core/features/luxor-national-university/Pages/contact-us/contact-us.component';
+import { CustomPageComponent } from './core/features/luxor-national-university/Pages/shared/custom-page/custom-page.component';
 
 export const routes: Routes = [
 
    {
-    path: '',
-    component: LuxorNationalUniversityComponent,
-    children: [
-      { path: 'home', component: HomeComponent },
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
-      { path: 'about', component: AboutUniversityComponent},
-      {path: 'news', component: NewsComponent},
-      {path: 'news/:id', component: NewsDetailsComponent},
-      {path: 'faculties', component: FacultiesComponent},
-      {path: 'faculties/:id', component: FacultyDetailsComponent},
-      {path: 'services', component:ServicesComponent},
-      {path: 'services/:id', component: ServicesComponent},
-      {path :'contactInfo', component: ContactUsComponent},
-      {path: '**', redirectTo: 'home' }
+     path: '',
+     component: LuxorNationalUniversityComponent,
+     children: [
+       { path: '', redirectTo: 'home', pathMatch: 'full' },
+       { path: 'home', component: HomeComponent },
+       { path: 'about', component: AboutUniversityComponent},
+       { path: 'about/overview', component: AboutUniversityComponent},
+       { path: 'about/vision', component: AboutUniversityComponent},
+       { path: 'about/mission', component: AboutUniversityComponent},
+       { path: 'about/goals', component: AboutUniversityComponent},
+       { path: 'about/history', component: AboutUniversityComponent},
 
-]}
+       {path: 'news', component: NewsComponent},
+       {path: 'news/:slug', component: NewsDetailsComponent},
+       {path: 'faculties', component: FacultiesComponent},
+       {path: 'faculties/:slug', component: FacultyDetailsComponent},
+       {path: 'services', component: ServicesComponent},
+       {path: 'services/:id', component: ServicesComponent},
+       {path: 'contactInfo', component: ContactUsComponent},
+       { path: 'custom', component: CustomPageComponent },
+       { path: 'custom/:slug', component: CustomPageComponent },
+       {path: '**', redirectTo: 'home' },
+   ]}
 ];

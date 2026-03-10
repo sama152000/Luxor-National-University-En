@@ -1,3 +1,32 @@
-<p>
-  faculties works!
-</p>
+    <section class="orbit-section">
+      <h2 class="orbit-title">الكليات</h2>
+
+      <div class="orbit-wrapper">
+        <!-- Center -->
+        <!-- <a href="#" class="orbit-center hover-scale">
+          <span>{{ section.centerButton.text }}</span>
+          <small>{{ section.centerButton.subtext }}</small>
+        </a> -->
+
+        <!-- Orbit Items - Grid in single row -->
+        <div 
+          *ngFor="let department of departments; let i = index"
+          class="faculty-item-wrapper"
+          (click)="viewFacultyDetails(department.slug)"
+        >
+          <div 
+            class="orbit-item hover-scale"
+            [class]="'item-' + (i + 1)"
+          >
+            <img 
+              *ngIf="department.departmentAttachments && department.departmentAttachments.length > 0"
+              [src]="department.departmentAttachments[0]?.url"
+              [alt]="department.name"
+              class="dept-image"
+            >
+            <div class="overlay"></div>
+          </div>
+          <span class="faculty-name">{{ department.name }}</span>
+        </div>
+      </div>
+    </section>

@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ContactService } from '../../Services/contact.service';
-import { ContactInfo, ContactFormData, UniversityInfo } from '../../model/contact.model';
+import { LogosService } from '../../Services/logos.service';
+import { Contact } from '../../model/contact.model';
+import { Logo } from '../../model/logo.model';
 
 @Component({
   selector: 'app-contact-us',
@@ -15,15 +17,17 @@ import { ContactInfo, ContactFormData, UniversityInfo } from '../../model/contac
 })
 export class ContactUsComponent implements OnInit, OnDestroy {
   contactForm: FormGroup;
-  contactInfo: ContactInfo[] = [];
-  universityInfo: UniversityInfo | null = null;
+  contacts: Contact[] = [];
+  logo: string = './assets/lnu.logo.png';
   isSubmitting = false;
   isSubmitted = false;
   private destroy$ = new Subject<void>();
+  private subscription = new Subscription();
 
   constructor(
     private fb: FormBuilder,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private logosService: LogosService
   ) {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
@@ -35,63 +39,75 @@ export class ContactUsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadContactData();
+    this.loadLogo();
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.subscription.unsubscribe();
   }
 
   private loadContactData(): void {
-    this.contactService.getContactInfo()
+    this.contactService.getAllContacts()
       .pipe(takeUntil(this.destroy$))
-      .subscribe(info => {
-        this.contactInfo = info;
-      });
-
-    this.contactService.getUniversityInfo()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(info => {
-        this.universityInfo = info;
+      .subscribe({
+        next: (data) => this.contacts = data,
+        error: (err) => console.error('Error fetching contacts', err)
       });
   }
 
-  onSubmit(): void {
-    if (this.contactForm.valid && !this.isSubmitting) {
-      this.isSubmitting = true;
-      const formData: ContactFormData = this.contactForm.value;
-
-      this.contactService.submitContactForm(formData)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.isSubmitted = true;
-            this.isSubmitting = false;
-            this.contactForm.reset();
-          },
-          error: () => {
-            this.isSubmitting = false;
-          }
-        });
-    }
+  private loadLogo(): void {
+    const sub = this.logosService.getAllLogos().subscribe({
+      next: (logos: Logo[]) => {
+        if (logos && logos.length > 0) {
+          this.logo = logos[0].url || './assets/lnu.logo.png';
+        }
+      },
+      error: (error) => {
+        console.error('Error loading logo:', error);
+      }
+    });
+    this.subscription.add(sub);
   }
 
-  getFieldError(fieldName: string): string {
-    const field = this.contactForm.get(fieldName);
-    if (field && field.errors && field.touched) {
-      if (field.errors['required']) return `${fieldName} مطلوب`;
-      if (field.errors['email']) return 'البريد الإلكتروني غير صحيح';
-      if (field.errors['minlength']) return `${fieldName} قصير جداً`;
-    }
-    return '';
-  }
+  // onSubmit(): void {
+  //   if (this.contactForm.valid && !this.isSubmitting) {
+  //     this.isSubmitting = true;
+  //     const formData = this.contactForm.value;
 
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.contactForm.get(fieldName);
-    return !!(field && field.errors && field.touched);
-  }
+  //     // هنا ممكن تبعت الفورم للـ API لو عندك endpoint خاص بالـ contact form
+  //     this.contactService.submitContactForm(formData)
+  //       .pipe(takeUntil(this.destroy$))
+  //       .subscribe({
+  //         next: () => {
+  //           this.isSubmitted = true;
+  //           this.isSubmitting = false;
+  //           this.contactForm.reset();
+  //         },
+  //         error: () => {
+  //           this.isSubmitting = false;
+  //         }
+  //       });
+  //   }
+  // }
 
-  trackByContact(index: number, contact: ContactInfo): string {
+  // getFieldError(fieldName: string): string {
+  //   const field = this.contactForm.get(fieldName);
+  //   if (field && field.errors && field.touched) {
+  //     if (field.errors['required']) return `${fieldName} مطلوب`;
+  //     if (field.errors['email']) return 'البريد الإلكتروني غير صحيح';
+  //     if (field.errors['minlength']) return `${fieldName} قصير جداً`;
+  //   }
+  //   return '';
+  // }
+
+  // isFieldInvalid(fieldName: string): boolean {
+  //   const field = this.contactForm.get(fieldName);
+  //   return !!(field && field.errors && field.touched);
+  // }
+
+  trackByContact(index: number, contact: Contact): string {
     return contact.id;
   }
 }

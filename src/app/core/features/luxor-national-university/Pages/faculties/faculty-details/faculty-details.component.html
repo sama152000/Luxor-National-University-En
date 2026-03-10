@@ -16,11 +16,6 @@
         </button>
       </div>
 
-      <!-- Faculty Header -->
-      <div class="faculty-header slide-up animate-delay-1">
-        <h2 class="faculty-title">{{ faculty.name }}</h2>
-        <p class="faculty-description">{{ faculty.fullDescription }}</p>
-      </div>
 
       <!-- Image Slider -->
       <div class="image-slider slide-up animate-delay-2" *ngIf="faculty.images && faculty.images.length > 0">
@@ -44,6 +39,16 @@
         </div>
       </div>
 
+      
+          <!-- Faculty Header -->
+      <div class="faculty-header slide-up animate-delay-1">
+        <h2 class="faculty-title">{{ faculty.name }}</h2>
+        <p class="faculty-description">{{ faculty.departmentTitle || faculty.fullDescription }}</p>
+        <div class="faculty-content" [innerHTML]="faculty.departmentContent | cleanHtml"></div>
+        <p class="faculty-dean" *ngIf="faculty.dean">{{ faculty.dean }} عميد الكلية</p>
+      </div>
+
+
       <!-- About Faculty Section -->
       <div class="about-section slide-up animate-delay-3">
         <h2 class="section-title">عن الكلية</h2>
@@ -61,7 +66,7 @@
           </div>
         </div>
         <div class="about-content">
-          <div class="content-wrapper" [innerHTML]="getAboutContent()"></div>
+          <div class="content-wrapper" [innerHTML]="getAboutContent()|cleanHtml"></div>
         </div>
       </div>
 
@@ -74,7 +79,7 @@
                [class]="'animate-delay-' + (i % 4 + 1)"
                (click)="openProgramModal(program)">
             <div class="program-header">
-              <div class="degree-badge">{{ program.name }}</div>
+              <div class="degree-badge">{{ program.programName || program.name }}</div>
             </div>
             <div class="program-content">
               <button class="btn btn-primary">
@@ -116,17 +121,25 @@
           <div *ngFor="let staffMember of paginatedStaff; let i = index"
                class="staff-card hover-lift"
                [class]="'animate-delay-' + (i % 4 + 1)"
-               [class.dean-card]="staffMember.isDean"
+               [class.dean-card]="staffMember.isLeader"
                (click)="openStaffModal(staffMember)">
             <div class="staff-image">
-              <img [src]="staffMember.image" [alt]="staffMember.name">
-              <div *ngIf="staffMember.isDean" class="dean-badge">
+              <img 
+                *ngIf="getMemberImage(staffMember.memberId)"
+                [src]="getMemberImage(staffMember.memberId)" 
+                [alt]="staffMember.memberName"
+                class="staff-img"
+              >
+              <div class="staff-avatar" *ngIf="!getMemberImage(staffMember.memberId)">
+                <i class="pi pi-user"></i>
+              </div>
+              <div *ngIf="staffMember.isLeader" class="dean-badge">
                 <i class="pi pi-star"></i> عميد الكلية
               </div>
             </div>
             <div class="staff-content">
-              <h3 class="staff-name">{{ staffMember.name }}</h3>
-              <p class="staff-position">{{ staffMember.position }}</p>
+              <h3 class="staff-name">{{ staffMember.memberName }}</h3>
+              <p class="staff-position">{{ staffMember.departmentName }}</p>
               <button class="btn btn-primary">
                 عرض التفاصيل <i class="pi pi-arrow-left"></i>
               </button>
@@ -193,11 +206,17 @@
         <!-- Program Tab Content -->
         <div class="program-tab-content">
           <div class="content-wrapper">
-            <div *ngIf="isActiveProgramTab('overview')" [innerHTML]="selectedProgram?.overview"></div>
-            <div *ngIf="isActiveProgramTab('vision')" [innerHTML]="selectedProgram?.vision"></div>
-            <div *ngIf="isActiveProgramTab('mission')" [innerHTML]="selectedProgram?.mission"></div>
-            <div *ngIf="isActiveProgramTab('goals')" [innerHTML]="selectedProgram?.goals"></div>
-            <div *ngIf="isActiveProgramTab('details')" [innerHTML]="selectedProgram?.details"></div>
+            <div *ngIf="isActiveProgramTab('overview')" [innerHTML]="selectedProgramDetails?.about |cleanHtml"></div>
+            <div *ngIf="isActiveProgramTab('vision')" [innerHTML]="selectedProgramDetails?.vision |cleanHtml"></div>
+            <div *ngIf="isActiveProgramTab('mission')" [innerHTML]="selectedProgramDetails?.mission |cleanHtml"></div>
+            <div *ngIf="isActiveProgramTab('goals')">
+              <ul *ngIf="selectedProgramDetails?.goals?.length">
+                <li *ngFor="let goal of selectedProgramDetails?.goals">
+                  {{ goal.goalName }} 
+                </li>
+              </ul>
+            </div>
+           
           </div>
         </div>
       </div>
@@ -209,7 +228,9 @@
   <div *ngIf="showStaffModal" class="modal-overlay" (click)="closeStaffModal()">
     <div class="modal-content staff-modal" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <h2>{{ selectedStaff?.name }}</h2>
+        <h2>{{ selectedStaff?.memberName }}</h2>
+         <p class="position">{{ selectedMemberDetails?.position || selectedStaff?.departmentName }}</p>
+
         <button class="modal-close" (click)="closeStaffModal()">
           <i class="pi pi-times"></i>
         </button>
@@ -218,17 +239,20 @@
       <div class="modal-body" *ngIf="selectedStaff">
         <div class="staff-profile">
           <div class="profile-image">
-            <img [src]="selectedStaff.image" [alt]="selectedStaff.name">
+            <div class="staff-avatar-large">
+              <i class="pi pi-user"></i>
+            </div>
           </div>
           
           <div class="profile-info">
-            <h4>{{ selectedStaff.name }}</h4>
-            <p class="position">{{ selectedStaff.position }}</p>
-            
-          
+            <h4>{{ selectedMemberDetails?.fullName || selectedStaff?.memberName }}</h4>
+            <p class="position">{{ selectedMemberDetails?.position || selectedStaff?.departmentName }}</p>
+            <p class="specialization">{{ selectedMemberDetails?.specialization }}</p>
+            <p class="role" *ngIf="selectedStaff?.isLeader">
+              <i class="pi pi-star"></i> عميد الكلية
+            </p>
+          </div>
         </div>
-        
-       
       </div>
     </div>
   </div>

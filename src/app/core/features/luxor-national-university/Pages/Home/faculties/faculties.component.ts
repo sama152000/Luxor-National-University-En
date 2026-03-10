@@ -1,48 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FacultiesService } from '../../../Services/faculties.service';
-import { FacultiesSection } from '../../../model/faculty.model';
+import { Router } from '@angular/router';
+import { FacultyService } from '../../../Services/faculty.service';
+import { Department } from '../../../model/faculty.model';
 
 @Component({
   selector: 'app-faculties',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <section class="orbit-section">
-      <h2 class="orbit-title">{{ section.title }}</h2>
+  templateUrl: './faculties.component.html',
 
-      <div class="orbit-wrapper">
-        <!-- Center -->
-        <!-- <a href="#" class="orbit-center hover-scale">
-          <span>{{ section.centerButton.text }}</span>
-          <small>{{ section.centerButton.subtext }}</small>
-        </a> -->
-
-        <!-- Orbit Items - Grid in single row -->
-        <div 
-          *ngFor="let faculty of section.faculties; let i = index"
-          class="faculty-item-wrapper"
-        >
-          <div 
-            class="orbit-item hover-scale"
-            [class]="'item-' + (i + 1) + ' ' + faculty.cssClass"
-            [style.background-image]="'url(' + faculty.backgroundImage + ')'"
-          >
-            <div class="overlay"></div>
-          </div>
-          <span class="faculty-name">{{ faculty.name }}</span>
-        </div>
-      </div>
-    </section>
-  `,
   styleUrl: './faculties.component.css'
 })
 export class FacultiesComponent implements OnInit {
-  section!: FacultiesSection;
+  departments: Department[] = [];
 
-  constructor(private facultiesService: FacultiesService) {}
+  constructor(
+    private facultyService: FacultyService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.section = this.facultiesService.getFacultiesSection();
+    this.facultyService.get4Departments().subscribe(departments => {
+      this.departments = departments;
+    });
+  }
+
+  /** Navigate to faculty details */
+  viewFacultyDetails(slug: string): void {
+    this.router.navigate(['/faculties', slug]);
   }
 }

@@ -1,24 +1,42 @@
- <header class="main-header sticky-header">
-      <div class="container-custom nav-inner">
-        <!-- Logo Box -->
-        <div class="logo-box hover-lift">
-          <img src="./assets/lnu.logo.png"
-               alt="جامعة الأقصر القومية" 
-               class="logo-img">
-        </div>
+<header class="main-header sticky-header">
+  <div class="container-custom nav-inner">
+    <!-- Logo Box -->
+    <div class="logo-box hover-lift" *ngIf="logos.length > 0">
+      <img [src]="logos[0].url"
+           [alt]="logos[0].fileName"
+           [width]="200"
+           [height]="60"
+           class="logo-img">
+    </div>
 
-        <!-- Navigation -->
-        <nav class="circle-menu">
+    <!-- Navigation -->
+    <nav class="circle-menu">
+      <a 
+        *ngFor="let item of navigationItems"
+        [routerLink]="hasChilds(item) ? null : '/' + item.slug"
+        [routerLinkActive]="'active'"
+        [routerLinkActiveOptions]="{ exact: item.slug === 'home' }"
+        class="menu-item"
+        [class.has-dropdown]="hasChilds(item)"
+        (click)="hasChilds(item) ? toggleDropdown($event, item) : null"
+      >
+        <i [class]="getIcon(item.slug)"></i>
+        <span>{{ item.title }}</span>
+        <i *ngIf="hasChilds(item)" class="fas fa-chevron-down dropdown-arrow"></i>
+        
+        <!-- Dropdown for items with childs (show on click) -->
+        <div *ngIf="hasChilds(item) && isDropdownOpen(item.id)" class="dropdown-menu" (click)="$event.stopPropagation()">
           <a 
-            *ngFor="let item of navigationItems"
-            [routerLink]="item.route"
-            [routerLinkActive]="'active'"
-            [routerLinkActiveOptions]="{ exact: item.route === '/home' }"
-            class="menu-item"
+            *ngFor="let child of getChilds(item)"
+            [routerLink]="'/custom/' + child.slug"
+            class="dropdown-item"
+            (click)="closeDropdown()"
           >
-            <i [class]="item.icon"></i>
-            <span>{{ item.label }}</span>
+            <i [class]="getIcon(child.slug)"></i>
+            <span>{{ child.title }}</span>
           </a>
-        </nav>
-      </div>
-    </header>
+        </div>
+      </a>
+    </nav>
+  </div>
+</header>

@@ -3,122 +3,150 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FacultyService } from '../../../Services/faculty.service';
 import { ProgramService } from '../../../Services/program.service';
-import { StaffService } from '../../../Services/staff.service';
-import { Faculty } from '../../../model/faculty.model';
+import { MemberService } from '../../../Services/member.service';
+import { Department, DepartmentDetail, DepartmentMember, DepartmentProgram } from '../../../model/faculty.model';
 import { Program } from '../../../model/program.model';
-import { Staff } from '../../../model/staff.model';
+import { Member } from '../../../model/member.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-faculty-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CleanHtmlPipe],
   templateUrl: './faculty-details.component.html',
   styleUrls: ['./faculty-details.component.css']
 })
 export class FacultyDetailsComponent implements OnInit {
-  faculty: Faculty | null = null;
-  programs: Program[] = [];
-  staff: Staff[] = [];
-  
-  // Image slider
-  currentImageIndex = 0;
-  
-  // About section
-  activeAboutSection = 'overview';
- aboutSections = [
-  { id: 'overview', title: 'نبذة عامة', icon: 'pi pi-home' },
-  { id: 'vision', title: 'الرؤية', icon: 'pi pi-eye' },
-  { id: 'mission', title: 'الرسالة', icon: 'pi pi-flag' },
-  { id: 'goals', title: 'الأهداف', icon: 'pi pi-bullseye' },
-  { id: 'history', title: 'تاريخ الكلية', icon: 'pi pi-clock' },
-  { id: 'details', title: 'التفاصيل', icon: 'pi pi-info-circle' },   // جديد
-  { id: 'location', title: 'تواصل معنا', icon: 'pi pi-map-marker' }      // جديد
-];
+  faculty: any = null;
+  isLoading = true;
 
-  
-  // Programs pagination
+  // Department Details
+  departmentDetails: DepartmentDetail[] = [];
+
+  // Slider
+  currentImageIndex = 0;
+
+  // Tabs
+  aboutSections: any[] = [];
+  activeAboutSectionId: string | null = null;
+
+  // Programs
+  programs: DepartmentProgram[] = [];
   currentProgramsPage = 1;
   programsPerPage = 6;
   totalProgramsPages = 1;
-  paginatedPrograms: Program[] = [];
-  
-  // Staff pagination
+  paginatedPrograms: DepartmentProgram[] = [];
+
+  // Staff
+  staff: DepartmentMember[] = [];
+  private membersMap: Map<string, Member> = new Map();
   currentStaffPage = 1;
   staffPerPage = 6;
   totalStaffPages = 1;
-  paginatedStaff: Staff[] = [];
-  
-  // Modal states
-  selectedProgram: Program | null = null;
-  selectedStaff: Staff | null = null;
+  paginatedStaff: DepartmentMember[] = [];
+
+  // Modals
   showProgramModal = false;
-  showStaffModal = false;
-  
-  // Program modal tabs
-  activeProgramTab = 'overview';
+  selectedProgram: DepartmentProgram | null = null;
+  selectedProgramDetails: Program | null = null;
+  activeProgramTabId = 'overview';
   programTabs = [
-    { id: 'overview', title: 'نبذة عامة', icon: 'pi pi-home' },
+    { id: 'overview', title: 'عن البرنامج', icon: 'pi pi-info-circle' },
     { id: 'vision', title: 'الرؤية', icon: 'pi pi-eye' },
-    { id: 'mission', title: 'الرسالة', icon: 'pi pi-flag' },
-    { id: 'goals', title: 'الأهداف', icon: 'pi pi-bullseye' },
-    { id: 'details', title: 'التفاصيل', icon: 'pi pi-info-circle' }
+    { id: 'mission', title: 'الرسالة', icon: 'pi pi-bullseye' },
+    { id: 'goals', title: 'الأهداف', icon: 'pi pi-check-circle' },
   ];
-  
-  isLoading = true;
+
+  showStaffModal = false;
+  selectedStaff: DepartmentMember | null = null;
+  selectedMemberDetails: Member | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private facultyService: FacultyService,
-    private programService: ProgramService,
-    private staffService: StaffService
+    private FacultyService: FacultyService,
+    private ProgramService: ProgramService,
+    private MemberService: MemberService
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const id = +params['id'];
-      if (id) {
-        this.loadFacultyDetails(id);
+      const slug = params['slug'];
+      if (slug) {
+        this.loadFaculty(slug);
       }
     });
   }
 
-  loadFacultyDetails(id: number): void {
+  /** تحميل بيانات الكلية */
+  loadFaculty(slug: string): void {
     this.isLoading = true;
-    
-    // Load faculty details
-    this.facultyService.getFacultyById(id).subscribe(faculty => {
-      this.faculty = faculty || null;
-      
-      if (this.faculty) {
-        // Load programs
-        this.programService.getProgramsByFacultyId(id).subscribe(programs => {
-          this.programs = programs;
+
+    this.FacultyService.getAllDepartments().subscribe(departments => {
+      const dep = departments.find(d => d.slug === slug);
+      if (dep) {
+        this.faculty = {
+          ...dep,
+          fullDescription: dep.about,
+          dean: '', // هنجيبها من أعضاء القسم
+          images: dep.departmentAttachments.map(a => a.url)
+        };
+
+        // Tabs عن الكلية
+        this.aboutSections = [
+          { id: 'about', title: 'عن القسم', icon: 'pi pi-info-circle', content: dep.about },
+          { id: 'vision', title: 'الرؤية', icon: 'pi pi-eye', content: dep.vision },
+          { id: 'mission', title: 'الرسالة', icon: 'pi pi-bullseye', content: dep.mission },
+          { id: 'goals', title: 'الأهداف', icon: 'pi pi-check-circle', content: dep.goals.map(g => g.goalName).join('<br>') }
+        ];
+        this.activeAboutSectionId = 'about';
+
+        // برامج القسم
+        this.FacultyService.getDepartmentPrograms().subscribe(programs => {
+          this.programs = programs.filter(p => p.departmentId === dep.id);
           this.updateProgramsPagination();
         });
-        
-        // Load staff
-        this.staffService.getStaffByFacultyId(id).subscribe(staff => {
-          this.staff = staff;
-          this.updateStaffPagination();
+
+        // أعضاء القسم
+        this.MemberService.getAllMembers().subscribe(allMembers => {
+          // Store full member details in map
+          allMembers.forEach(member => {
+            this.membersMap.set(member.id, member);
+          });
+          
+          this.FacultyService.getDepartmentMembers().subscribe(members => {
+            this.staff = members.filter(m => m.departmentId === dep.id);
+            const leader = this.staff.find(m => m.isLeader);
+            if (leader) this.faculty.dean = leader.memberName;
+            this.updateStaffPagination();
+          });
+        });
+
+        // تفاصيل القسم
+        this.FacultyService.getDepartmentDetails().subscribe(details => {
+          this.departmentDetails = details.filter(d => d.departmentId === dep.id);
+          // إضافة بيانات التفاصيل للـ faculty
+          if (this.departmentDetails.length > 0) {
+            this.faculty.departmentTitle = this.departmentDetails[0].title;
+            this.faculty.departmentContent = this.departmentDetails[0].content;
+          }
         });
       }
-      
       this.isLoading = false;
     });
   }
 
-  // Image Slider Methods
+  // Slider Methods
   nextImage(): void {
-    if (this.faculty && this.faculty.images && this.faculty.images.length > 1) {
+    if (this.faculty && this.faculty.images.length > 1) {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.faculty.images.length;
     }
   }
 
   previousImage(): void {
-    if (this.faculty && this.faculty.images && this.faculty.images.length > 1) {
-      this.currentImageIndex = this.currentImageIndex === 0 
-        ? this.faculty.images.length - 1 
+    if (this.faculty && this.faculty.images.length > 1) {
+      this.currentImageIndex = this.currentImageIndex === 0
+        ? this.faculty.images.length - 1
         : this.currentImageIndex - 1;
     }
   }
@@ -128,7 +156,7 @@ export class FacultyDetailsComponent implements OnInit {
   }
 
   getCurrentImage(): string {
-    return this.faculty?.images?.[this.currentImageIndex] || this.faculty?.mainImage || '';
+    return this.faculty?.images?.[this.currentImageIndex] || '';
   }
 
   hasMultipleImages(): boolean {
@@ -137,39 +165,19 @@ export class FacultyDetailsComponent implements OnInit {
 
   // About Section Methods
   setActiveAboutSection(sectionId: string): void {
-    this.activeAboutSection = sectionId;
+    this.activeAboutSectionId = sectionId;
   }
 
   isActiveAboutSection(sectionId: string): boolean {
-    return this.activeAboutSection === sectionId;
+    return this.activeAboutSectionId === sectionId;
   }
 
   getAboutContent(): string {
-  if (!this.faculty || !this.faculty.about) return '';
-  
-  switch (this.activeAboutSection) {
-    case 'overview': return this.faculty.about.overview || '';
-    case 'vision': return this.faculty.about.vision || '';
-    case 'mission': return this.faculty.about.mission || '';
-    case 'goals': return this.faculty.about.goals || '';
-    case 'history': return this.faculty.about.history || '';
-    case 'details': return this.faculty.about.details || '';
-    case 'location': 
-      // Format FacultyContact as HTML string
-      const location = this.faculty.about.location;
-      if (!location) return '';
-      let contactHtml = '<div class="location-contact">';
-      if (location.phone) contactHtml += `<p><i class="pi pi-phone"></i> ${location.phone}</p>`;
-      if (location.email) contactHtml += `<p><i class="pi pi-envelope"></i> ${location.email}</p>`;
-      if (location.website) contactHtml += `<p><i class="pi pi-globe"></i> ${location.website}</p>`;
-      contactHtml += '</div>';
-      return contactHtml;
-    default: return this.faculty.about.overview || '';
+    const section = this.aboutSections.find(s => s.id === this.activeAboutSectionId);
+    return section ? section.content : '';
   }
-}
 
-
-  // Programs Pagination Methods
+  // Programs Pagination
   updateProgramsPagination(): void {
     this.totalProgramsPages = Math.ceil(this.programs.length / this.programsPerPage);
     this.updatePaginatedPrograms();
@@ -201,17 +209,10 @@ export class FacultyDetailsComponent implements OnInit {
   }
 
   getProgramsPageNumbers(): number[] {
-    const pages: number[] = [];
-    const startPage = Math.max(1, this.currentProgramsPage - 2);
-    const endPage = Math.min(this.totalProgramsPages, this.currentProgramsPage + 2);
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    return pages;
+    return Array.from({ length: this.totalProgramsPages }, (_, i) => i + 1);
   }
 
-  // Staff Pagination Methods
+  // Staff Pagination
   updateStaffPagination(): void {
     this.totalStaffPages = Math.ceil(this.staff.length / this.staffPerPage);
     this.updatePaginatedStaff();
@@ -243,66 +244,70 @@ export class FacultyDetailsComponent implements OnInit {
   }
 
   getStaffPageNumbers(): number[] {
-    const pages: number[] = [];
-    const startPage = Math.max(1, this.currentStaffPage - 2);
-    const endPage = Math.min(this.totalStaffPages, this.currentStaffPage + 2);
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pages.push(i);
-    }
-    return pages;
+    return Array.from({ length: this.totalStaffPages }, (_, i) => i + 1);
   }
 
   // Modal Methods
-  openProgramModal(program: Program): void {
+  openProgramModal(program: DepartmentProgram): void {
     this.selectedProgram = program;
     this.showProgramModal = true;
     document.body.style.overflow = 'hidden';
+    
+    // Load full program details
+    if (program.programId) {
+      this.ProgramService.getProgramById(program.programId).subscribe(fullProgram => {
+        this.selectedProgramDetails = fullProgram || null;
+      });
+    }
   }
 
   closeProgramModal(): void {
     this.showProgramModal = false;
     this.selectedProgram = null;
-    this.activeProgramTab = 'overview';
+    this.selectedProgramDetails = null;
+    this.activeProgramTabId = 'overview';
     document.body.style.overflow = 'auto';
   }
-  
-  // Program Tab Methods
+
   setActiveProgramTab(tabId: string): void {
-    this.activeProgramTab = tabId;
-  }
-  
-  isActiveProgramTab(tabId: string): boolean {
-    return this.activeProgramTab === tabId;
-  }
-  
-  getProgramContent(): string {
-    if (!this.selectedProgram) return '';
-    
-    switch (this.activeProgramTab) {
-      case 'overview': return this.selectedProgram.overview || '';
-      case 'vision': return this.selectedProgram.vision || '';
-      case 'mission': return this.selectedProgram.mission || '';
-      case 'goals': return this.selectedProgram.goals || '';
-      case 'details': return this.selectedProgram.details || '';
-      default: return this.selectedProgram.overview || '';
-    }
+    this.activeProgramTabId = tabId;
   }
 
-  openStaffModal(staffMember: Staff): void {
+  isActiveProgramTab(tabId: string): boolean {
+    return this.activeProgramTabId === tabId;
+  }
+
+  openStaffModal(staffMember: DepartmentMember): void {
     this.selectedStaff = staffMember;
     this.showStaffModal = true;
     document.body.style.overflow = 'hidden';
+    
+    // Load full member details
+    if (staffMember.memberId) {
+      this.MemberService.getMemberById(staffMember.memberId).subscribe(fullMember => {
+        this.selectedMemberDetails = fullMember || null;
+      });
+    }
   }
 
   closeStaffModal(): void {
     this.showStaffModal = false;
     this.selectedStaff = null;
+    this.selectedMemberDetails = null;
     document.body.style.overflow = 'auto';
   }
 
-  // Navigation Methods
+  // Navigation
   goBack(): void {
     this.router.navigate(['/faculties']);
+  }
+
+  /** Get member image URL by member ID */
+  getMemberImage(memberId: string): string {
+    const member = this.membersMap.get(memberId);
+    if (member && member.memberAttachments && member.memberAttachments.length > 0) {
+      return member.memberAttachments[0].url;
+    }
+    return '';
   }
 }

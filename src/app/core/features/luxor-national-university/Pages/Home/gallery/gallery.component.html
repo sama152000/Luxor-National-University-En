@@ -2,8 +2,8 @@
   <div class="container-custom">
     <!-- Section Header -->
     <div class="gallery-header slide-down">
-      <h2 class="gallery-title">معرض الصور </h2>
-      <p class="gallery-subtitle">استكشف الحرم الجامعي والحياة الأكاديمية </p>
+      <h2 class="gallery-title">معرض الصور</h2>
+      <p class="gallery-subtitle">استكشف الحرم الجامعي والحياة الأكاديمية</p>
       <div class="gallery-divider"></div>
     </div>
 
@@ -16,7 +16,8 @@
         (click)="openLightbox(image)">
         <div class="image-container">
           <img 
-            [src]="image.imageUrl" 
+            [src]="image.url" 
+            [alt]="image.fileName"
             class="gallery-image"
             loading="lazy">
           <div class="image-overlay">
@@ -26,10 +27,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="image-info">
-          <h4 class="image-title">{{ image.title }}</h4>
-          <p class="image-description" *ngIf="image.description">{{ image.description }}</p>
-        </div> -->
       </div>
     </div>
   </div>
@@ -68,15 +65,9 @@
       <!-- Image -->
       <div class="lightbox-image-container" *ngIf="selectedImage">
         <img 
-          [src]="selectedImage.imageUrl" 
+          [src]="selectedImage.url" 
+          [alt]="selectedImage.fileName"
           class="lightbox-image">
-        
-        <!-- <div class="lightbox-info">
-          <h3 class="lightbox-title">{{ selectedImage.title }}</h3>
-          <p class="lightbox-description" *ngIf="selectedImage.description">
-            {{ selectedImage.description }}
-          </p>
-        </div> -->
       </div>
     </div>
   </div>

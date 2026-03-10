@@ -2,21 +2,22 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NewsService } from '../../../Services/news.service';
-import { NewsItem } from '../../../model/news.model';
+import { News } from '../../../model/news.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-news-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CleanHtmlPipe],
   templateUrl: './news-details.component.html',
   styleUrls: ['./news-details.component.css']
 })
 export class NewsDetailsComponent implements OnInit {
-  news: NewsItem | null = null;
-  relatedNews: NewsItem[] = [];
-  previousNews: NewsItem | null = null;
-  nextNews: NewsItem | null = null;
-  
+  news: News | null = null;
+  relatedNews: News[] = [];
+  previousNews: News | null = null;
+  nextNews: News | null = null;
+
   currentImageIndex = 0;
   isLoading = true;
 
@@ -28,57 +29,55 @@ export class NewsDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const id = +params['id'];
-      if (id) {
-        this.loadNewsDetails(id);
+      const slug = params['slug'];
+      if (slug) {
+        this.loadNewsDetails(slug);
       }
     });
   }
 
-  loadNewsDetails(id: number): void {
+  loadNewsDetails(slug: string): void {
     this.isLoading = true;
-    
-    // Load main news
-    this.newsService.getNewsById(id).subscribe(news => {
+
+    this.newsService.getNewsBySlug(slug).subscribe(news => {
       this.news = news || null;
-      
+
       if (this.news) {
-        // Load related data
-        this.loadRelatedNews(id);
-        this.loadNavigationNews(id);
+        this.loadRelatedNews(this.news.id);
+        this.loadNavigationNews(this.news.id);
       }
-      
+
       this.isLoading = false;
     });
   }
 
-  loadRelatedNews(newsId: number): void {
+  loadRelatedNews(newsId: string): void {
     this.newsService.getRelatedNews(newsId, 4).subscribe(related => {
       this.relatedNews = related;
     });
   }
 
-  loadNavigationNews(newsId: number): void {
+  loadNavigationNews(newsId: string): void {
     this.newsService.getPreviousNews(newsId).subscribe(prev => {
-      this.previousNews = prev;
+      this.previousNews = prev !== undefined ? prev : null;
     });
-    
+
     this.newsService.getNextNews(newsId).subscribe(next => {
-      this.nextNews = next;
+      this.nextNews = next !== undefined ? next : null;
     });
   }
 
   // Image Slider Methods
   nextImage(): void {
-    if (this.news && this.news.images.length > 1) {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.news.images.length;
+    if (this.news && this.news.postAttachments.length > 1) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.news.postAttachments.length;
     }
   }
 
   previousImage(): void {
-    if (this.news && this.news.images.length > 1) {
-      this.currentImageIndex = this.currentImageIndex === 0 
-        ? this.news.images.length - 1 
+    if (this.news && this.news.postAttachments.length > 1) {
+      this.currentImageIndex = this.currentImageIndex === 0
+        ? this.news.postAttachments.length - 1
         : this.currentImageIndex - 1;
     }
   }
@@ -90,18 +89,20 @@ export class NewsDetailsComponent implements OnInit {
   // Navigation Methods
   goToPreviousNews(): void {
     if (this.previousNews) {
-      this.router.navigate(['/news', this.previousNews.id]);
+      this.router.navigate(['/news', this.previousNews.slug]);
     }
   }
 
   goToNextNews(): void {
     if (this.nextNews) {
-      this.router.navigate(['/news', this.nextNews.id]);
+      this.router.navigate(['/news', this.nextNews.slug]);
     }
   }
 
-  viewRelatedNews(newsId: number): void {
-    this.router.navigate(['/news', newsId]);
+  viewRelatedNews(slug: string | undefined): void {
+    if (slug) {
+      this.router.navigate(['/news', slug]);
+    }
   }
 
   goBack(): void {
@@ -109,19 +110,19 @@ export class NewsDetailsComponent implements OnInit {
   }
 
   // Utility Methods
-  formatDate(date: Date): string {
+  formatDate(date: string): string {
     return new Intl.DateTimeFormat('ar-SA', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    }).format(date);
+    }).format(new Date(date));
   }
 
   getCurrentImage(): string {
-    return this.news?.images[this.currentImageIndex] || this.news?.mainImage || '';
+    return this.news?.postAttachments[this.currentImageIndex]?.url || this.news?.featuredImagePath || '';
   }
 
   hasMultipleImages(): boolean {
-    return (this.news?.images.length || 0) > 1;
+    return (this.news?.postAttachments.length || 0) > 1;
   }
 }

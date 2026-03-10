@@ -55,12 +55,12 @@
           *ngFor="let faculty of paginatedFaculties; let i = index"
           class="faculty-card hover-lift"
           [class]="'animate-delay-' + (i % 4 + 1)"
-          (click)="viewFacultyDetails(faculty.id)"
+          (click)="viewFacultyDetails(faculty.slug)"
         >
           <!-- Card Image -->
           <div class="card-image">
             <img 
-              [src]="faculty.mainImage" 
+              [src]="faculty.departmentAttachments[0]?.url" 
               [alt]="faculty.name"
               loading="lazy"
             >
@@ -73,7 +73,7 @@
           <div class="card-content">
             <h3 class="card-title">{{ faculty.name }}</h3>
             
-            <p class="card-description">{{ faculty.shortDescription }}</p>
+            <p class="card-description" [innerHTML]="faculty.about | cleanHtml"></p>
             
             <!-- <div class="card-stats">
               <div class="stat-item">

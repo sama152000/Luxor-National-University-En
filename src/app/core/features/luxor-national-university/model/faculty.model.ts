@@ -1,53 +1,60 @@
-export interface FacultyContact {
-  phone: string;
-  email: string;
-  website: string;
+//faculty.model.ts
+export interface DepartmentGoal {
+  id: string;
+  index: number;
+  goalName: string;
+  aboutId: string;
 }
 
-export interface FacultyAbout {
-  overview: string;
-  vision: string;
-  mission: string;
-  goals: string;
-  history: string;
-  details: string;
-  location: FacultyContact;
+export interface DepartmentAttachment {
+  id: string;
+  fileName: string;
+  isPublic: boolean;
+  relativePath: string;
+  folderName: string;
+  url: string;
+  isFeatured: boolean;
+  departmentId: string;
 }
 
-export interface Faculty {
-  id: string | number;
+export interface Department {
+  id: string;
   name: string;
-  shortDescription?: string;
-  fullDescription?: string;
-  icon?: string;
-  backgroundImage?: string;
-  cssClass?: string;
-  description?: string;
-  link?: string;
-  images?: string[];
-  mainImage?: string;
-  establishedYear?: number;
-  studentsCount?: number;
-  staffCount?: number;
-  programsCount?: number;
-  dean?: string;
-  location?: string;
-  contact?: FacultyContact;
-  about?: FacultyAbout;
+  subTitle: string;
+  pageId: string;
+  pageTitle: string;
+  slug: string;
+  aboutId: string;
+  about: string;
+  mission: string;
+  vision: string;
+  goals: DepartmentGoal[];
+  departmentAttachments: DepartmentAttachment[];
 }
 
-export interface FacultySearchFilter {
-  searchText?: string;
-  alphabetFilter?: string;
-}
-
-export interface FacultiesSection {
+export interface DepartmentDetail {
   id: string;
   title: string;
-  centerButton: {
-    text: string;
-    subtext: string;
-    link: string;
-  };
-  faculties: Faculty[];
+  content: string;
+  departmentId: string;
+  departmentName: string;
+}
+
+export interface DepartmentMember {
+  id: string;
+  isLeader: boolean;
+  departmentId: string;
+  departmentName: string;
+  memberId: string;
+  memberName: string;
+}
+
+export interface DepartmentProgram {
+  id: string;
+  name: string;
+  departmentId: string;
+  departmentName: string;
+  programId: string;
+  programName: string;
+  slug: string;
 }

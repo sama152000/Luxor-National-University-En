@@ -1,0 +1,98 @@
+<div class="about-university-container" dir="rtl">
+  <div class="container-custom">
+    <!-- Page Header -->
+    <div class="page-header fade-in">
+      <h1>{{ currentPage?.subTitle || 'عن الجامعة' }}</h1>
+      <p class="lead">تعرف على تاريخ ورؤية ورسالة جامعتنا العريقة</p>
+    </div>
+
+    <!-- Featured Image -->
+    <!-- <div *ngIf="currentPage?.featuredImagePath" class="featured-image-container slide-up animate-delay-1">
+      <img 
+        [src]="getFullImageUrl(currentPage.featuredImagePath)" 
+        [alt]="currentPage.subTitle"
+        class="featured-image">
+    </div> -->
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-container slide-up animate-delay-1">
+      <div class="tabs-wrapper">
+        <div class="tabs-list" role="tablist">
+          <button
+            *ngFor="let tab of tabs"
+            class="tab-item"
+            [class.active]="isActiveTab(tab.id)"
+            (click)="setActiveTab(tab.id)"
+            role="tab"
+            [attr.aria-selected]="isActiveTab(tab.id)"
+          >
+            <i [class]="tab.icon"></i>
+            <span>{{ tab.title }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-container slide-up animate-delay-2">
+      <div class="content-wrapper">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-container">
+          <div class="loading-spinner"></div>
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="hasError && !isLoading" class="no-content">
+          <i class="pi pi-exclamation-triangle"></i>
+          <p>عذراً، حدث خطأ في تحميل المحتوى</p>
+        </div>
+
+        <!-- Content Display -->
+        <div 
+          *ngIf="!isLoading && !hasError && activeTabId !== 'attachments' && currentPage?.content" 
+          class="content-section fade-in"
+          [innerHTML]="currentPage?.content|cleanHtml"
+        ></div>
+
+        <!-- Attachments Section -->
+        <div 
+          *ngIf="!isLoading && !hasError && activeTabId === 'attachments'" 
+          class="content-section fade-in">
+          
+          <div *ngIf="currentPage?.pageAttachments && currentPage!.pageAttachments!.length > 0">
+            <h3 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">المرفقات المتاحة</h3>
+            
+            <div class="attachments-grid">
+              <div 
+                *ngFor="let attachment of currentPage!.pageAttachments"
+                class="attachment-item"
+                (click)="downloadAttachment(attachment)">
+                <div class="attachment-icon">
+                  <i [class]="getFileIcon(attachment.fileName)"></i>
+                </div>
+                <div class="attachment-info">
+                  <h4>{{ attachment.fileName }}</h4>
+                  <p>انقر للتحميل</p>
+                </div>
+                <div class="download-icon">
+                  <i class="pi pi-download"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="!currentPage?.pageAttachments || currentPage!.pageAttachments!.length === 0" class="no-content">
+            <i class="pi pi-info-circle"></i>
+            <p>لا توجد مرفقات متاحة</p>
+          </div>
+        </div>
+..
+        <!-- No Content State -->
+        <div *ngIf="!isLoading && !hasError && activeTabId !== 'attachments' && !currentPage?.content" class="no-content">
+          <i class="pi pi-info-circle"></i>
+          <p>لا توجد محتويات متاحة</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
