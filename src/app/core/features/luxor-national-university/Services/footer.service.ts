@@ -28,33 +28,33 @@ export class FooterService {
     // Build social links from contact info
     const socialLinks = [];
     if (contact?.facebook) {
-      socialLinks.push({ platform: 'فيسبوك', url: contact.facebook, icon: 'fab fa-facebook-f' });
+      socialLinks.push({ platform: 'Facebook', url: contact.facebook, icon: 'fab fa-facebook-f' });
     }
     if (contact?.whatsApp) {
-      socialLinks.push({ platform: 'واتساب', url: contact.whatsApp, icon: 'fab fa-whatsapp' });
+      socialLinks.push({ platform: 'WhatsApp', url: contact.whatsApp, icon: 'fab fa-whatsapp' });
     }
 
     return {
       id: '1',
       logo: {
         src: './assets/lnu.logo.png',
-        alt: 'جامعة الأقصر الوطنية',
-        title: 'شعار الجامعة'
+        alt: 'Luxor National University',
+        title: 'University Logo'
       },
-      description: 'جامعة الأقصر الوطنية ملتزمة بالتميز الأكاديمي، والبحث العلمي، وخدمة المجتمع.',
+      description: 'Luxor National University is committed to academic excellence, scientific research, and community service.',
       sections: [
         {
-          title: 'روابط هامة',
+          title: 'Important Links',
           links: [
-            { label: 'عن الجامعة', url: '/about' },
-            { label: 'الكليات', url: '/faculties' },
-            { label: 'الأخبار والفعاليات', url: '/news' },
-            { label: 'تواصل معنا', url: '/contactInfo' }
+            { label: 'About the University', url: '/about' },
+            { label: 'Faculties', url: '/faculties' },
+            { label: 'News and Events', url: '/news' },
+            { label: 'Contact Us', url: '/contactInfo' }
           ]
         }
       ],
       socialLinks: socialLinks,
-      copyright: 'جامعة الأقصر الوطنية. جميع الحقوق محفوظة.',
+      copyright: 'Luxor National University. All rights reserved.',
       year: new Date().getFullYear()
     };
   }

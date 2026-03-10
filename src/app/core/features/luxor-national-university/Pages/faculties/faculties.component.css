@@ -65,6 +65,8 @@
   font-size: 1rem;
   transition: var(--transition-smooth);
   background: var(--light-gray);
+    text-align: left;
+  align-items: start;
 }
 
 .search-input:focus {
@@ -77,6 +79,8 @@
 .search-input::placeholder {
   color: var(--medium-gray);
   padding-bottom: 1rem;
+  text-align: left;
+  align-items: start;
 }
 
 /* Alphabetical Filter */
@@ -108,7 +112,6 @@
   border: 2px solid var(--soft-gray);
   border-radius: var(--radius-md);
   color: var(--medium-gray);
-  font-family: 'Almarai', sans-serif;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;

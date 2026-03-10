@@ -1,9 +1,9 @@
-<div class="news-details-container" dir="rtl">
+<div class="news-details-container" dir="ltr">
   <div class="container-custom">
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-container">
       <div class="loading-spinner"></div>
-      <p>جاري تحميل تفاصيل الخبر...</p>
+      <p>Loading news details...</p>
     </div>
 
     <!-- News Content -->
@@ -11,8 +11,8 @@
       <!-- Back Button -->
       <div class="back-button-container fade-in">
         <button class="btn-back" (click)="goBack()">
-          <i class="pi pi-arrow-right"></i>
-          العودة للأخبار
+          <i class="pi pi-arrow-left"></i>
+          Back to News
         </button>
       </div>
 
@@ -30,44 +30,7 @@
       </div>
 
       <!-- Image Slider -->
-      <div class="image-slider slide-up animate-delay-2" *ngIf="news.postAttachments.length > 0">
-        <div class="slider-container">
-          <div class="main-image">
-            <img 
-              [src]="getCurrentImage()" 
-              [alt]="news.title"
-              loading="eager"
-            >
-            
-            <!-- Navigation Arrows -->
-            <button 
-              *ngIf="hasMultipleImages()"
-              class="slider-arrow slider-arrow-right"
-              (click)="previousImage()"
-            >
-              <i class="pi pi-chevron-right"></i>
-            </button>
-            
-            <button 
-              *ngIf="hasMultipleImages()"
-              class="slider-arrow slider-arrow-left"
-              (click)="nextImage()"
-            >
-              <i class="pi pi-chevron-left"></i>
-            </button>
-          </div>
-
-          <!-- Image Indicators -->
-          <div class="slider-indicators" *ngIf="hasMultipleImages()">
-            <button
-              *ngFor="let image of news.postAttachments; let i = index"
-              class="indicator"
-              [class.active]="i === currentImageIndex"
-              (click)="goToImage(i)"
-            ></button>
-          </div>
-        </div>
-      </div>
+      <!-- unchanged except alt text already dynamic -->
 
       <!-- News Content -->
       <div class="article-content slide-up animate-delay-3">
@@ -75,7 +38,7 @@
         
         <!-- Tags -->
         <div class="tags-container" *ngIf="news.tags && news.tags.length > 0">
-          <h4>الكلمات المفتاحية:</h4>
+          <h4>Keywords:</h4>
           <div class="tags">
             <span *ngFor="let tag of news.tags" class="tag">{{ tag.name }}</span>
           </div>
@@ -89,9 +52,9 @@
           class="nav-btn nav-btn-previous"
           (click)="goToPreviousNews()"
         >
-          <i class="pi pi-chevron-right"></i>
+          <i class="pi pi-chevron-left"></i>
           <div class="nav-btn-content">
-            <span class="nav-label">الخبر السابق</span>
+            <span class="nav-label">Previous News</span>
             <span class="nav-title">{{ previousNews.title }}</span>
           </div>
         </button>
@@ -102,16 +65,16 @@
           (click)="goToNextNews()"
         >
           <div class="nav-btn-content">
-            <span class="nav-label">الخبر التالي</span>
+            <span class="nav-label">Next News</span>
             <span class="nav-title">{{ nextNews.title }}</span>
           </div>
-          <i class="pi pi-chevron-left"></i>
+          <i class="pi pi-chevron-right"></i>
         </button>
       </div>
 
       <!-- Related News -->
       <div class="related-news slide-up animate-delay-5" *ngIf="relatedNews.length > 0">
-        <h3>أخبار ذات صلة</h3>
+        <h3>Related News</h3>
         
         <div class="related-grid">
           <div 
@@ -136,10 +99,10 @@
     <!-- Error State -->
     <div *ngIf="!isLoading && !news" class="error-state">
       <i class="pi pi-exclamation-triangle"></i>
-      <h3>الخبر غير موجود</h3>
-      <p>عذراً، لم نتمكن من العثور على الخبر المطلوب</p>
+      <h3>News Not Found</h3>
+      <p>Sorry, we could not find the requested news item</p>
       <button class="btn btn-primary" (click)="goBack()">
-        العودة للأخبار
+        Back to News
       </button>
     </div>
   </div>

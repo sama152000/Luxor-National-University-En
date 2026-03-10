@@ -2,40 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DiscoverService } from '../../../Services/discover.service';
-import { DiscoverSection } from '../../../model/discover.model';
+import { Journal } from '../../../model/discover.model';
 
 @Component({
   selector: 'app-discover',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <section class="video-section">
-      <div class="container-custom">
-        <div class="video-grid">
-          <!-- Text -->
-          <div class="video-text">
-            <h2 class="slide-left">{{ section.title }}</h2>
-            <p class="slide-left animate-delay-1">{{ section.description }}</p>
-            <a href="/assets/magazine.pdf" download class="download-btn" aria-label="Download magazine"> قم بتحميل كتيب الجامعه الاهلية</a>
-          </div>
-
-          <!-- Video -->
-          <!-- <div class="video-frame slide-right animate-delay-2">
-            <iframe
-              [src]="getSafeVideoUrl(section.videoUrl)"
-              [title]="section.videoTitle"
-              allowfullscreen
-              loading="lazy">
-            </iframe>
-          </div> -->
-        </div>
-      </div>
-    </section>
-  `,
-  styleUrl: './discover.component.css'
+  templateUrl: './discover.component.html',
+  styleUrls: ['./discover.component.css']
 })
 export class DiscoverComponent implements OnInit {
-  section!: DiscoverSection;
+  journal: Journal | null = null;
+  safePdfUrl: SafeResourceUrl | null = null;
 
   constructor(
     private discoverService: DiscoverService,
@@ -43,10 +21,18 @@ export class DiscoverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.section = this.discoverService.getDiscoverSection();
+    this.discoverService.getLatestJournal().subscribe({
+      next: (data) => {
+        this.journal = data || null;
+        if (this.journal && this.journal.journalAttachments && this.journal.journalAttachments.length > 0) {
+          this.safePdfUrl = this.getSafePdfUrl(this.journal.journalAttachments[0].url);
+        }
+      },
+      error: (err) => console.error('Error fetching journal', err)
+    });
   }
 
-  getSafeVideoUrl(url: string): SafeResourceUrl {
+  getSafePdfUrl(url: string): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 }

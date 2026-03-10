@@ -28,8 +28,8 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   hasError: boolean = false;
   activeTabId: string = 'content';
   tabs: Tab[] = [
-    { id: 'content', title: 'المحتوى', icon: 'pi pi-file' },
-    { id: 'attachments', title: 'المرفقات', icon: 'pi pi-paperclip' }
+    { id: 'content', title: 'Content', icon: 'pi pi-file' },
+    { id: 'attachments', title: 'Attachments', icon: 'pi pi-paperclip' }
   ];
   private subscription = new Subscription();
 

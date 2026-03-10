@@ -1,9 +1,9 @@
-<div class="faculties-container" dir="rtl">
+<div class="faculties-container" dir="ltr">
   <div class="container-custom">
     <!-- Page Header -->
     <div class="page-header fade-in">
-      <h2>كليات الجامعة</h2>
-      <p class="lead">تعرف على كليات الجامعة المتنوعة وبرامجها الأكاديمية المتميزة</p>
+      <h1>University Faculties</h1>
+      <p class="lead">Discover the university’s diverse faculties and distinguished academic programs</p>
     </div>
 
     <!-- Search Section -->
@@ -12,32 +12,16 @@
         <!-- Text Search -->
         <div class="text-search">
           <div class="search-input-wrapper">
-            <i class="pi pi-search"></i>
             <input
-              type="text"
-              class="search-input"
-              placeholder="البحث عن كلية..."
-              [(ngModel)]="searchFilter.searchText"
-              (input)="onSearchTextChange()"
+            type="text"
+            class="search-input"
+            placeholder="Search for a faculty..."
+            [(ngModel)]="searchFilter.searchText"
+            (input)="onSearchTextChange()"
             >
+            <i class="pi pi-search"></i>
           </div>
         </div>
-
-        <!-- Alphabetical Filter -->
-        <!-- <div class="alphabet-filter">
-          <div class="alphabet-wrapper">
-            <div class="alphabet-list">
-              <button
-                *ngFor="let letter of alphabetLetters"
-                class="alphabet-btn"
-                [class.active]="isActiveAlphabetFilter(letter)"
-                (click)="setAlphabetFilter(letter)"
-              >
-                {{ letter }}
-              </button>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -46,7 +30,7 @@
       <!-- Loading State -->
       <div *ngIf="isLoading" class="loading-container">
         <div class="loading-spinner"></div>
-        <p>جاري تحميل الكليات...</p>
+        <p>Loading faculties...</p>
       </div>
 
       <!-- Faculties Cards -->
@@ -65,7 +49,7 @@
               loading="lazy"
             >
             <!-- <div class="established-badge">
-              تأسست {{ faculty.establishedYear }}
+              Established {{ faculty.establishedYear }}
             </div> -->
           </div>
 
@@ -78,22 +62,22 @@
             <!-- <div class="card-stats">
               <div class="stat-item">
                 <i class="pi pi-users"></i>
-                <span>{{ faculty.studentsCount }} طالب</span>
+                <span>{{ faculty.studentsCount }} Students</span>
               </div>
               <div class="stat-item">
                 <i class="pi pi-user"></i>
-                <span>{{ faculty.staffCount }} عضو هيئة تدريس</span>
+                <span>{{ faculty.staffCount }} Faculty Members</span>
               </div>
               <div class="stat-item">
                 <i class="pi pi-book"></i>
-                <span>{{ faculty.programsCount }} برنامج</span>
+                <span>{{ faculty.programsCount }} Programs</span>
               </div>
             </div> -->
             
             <div class="card-footer">
               <button class="btn btn-primary">
-                عرض التفاصيل
-                <i class="pi pi-arrow-left"></i>
+                View Details
+                <i class="pi pi-arrow-right"></i>
               </button>
             </div>
           </div>
@@ -103,8 +87,8 @@
       <!-- No Results -->
       <div *ngIf="!isLoading && paginatedFaculties.length === 0" class="no-results">
         <i class="pi pi-info-circle"></i>
-        <h3>لا توجد كليات متاحة</h3>
-        <p>لا توجد كليات تطابق معايير البحث المحددة</p>
+        <h3>No faculties available</h3>
+        <p>No faculties match the specified search criteria</p>
       </div>
     </div>
 
@@ -121,7 +105,7 @@
           (click)="previousPage()"
         >
           <i class="pi pi-angle-right"></i>
-          السابق
+          Previous
         </button>
 
         <!-- Page Numbers -->
@@ -142,16 +126,16 @@
           [disabled]="currentPage === totalPages"
           (click)="nextPage()"
         >
-          التالي
+          Next
           <i class="pi pi-angle-left"></i>
         </button>
       </div>
 
       <!-- Pagination Info -->
       <div class="pagination-info">
-        عرض {{ (currentPage - 1) * itemsPerPage + 1 }} إلى 
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
         {{ getMinValue(currentPage * itemsPerPage, filteredFaculties.length) }} 
-        من أصل {{ filteredFaculties.length }} كلية
+        of {{ filteredFaculties.length }} faculties
       </div>
     </div>
   </div>

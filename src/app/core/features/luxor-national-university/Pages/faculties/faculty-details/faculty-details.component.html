@@ -1,19 +1,19 @@
-<div class="faculty-details-container" dir="rtl">
+<div class="faculty-details-container" dir="ltr">
   <div class="container-custom">
     <!-- Loading State -->
     <div *ngIf="isLoading" class="loading-container">
       <div class="loading-spinner"></div>
-      <p>جاري تحميل تفاصيل الكلية...</p>
-    </div>
+      <p>Loading faculty details...</p>
+        </div>
 
     <!-- Faculty Content -->
     <div *ngIf="!isLoading && faculty" class="faculty-content">
       <!-- Back Button -->
       <div class="back-button-container fade-in">
         <button class="btn-back" (click)="goBack()">
-          <i class="pi pi-arrow-right"></i>
-          العودة للكليات
-        </button>
+          <i class="pi pi-arrow-left"></i>
+          Back to Faculties
+                </button>
       </div>
 
 
@@ -45,14 +45,14 @@
         <h2 class="faculty-title">{{ faculty.name }}</h2>
         <p class="faculty-description">{{ faculty.departmentTitle || faculty.fullDescription }}</p>
         <div class="faculty-content" [innerHTML]="faculty.departmentContent | cleanHtml"></div>
-        <p class="faculty-dean" *ngIf="faculty.dean">{{ faculty.dean }} عميد الكلية</p>
+        <p class="faculty-dean" *ngIf="faculty.dean"> Dean of the Faculty {{ faculty.dean }}</p>
       </div>
 
 
       <!-- About Faculty Section -->
       <div class="about-section slide-up animate-delay-3">
-        <h2 class="section-title">عن الكلية</h2>
-        <div class="tabs-container">
+        <h2 class="section-title">About the Faculty</h2>
+                <div class="tabs-container">
           <div class="tabs-wrapper">
             <div class="tabs-list">
               <button *ngFor="let section of aboutSections"
@@ -72,8 +72,8 @@
 
       <!-- Programs Section -->
       <div class="programs-section slide-up animate-delay-4">
-        <h2 class="section-title">برامج الكلية</h2>
-        <div class="programs-grid">
+        <h2 class="section-title">Faculty Programs</h2>
+                <div class="programs-grid">
           <div *ngFor="let program of paginatedPrograms; let i = index"
                class="program-card hover-lift"
                [class]="'animate-delay-' + (i % 4 + 1)"
@@ -83,8 +83,8 @@
             </div>
             <div class="program-content">
               <button class="btn btn-primary">
-                عرض التفاصيل
-                <i class="pi pi-arrow-left"></i>
+                                 View Details
+                <i class="pi pi-arrow-right"></i>
               </button>
             </div>
           </div>
@@ -95,7 +95,7 @@
             <button class="pagination-btn"
                     [disabled]="currentProgramsPage === 1"
                     (click)="previousProgramsPage()">
-              <i class="pi pi-angle-right"></i> السابق
+              <i class="pi pi-angle-right"></i> Previous
             </button>
             <div class="page-numbers">
               <button *ngFor="let pageNum of getProgramsPageNumbers()"
@@ -108,7 +108,7 @@
             <button class="pagination-btn"
                     [disabled]="currentProgramsPage === totalProgramsPages"
                     (click)="nextProgramsPage()">
-              التالي <i class="pi pi-angle-left"></i>
+              Next <i class="pi pi-angle-left"></i>
             </button>
           </div>
         </div>
@@ -116,8 +116,8 @@
 
       <!-- Staff Section -->
       <div class="staff-section slide-up animate-delay-5">
-        <h2 class="section-title">أعضاء هيئة التدريس</h2>
-        <div class="staff-grid">
+        <h2 class="section-title">Faculty Staff Members</h2>
+                <div class="staff-grid">
           <div *ngFor="let staffMember of paginatedStaff; let i = index"
                class="staff-card hover-lift"
                [class]="'animate-delay-' + (i % 4 + 1)"
@@ -134,14 +134,14 @@
                 <i class="pi pi-user"></i>
               </div>
               <div *ngIf="staffMember.isLeader" class="dean-badge">
-                <i class="pi pi-star"></i> عميد الكلية
-              </div>
+                <i class="pi pi-star"></i> Dean of the Faculty
+                            </div>
             </div>
             <div class="staff-content">
               <h3 class="staff-name">{{ staffMember.memberName }}</h3>
               <p class="staff-position">{{ staffMember.departmentName }}</p>
               <button class="btn btn-primary">
-                عرض التفاصيل <i class="pi pi-arrow-left"></i>
+                   View Details  <i class="pi pi-arrow-right"></i>
               </button>
             </div>
           </div>
@@ -152,7 +152,7 @@
             <button class="pagination-btn"
                     [disabled]="currentStaffPage === 1"
                     (click)="previousStaffPage()">
-              <i class="pi pi-angle-right"></i> السابق
+              <i class="pi pi-angle-right"></i> Previous
             </button>
             <div class="page-numbers">
               <button *ngFor="let pageNum of getStaffPageNumbers()"
@@ -165,7 +165,7 @@
             <button class="pagination-btn"
                     [disabled]="currentStaffPage === totalStaffPages"
                     (click)="nextStaffPage()">
-              التالي <i class="pi pi-angle-left"></i>
+              Next <i class="pi pi-angle-left"></i>
             </button>
           </div>
         </div>
@@ -175,9 +175,9 @@
     <!-- Error State -->
     <div *ngIf="!isLoading && !faculty" class="error-state">
       <i class="pi pi-exclamation-triangle"></i>
-      <h3>الكلية غير موجودة</h3>
-      <p>عذراً، لم نتمكن من العثور على الكلية المطلوبة</p>
-      <button class="btn btn-primary" (click)="goBack()">العودة للكليات</button>
+       <h3>Faculty Not Found</h3>
+      <p>Sorry, we could not find the requested faculty</p>
+      <button class="btn btn-primary" (click)="goBack()">Back to Faculties</button>
     </div>
   </div>
 
@@ -249,8 +249,8 @@
             <p class="position">{{ selectedMemberDetails?.position || selectedStaff?.departmentName }}</p>
             <p class="specialization">{{ selectedMemberDetails?.specialization }}</p>
             <p class="role" *ngIf="selectedStaff?.isLeader">
-              <i class="pi pi-star"></i> عميد الكلية
-            </p>
+              <i class="pi pi-star"></i> Dean of the Faculty
+                        </p>
           </div>
         </div>
       </div>

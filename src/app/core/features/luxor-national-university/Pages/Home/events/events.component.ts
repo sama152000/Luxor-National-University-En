@@ -38,7 +38,7 @@ export class EventsComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    return new Intl.DateTimeFormat('ar-SA', {
+    return new Intl.DateTimeFormat('en-SA', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

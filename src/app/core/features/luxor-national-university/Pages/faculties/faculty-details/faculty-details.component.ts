@@ -50,12 +50,12 @@ export class FacultyDetailsComponent implements OnInit {
   selectedProgram: DepartmentProgram | null = null;
   selectedProgramDetails: Program | null = null;
   activeProgramTabId = 'overview';
-  programTabs = [
-    { id: 'overview', title: 'عن البرنامج', icon: 'pi pi-info-circle' },
-    { id: 'vision', title: 'الرؤية', icon: 'pi pi-eye' },
-    { id: 'mission', title: 'الرسالة', icon: 'pi pi-bullseye' },
-    { id: 'goals', title: 'الأهداف', icon: 'pi pi-check-circle' },
-  ];
+programTabs = [
+  { id: 'overview', title: 'About the Program', icon: 'pi pi-info-circle' },
+  { id: 'vision', title: 'Vision', icon: 'pi pi-eye' },
+  { id: 'mission', title: 'Mission', icon: 'pi pi-bullseye' },
+  { id: 'goals', title: 'Goals', icon: 'pi pi-check-circle' },
+];
 
   showStaffModal = false;
   selectedStaff: DepartmentMember | null = null;
@@ -93,12 +93,13 @@ export class FacultyDetailsComponent implements OnInit {
         };
 
         // Tabs عن الكلية
-        this.aboutSections = [
-          { id: 'about', title: 'عن القسم', icon: 'pi pi-info-circle', content: dep.about },
-          { id: 'vision', title: 'الرؤية', icon: 'pi pi-eye', content: dep.vision },
-          { id: 'mission', title: 'الرسالة', icon: 'pi pi-bullseye', content: dep.mission },
-          { id: 'goals', title: 'الأهداف', icon: 'pi pi-check-circle', content: dep.goals.map(g => g.goalName).join('<br>') }
-        ];
+      this.aboutSections = [
+  { id: 'about', title: 'About the Department', icon: 'pi pi-info-circle', content: dep.about },
+  { id: 'vision', title: 'Vision', icon: 'pi pi-eye', content: dep.vision },
+  { id: 'mission', title: 'Mission', icon: 'pi pi-bullseye', content: dep.mission },
+  { id: 'goals', title: 'Goals', icon: 'pi pi-check-circle', content: dep.goals.map(g => g.goalName).join('<br>') }
+];
+
         this.activeAboutSectionId = 'about';
 
         // برامج القسم

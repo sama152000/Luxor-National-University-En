@@ -1,8 +1,8 @@
 <div class="services-page" dir="ltr">
   <section class="services-hero">
     <div class="container-custom">
-      <h1 class="page-title fade-in">خدماتنا</h1>
-      <p class="page-subtitle slide-up animate-delay-1">نقدم مجموعة شاملة من الخدمات الأكاديمية والبحثية المتميزة</p>
+      <h1 class="page-title fade-in">Our Services</h1>
+      <p class="page-subtitle slide-up animate-delay-1">We provide a comprehensive range of distinguished academic and research services</p>
     </div>
   </section>
 
@@ -15,7 +15,7 @@
           class="slider-arrow slider-arrow-left" 
           (click)="prevSlide()"
           [disabled]="isTransitioning"
-          aria-label="الشريحة السابقة">
+          aria-label="Previous Slide">
           <i class="pi pi-chevron-left"></i>
         </button>
 
@@ -23,7 +23,7 @@
           class="slider-arrow slider-arrow-right" 
           (click)="nextSlide()"
           [disabled]="isTransitioning"
-          aria-label="الشريحة التالية">
+          aria-label="Next Slide">
           <i class="pi pi-chevron-right"></i>
         </button>
 
@@ -48,13 +48,13 @@
                   <p class="service-description" [innerHTML]="service.description | cleanHtml"></p>
                   <div class="service-action-container">
                     <a [href]="service?.iconPath" class="service-action-btn">
-                      اذهب الان
+                      Go Now
                       <i class="pi pi-arrow-right"></i>
                     </a>
                    
                   </div>
                   <!-- <div *ngIf="service.bulletPointsAr && service.bulletPointsAr.length > 0" class="service-features">
-                    <h4 class="features-title">المزايا الرئيسية:</h4>
+                    <h4 class="features-title">Key Features:</h4>
                     <ul class="features-list">
                       <li *ngFor="let point of service.bulletPointsAr; let j = index" 
                           class="feature-item"
@@ -77,7 +77,7 @@
             class="dot"
             [class.active]="i === currentIndex"
             (click)="goToSlide(i)"
-            [attr.aria-label]="'الانتقال إلى الشريحة ' + (i + 1)">
+            [attr.aria-label]="'Go to slide ' + (i + 1)">
           </button>
         </div>
 
@@ -89,6 +89,4 @@
       </div>
     </div>
   </section>
-
-  
 </div>

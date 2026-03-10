@@ -271,6 +271,8 @@
   cursor: pointer;
   border-radius: var(--radius-lg);
   transition: all 0.3s ease;
+  align-items: start;
+  text-align: left;
 }
 
 .pagination-btn:hover:not(:disabled) {

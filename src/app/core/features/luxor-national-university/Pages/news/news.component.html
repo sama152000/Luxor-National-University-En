@@ -2,21 +2,21 @@
   <div class="container-custom">
     <!-- Page Header -->
     <div class="page-header fade-in">
-      <h1>الأخبار والفعاليات</h1>
-      <p class="lead">تابع آخر الأخبار والأنشطة والفعاليات في الجامعة</p>
+      <h1>News and Events</h1>
+      <p class="lead">Follow the latest news, activities, and events at the university</p>
     </div>
 
     <!-- Category Tabs -->
     <div class="tabs-container slide-up animate-delay-1">
       <div class="tabs-wrapper">
         <div class="tabs-list">
-                   <button 
-    class="tab-item" 
-    [class.active]="selectedCategory === null" 
-    (click)="clearFilter()"
-  >
-    الكل
-  </button>
+          <button 
+            class="tab-item" 
+            [class.active]="selectedCategory === null" 
+            (click)="clearFilter()"
+          >
+            All
+          </button>
           <button
             *ngFor="let category of categories"
             class="tab-item"
@@ -25,7 +25,6 @@
           >
             <span>{{ category.name }}</span>
           </button>
-
         </div>
       </div>
     </div>
@@ -35,7 +34,7 @@
       <!-- Loading State -->
       <div *ngIf="isLoading" class="loading-container">
         <div class="loading-spinner"></div>
-        <p>جاري تحميل الأخبار...</p>
+        <p>Loading news...</p>
       </div>
 
       <!-- News Cards -->
@@ -72,8 +71,9 @@
             <div class="card-description" [innerHTML]="news.content | cleanHtml"></div>
             
             <div class="card-footer">
-        <button class="btn btn-primary" [routerLink]="['/news', news?.slug]">                اقرأ المزيد
-                <i class="pi pi-arrow-left"></i>
+              <button class="btn btn-primary" style="display: flex; justify-content: flex-start;" [routerLink]="['/news', news?.slug]">
+                <i class="pi pi-arrow-right p-1"></i>
+                Read More
               </button>
             </div>
           </div>
@@ -83,8 +83,8 @@
       <!-- No Results -->
       <div *ngIf="!isLoading && filteredNews.length === 0" class="no-results">
         <i class="pi pi-info-circle"></i>
-        <h3>لا توجد أخبار متاحة</h3>
-        <p>لا توجد أخبار في هذا القسم حالياً</p>
+        <h3>No news available</h3>
+        <p>There are currently no news items in this section</p>
       </div>
 
       <!-- Pagination -->
@@ -96,7 +96,7 @@
             (click)="prevPage()"
           >
             <i class="pi pi-angle-right"></i>
-            السابق
+            Previous
           </button>
           
           <div class="pagination-pages">
@@ -115,14 +115,14 @@
             [disabled]="!canGoNext"
             (click)="nextPage()"
           >
-            التالي
+            Next
             <i class="pi pi-angle-left"></i>
           </button>
         </nav>
         
         <div class="pagination-info">
-          صفحة {{ currentPage }} من {{ totalPages }}
-          ({{ totalItems }} خبر)
+          Page {{ currentPage }} of {{ totalPages }}
+          ({{ totalItems }} News)
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ import { HomeService } from './core/features/luxor-national-university/Services/
 })
 export class App implements OnInit {
 
-  protected title = 'جامعة الاقصر الاهلية';
+  protected title = 'Luxor National University';
   showScrollButton = false;
   showLoader: boolean = true;
   loaderConfig!: LoaderConfig;

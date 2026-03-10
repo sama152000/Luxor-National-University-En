@@ -2,8 +2,7 @@
   <div class="container-custom">
     <!-- Page Header -->
     <div class="page-header fade-in">
-      <h1>{{ currentPage?.subTitle || 'عن الجامعة' }}</h1>
-      <p class="lead">تعرف على تاريخ ورؤية ورسالة جامعتنا العريقة</p>
+      <h1>{{ currentPage?.subTitle || 'About the University' }}</h1>
     </div>
 
     <!-- Featured Image -->
@@ -44,7 +43,7 @@
         <!-- Error State -->
         <div *ngIf="hasError && !isLoading" class="no-content">
           <i class="pi pi-exclamation-triangle"></i>
-          <p>عذراً، حدث خطأ في تحميل المحتوى</p>
+          <p>Sorry, an error occurred while loading the content</p>
         </div>
 
         <!-- Content Display -->
@@ -60,7 +59,7 @@
           class="content-section fade-in">
           
           <div *ngIf="currentPage?.pageAttachments && currentPage!.pageAttachments!.length > 0">
-            <h3 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">المرفقات المتاحة</h3>
+            <h3 style="color: var(--primary-color); margin-bottom: var(--spacing-lg);">Available Attachments</h3>
             
             <div class="attachments-grid">
               <div 
@@ -72,7 +71,7 @@
                 </div>
                 <div class="attachment-info">
                   <h4>{{ attachment.fileName }}</h4>
-                  <p>انقر للتحميل</p>
+                  <p>Click to download</p>
                 </div>
                 <div class="download-icon">
                   <i class="pi pi-download"></i>
@@ -83,14 +82,14 @@
 
           <div *ngIf="!currentPage?.pageAttachments || currentPage!.pageAttachments!.length === 0" class="no-content">
             <i class="pi pi-info-circle"></i>
-            <p>لا توجد مرفقات متاحة</p>
+            <p>No attachments available</p>
           </div>
         </div>
-..
+
         <!-- No Content State -->
         <div *ngIf="!isLoading && !hasError && activeTabId !== 'attachments' && !currentPage?.content" class="no-content">
           <i class="pi pi-info-circle"></i>
-          <p>لا توجد محتويات متاحة</p>
+          <p>No content available</p>
         </div>
       </div>
     </div>

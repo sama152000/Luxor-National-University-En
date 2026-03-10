@@ -1,3 +1,33 @@
-<p>
-  discover works!
-</p>
+<section class="video-section">
+  <div class="container-custom">
+    <div class="video-grid">
+      <!-- Text -->
+      <div class="video-text" *ngIf="journal">
+        <h2 class="slide-left">{{ journal.title }}</h2>
+        <p class="slide-left animate-delay-1">{{ journal.description }}</p>
+
+        <!-- PDF Download Button -->
+        <a 
+          *ngIf="safePdfUrl" 
+          [href]="safePdfUrl" 
+          download 
+          class="download-btn" 
+          aria-label="Download magazine">
+          Download Luxor National University Brochure
+        </a>
+      </div>
+
+      <!-- Video (if you want to display video or PDF inside iframe) -->
+      <!--
+      <div class="video-frame slide-right animate-delay-2" *ngIf="safePdfUrl">
+        <iframe
+          [src]="safePdfUrl"
+          title="University Magazine"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+      </div>
+      -->
+    </div>
+  </div>
+</section>

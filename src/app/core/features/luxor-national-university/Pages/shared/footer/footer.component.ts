@@ -19,8 +19,8 @@ export class FooterComponent implements OnInit, OnDestroy {
   footerData!: FooterData;
   logo: ImageAsset = {
     src: './assets/lnu.logo.png',
-    alt: 'جامعة الأقصر الوطنية',
-    title: 'شعار الجامعة'
+    alt: 'Luxor National University',
+    title: 'logo'
   };
   private subscription = new Subscription();
 
@@ -58,47 +58,48 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   private getDefaultFooterData(): FooterData {
-    return {
-      id: '1',
-      logo: {
-        src: './assets/lnu.logo.png',
-        alt: 'جامعة الأقصر الوطنية',
-        title: 'شعار الجامعة'
-      },
-      description: 'جامعة الأقصر الوطنية ملتزمة بالتميز الأكاديمي، والبحث العلمي، وخدمة المجتمع.',
-      sections: [
-        {
-          title: 'روابط هامة',
-          links: [
-            { label: 'عن الجامعة', url: '/about' },
-            { label: 'الكليات', url: '/faculties' },
-            { label: 'الأخبار والفعاليات', url: '/news' },
-            { label: 'تواصل معنا', url: '/contactInfo' }
-          ]
-        }
-      ],
-      socialLinks: [],
-      copyright: 'جامعة الأقصر الوطنية. جميع الحقوق محفوظة.',
-      year: new Date().getFullYear()
-    };
-  }
-
-  private loadLogo(): void {
-    const sub = this.logosService.getAllLogos().subscribe({
-      next: (logos: Logo[]) => {
-        if (logos && logos.length > 0) {
-          const firstLogo = logos[0];
-          this.logo = {
-            src: firstLogo.url || './assets/lnu.logo.png',
-            alt: 'جامعة الأقصر الوطنية',
-            title: 'شعار الجامعة'
-          };
-        }
-      },
-      error: (error) => {
-        console.error('Error loading logo:', error);
+  return {
+    id: '1',
+    logo: {
+      src: './assets/lnu.logo.png',
+      alt: 'Luxor National University',
+      title: 'University Logo'
+    },
+    description: 'Luxor National University is committed to academic excellence, scientific research, and community service.',
+    sections: [
+      {
+        title: 'Important Links',
+        links: [
+          { label: 'About the University', url: '/about' },
+          { label: 'Faculties', url: '/faculties' },
+          { label: 'News and Events', url: '/news' },
+          { label: 'Contact Us', url: '/contactInfo' }
+        ]
       }
-    });
-    this.subscription.add(sub);
-  }
+    ],
+    socialLinks: [],
+    copyright: 'Luxor National University. All rights reserved.',
+    year: new Date().getFullYear()
+  };
+}
+
+private loadLogo(): void {
+  const sub = this.logosService.getAllLogos().subscribe({
+    next: (logos: Logo[]) => {
+      if (logos && logos.length > 0) {
+        const firstLogo = logos[0];
+        this.logo = {
+          src: firstLogo.url || './assets/lnu.logo.png',
+          alt: 'Luxor National University',
+          title: 'University Logo'
+        };
+      }
+    },
+    error: (error) => {
+      console.error('Error loading logo:', error);
+    }
+  });
+  this.subscription.add(sub);
+}
+
 }

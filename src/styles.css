@@ -1,35 +1,12 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import 'primeicons/primeicons.css';
 
-/* Almarai Font */
 @font-face {
-  font-family: 'Almarai' !important;
-  src: url('assets/fonts/Almarai/Almarai-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
+  font-family: 'IBM Plex Sans';
+  src: url('./assets/fonts/IBM_Plex_Sans/IBMPlexSans-VariableFont_wdth,wght.ttf') format('truetype-variations');
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
 }
-
-@font-face {
-  font-family: 'Almarai';
-  src: url('assets/fonts/Almarai/Almarai-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Almarai';
-  src: url('assets/fonts/Almarai/Almarai-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Almarai';
-  src: url('assets/fonts/Almarai/Almarai-ExtraBold.ttf') format('truetype');
-  font-weight: 800;
-  font-style: normal;
-}
-
 /* ===== GLOBAL RESET & BASE STYLES ===== */
 * {
   margin: 0;
@@ -44,7 +21,7 @@ html, body {
 }
 
 body {
-  font-family: 'Almarai', sans-serif;
+  font-family: 'IBM Plex Sans', sans-serif;
   line-height: 1.6;
   color: #333;
   background: #f8f6f1;

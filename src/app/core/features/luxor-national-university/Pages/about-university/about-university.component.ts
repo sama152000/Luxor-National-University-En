@@ -17,13 +17,13 @@ export class AboutUniversityComponent implements OnInit {
   activeTab: string = 'overview';
   isLoading = false;
 
-  tabs = [
-    { id: 'overview', title: 'نبذة عامة', icon: 'pi pi-home' },
-    { id: 'vision', title: 'الرؤية', icon: 'pi pi-eye' },
-    { id: 'mission', title: 'الرسالة', icon: 'pi pi-flag' },
-    { id: 'goals', title: 'الأهداف', icon: 'pi pi-bullseye' },
-    { id: 'history', title: 'تاريخ الجامعة', icon: 'pi pi-clock' }
-  ];
+tabs = [
+  { id: 'overview', title: 'Overview', icon: 'pi pi-home' },
+  { id: 'vision', title: 'Vision', icon: 'pi pi-eye' },
+  { id: 'mission', title: 'Mission', icon: 'pi pi-flag' },
+  { id: 'goals', title: 'Goals', icon: 'pi pi-bullseye' },
+  { id: 'history', title: 'University History', icon: 'pi pi-clock' }
+];
 
   constructor(
     private aboutService: AboutUniversityService,
