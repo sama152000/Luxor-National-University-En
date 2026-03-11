@@ -30,6 +30,45 @@
       </div>
 
       <!-- Image Slider -->
+             <!-- Image Slider -->
+      <div class="image-slider slide-up animate-delay-2" *ngIf="news.postAttachments.length > 0">
+        <div class="slider-container">
+          <div class="main-image">
+            <img 
+              [src]="getCurrentImage()" 
+              [alt]="news.title"
+              loading="eager"
+            >
+            
+            <!-- Navigation Arrows -->
+            <button 
+              *ngIf="hasMultipleImages()"
+              class="slider-arrow slider-arrow-right"
+              (click)="previousImage()"
+            >
+              <i class="pi pi-chevron-right"></i>
+            </button>
+            
+            <button 
+              *ngIf="hasMultipleImages()"
+              class="slider-arrow slider-arrow-left"
+              (click)="nextImage()"
+            >
+              <i class="pi pi-chevron-left"></i>
+            </button>
+          </div>
+
+          <!-- Image Indicators -->
+          <div class="slider-indicators" *ngIf="hasMultipleImages()">
+            <button
+              *ngFor="let image of news.postAttachments; let i = index"
+              class="indicator"
+              [class.active]="i === currentImageIndex"
+              (click)="goToImage(i)"
+            ></button>
+          </div>
+        </div>
+      </div>
       <!-- unchanged except alt text already dynamic -->
 
       <!-- News Content -->
