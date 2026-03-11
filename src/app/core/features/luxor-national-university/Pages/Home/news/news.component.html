@@ -16,13 +16,13 @@
       <!-- Side News -->
       <div class="news-side">
         <article 
-          *ngFor="let article of latestNews.slice(1)" 
+          *ngFor="let article of latestNews.slice(2)" 
           class="news-item hover-lift"
           [routerLink]="['/news', article.slug]"
         >
           <img [src]="article.featuredImagePath" [alt]="article.title">
           <div>
-            <span class="news-date">{{ formatDate(article.createdDate) }}</span>
+            <span class="news-date">{{ formatDate(article.publishedDate) }}</span>
             <h4>{{ article.title }}</h4>
             <a [routerLink]="['/news', article.slug]">View</a>
           </div>

@@ -41,7 +41,7 @@ export class FooterService {
         alt: 'Luxor National University',
         title: 'University Logo'
       },
-      description: 'Luxor National University is committed to academic excellence, scientific research, and community service.',
+      description: contact?.address || 'Luxor National University is committed to academic excellence, scientific research, and community service.',
       sections: [
         {
           title: 'Important Links',

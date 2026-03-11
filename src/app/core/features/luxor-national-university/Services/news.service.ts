@@ -84,13 +84,13 @@ export class NewsService {
     );
   }
 
-  /** جلب آخر 4 أخبار للـ Home حسب createdDate */
+  /** جلب آخر 4 أخبار للـ Home حسب publishedDate */
   getLatestNews(limit: number = 4): Observable<News[]> {
     return this.getAllNews().pipe(
       map(posts =>
         posts
           .filter(p => p.type === 'News')
-          .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+          .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
           .slice(0, limit)
       )
     );
@@ -102,7 +102,7 @@ export class NewsService {
       map(posts =>
         posts
           .filter(p => p.type === 'Events')
-          .sort((a, b) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime())
+          .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
           .slice(0, limit)
       )
     );

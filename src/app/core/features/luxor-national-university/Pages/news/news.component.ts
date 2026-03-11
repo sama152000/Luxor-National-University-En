@@ -53,8 +53,11 @@ export class NewsComponent implements OnInit {
     this.isLoading = true;
     this.newsService.getAllNews().subscribe({
       next: (data) => {
-        this.news = data;
-        this.filteredNews = data; 
+        // ترتيب الأخبار من الأحدث للأقدم
+        this.news = data.sort((a, b) => 
+          new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()
+        );
+        this.filteredNews = this.news; 
         this.currentPage = 1;
         this.updatePagination();
         this.isLoading = false;
