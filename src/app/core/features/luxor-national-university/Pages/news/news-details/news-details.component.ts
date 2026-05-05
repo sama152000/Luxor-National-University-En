@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NewsService } from '../../../Services/news.service';
 import { News } from '../../../model/news.model';
 import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
+import { Meta, Title } from '@angular/platform-browser';
+import { environment } from '../../../../../../../environments/environment';
 
 @Component({
   selector: 'app-news-details',
@@ -24,22 +26,64 @@ export class NewsDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private newsService: NewsService
+    private newsService: NewsService,
+    private meta: Meta,
+    private title: Title
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const slug = params['slug'];
-      if (slug) {
-        this.loadNewsDetails(slug);
+      const id = params['id'];
+      if (id) {
+        this.loadNewsDetails(id);
       }
     });
   }
 
-  loadNewsDetails(slug: string): void {
+  private updateMetaTags(news: News): void {
+    // Get the first image from attachments or use featured image
+    const imageUrl = news.postAttachments?.[0]?.url 
+      ? this.getFullImageUrl(news.postAttachments[0].url)
+      : news.featuredImagePath 
+        ? this.getFullImageUrl(news.featuredImagePath)
+        : 'https://lunar.runasp.net/assets/lnu.logo.png';
+
+    // Get a clean description from content (strip HTML tags)
+    const description = this.stripHtmlTags(news.content).substring(0, 160);
+
+    // Update page title
+    this.title.setTitle(`${news.title} - جامعة الاقصر الاهلية`);
+
+    // Update Open Graph meta tags
+    this.meta.updateTag({ property: 'og:title', content: news.title });
+    this.meta.updateTag({ property: 'og:description', content: description });
+    this.meta.updateTag({ property: 'og:image', content: imageUrl });
+    this.meta.updateTag({ property: 'og:url', content: `${environment.apiBase}/news/${news.id}` });
+    this.meta.updateTag({ property: 'og:type', content: 'article' });
+
+    // Update Twitter Card meta tags
+    this.meta.updateTag({ name: 'twitter:title', content: news.title });
+    this.meta.updateTag({ name: 'twitter:description', content: description });
+    this.meta.updateTag({ name: 'twitter:image', content: imageUrl });
+  }
+
+  private getFullImageUrl(url: string): string {
+    if (url.startsWith('http')) {
+      return url;
+    }
+    return `${environment.apiBase}${url}`;
+  }
+
+  private stripHtmlTags(html: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = html;
+    return div.textContent || div.innerText || '';
+  }
+
+  loadNewsDetails(id: string): void {
     this.isLoading = true;
 
-    this.newsService.getNewsBySlug(slug).subscribe(news => {
+    this.newsService.getNewsById(id).subscribe(news => {
       this.news = news || null;
 
       if (this.news) {
@@ -87,23 +131,23 @@ export class NewsDetailsComponent implements OnInit {
   }
 
   // Navigation Methods
-  goToPreviousNews(): void {
-    if (this.previousNews) {
-      this.router.navigate(['/news', this.previousNews.slug]);
-    }
-  }
+   goToPreviousNews(): void {
+     if (this.previousNews) {
+       this.router.navigate(['/news', this.previousNews.id]);
+     }
+   }
 
-  goToNextNews(): void {
-    if (this.nextNews) {
-      this.router.navigate(['/news', this.nextNews.slug]);
-    }
-  }
+   goToNextNews(): void {
+     if (this.nextNews) {
+       this.router.navigate(['/news', this.nextNews.id]);
+     }
+   }
 
-  viewRelatedNews(slug: string | undefined): void {
-    if (slug) {
-      this.router.navigate(['/news', slug]);
-    }
-  }
+   viewRelatedNews(id: string | undefined): void {
+     if (id) {
+       this.router.navigate(['/news', id]);
+     }
+   }
 
   goBack(): void {
     this.router.navigate(['/news']);
@@ -111,7 +155,7 @@ export class NewsDetailsComponent implements OnInit {
 
   // Utility Methods
   formatDate(date: string): string {
-    return new Intl.DateTimeFormat('en-SA', {
+    return new Intl.DateTimeFormat('EN-SA', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'

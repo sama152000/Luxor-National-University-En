@@ -37,5 +37,6 @@ export interface News {
   postCategories: PostCategory[];
   postAttachments: PostAttachment[];
   tags: PostTag[];
+  totalViewCount: number;
   slug?: string; // مضاف حديثًا
 }

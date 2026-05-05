@@ -1,7 +1,7 @@
 <header class="main-header sticky-header">
   <div class="container-custom nav-inner">
     <!-- Logo Box -->
-    <div class="logo-box hover-lift" *ngIf="logos.length > 0">
+    <div routerLink="/home" class="logo-box hover-lift" *ngIf="logos.length > 0">
       <img [src]="logos[0].url"
            [alt]="logos[0].fileName"
            [width]="200"

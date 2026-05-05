@@ -6,7 +6,7 @@
       <div 
         *ngFor="let event of latestEvents"
         class="event-card hover-lift"
-        [routerLink]="['/news', event?.slug]"
+        [routerLink]="['/news', event?.id]"
       >
         <span class="event-date">{{ formatDate(event.publishedDate) }}</span>
         <img [src]="event.featuredImagePath" [alt]="event.title">

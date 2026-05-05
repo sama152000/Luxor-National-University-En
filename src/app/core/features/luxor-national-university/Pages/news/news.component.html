@@ -56,22 +56,25 @@
             </div>
           </div>
 
-          <!-- Card Content -->
+        <!-- Card Content -->
           <div class="card-content">
-            <div class="card-meta">
-              <span class="date">
-                <i class="pi pi-calendar"></i>
-                {{ news.publishedDate | date:'mediumDate' }}
-              </span>
-            </div>
-
+             <div class="card-meta">
+               <span class="date">
+                 <i class="pi pi-calendar"></i>
+                 {{ news.publishedDate | date:'mediumDate' }}
+               </span>
+               <span class="views">
+                 <i class="pi pi-eye"></i>
+                 {{ news.totalViewCount }} Views
+               </span>
+             </div>
             <h3 class="card-title">{{ news.title }}</h3>
             
             <!-- Clean HTML Content -->
             <div class="card-description" [innerHTML]="news.content | cleanHtml"></div>
             
             <div class="card-footer">
-              <button class="btn btn-primary" style="display: flex; justify-content: flex-start;" [routerLink]="['/news', news?.slug]">
+              <button class="btn btn-primary" style="display: flex; justify-content: flex-start;" [routerLink]="['/news', news?.id]">
                 <i class="pi pi-arrow-right p-1"></i>
                 Read More
               </button>
