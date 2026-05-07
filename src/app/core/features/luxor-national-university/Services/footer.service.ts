@@ -46,7 +46,7 @@ export class FooterService {
         {
           title: 'Important Links',
           links: [
-            { label: 'About the University', url: '/about' },
+            { label: 'About Us', url: '/about' },
             { label: 'Faculties', url: '/faculties' },
             { label: 'News and Events', url: '/news' },
             { label: 'Contact Us', url: '/contactInfo' }

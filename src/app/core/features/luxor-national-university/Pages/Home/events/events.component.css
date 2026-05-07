@@ -119,6 +119,22 @@
   transition: var(--transition-smooth);
 }
 
+.event-views {
+  display: inline-block;
+  background: rgba(0, 123, 255, 0.1);
+  color: var(--primary-color);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  margin-left: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.event-views i {
+  margin-left: 4px;
+}
+
 .event-card:hover .event-date {
   background: var(--white);
   color: var(--primary-color);

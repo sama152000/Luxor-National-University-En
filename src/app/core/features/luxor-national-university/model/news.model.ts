@@ -40,3 +40,13 @@ export interface News {
   totalViewCount: number;
   slug?: string; // مضاف حديثًا
 }
+
+export interface PagedResponse<T> {
+  success: boolean;
+  data: {
+    items: T[];
+    totalCount: number;
+    pageNumber: number;
+    pageSize: number;
+  };
+}

@@ -8,7 +8,7 @@ import { VisitorsService } from '../../../Services/visitors.service';
 import { FooterData } from '../../../model/footer.model';
 import { ImageAsset } from '../../../model/common.model';
 import { Logo } from '../../../model/logo.model';
-import { VisitorsTotal } from '../../../model/visitors.model';
+import { VisitorsTotal, VisitorsToday, VisitorsMonth } from '../../../model/visitors.model';
 
 @Component({
   selector: 'app-footer',
@@ -21,13 +21,16 @@ export class FooterComponent implements OnInit, OnDestroy {
   footerData!: FooterData;
   logo: ImageAsset = {
     src: './assets/lnu.logo.png',
-   alt: 'Luxor National University',
-title: 'University Logo'
- };
+    alt: 'جامعة الأقصر الوطنية',
+    title: 'شعار الجامعة'
+  };
 
   totalViews = 0;
   displayedViews = 0;
   animationDone = false;
+
+  todayViews = 0;
+  monthViews = 0;
 
   private subscription = new Subscription();
   private animationFrameId?: number;
@@ -43,6 +46,8 @@ title: 'University Logo'
     this.loadFooterData();
     this.loadLogo();
     this.loadTotalViews();
+    this.loadTodayViews();
+    this.loadMonthViews();
   }
 
   ngOnDestroy(): void {
@@ -67,49 +72,48 @@ title: 'University Logo'
     });
     this.subscription.add(sub);
   }
-private getDefaultFooterData(): FooterData {
-  return {
-    id: '1',
-    logo: {
-      src: './assets/lnu.logo.png',
-      alt: 'Luxor National University',
-      title: 'University Logo'
-    },
-    description: 'Luxor National University is committed to academic excellence, scientific research, and community service.',
-    sections: [
-      {
-        title: 'Important Links',
-        links: [
-          { label: 'About the University', url: '/about' },
-          { label: 'Faculties', url: '/faculties' },
-          { label: 'News & Events', url: '/news' },
-          { label: 'Contact Us', url: '/contactInfo' }
-        ]
-      }
-    ],
-    socialLinks: [],
-    copyright: 'Luxor National University. All rights reserved.',
-    year: new Date().getFullYear()
-  };
-}
 
+  private getDefaultFooterData(): FooterData {
+    return {
+      id: '1',
+      logo: {
+        src: './assets/lnu.logo.png',
+        alt: 'جامعة الأقصر الوطنية',
+        title: 'شعار الجامعة'
+      },
+      description: 'جامعة الأقصر الوطنية ملتزمة بالتميز الأكاديمي، والبحث العلمي، وخدمة المجتمع.',
+      sections: [
+        {
+          title: 'روابط هامة',
+          links: [
+            { label: 'عن الجامعة', url: '/about' },
+            { label: 'الكليات', url: '/faculties' },
+            { label: 'الأخبار والفعاليات', url: '/news' },
+            { label: 'تواصل معنا', url: '/contactInfo' }
+          ]
+        }
+      ],
+      socialLinks: [],
+      copyright: 'جامعة الأقصر الوطنية. جميع الحقوق محفوظة.',
+      year: new Date().getFullYear()
+    };
+  }
 
-private loadLogo(): void {
-  const sub = this.logosService.getAllLogos().subscribe({
-    next: (logos: Logo[]) => {
-      if (logos?.length > 0) {
-        this.logo = {
-          src: logos[0].url || './assets/lnu.logo.png',
-          alt: 'Luxor National University',
-          title: 'University Logo'
-        };
-      }
-    },
-    error: () => {}
-  });
-  this.subscription.add(sub);
-}
-
+  private loadLogo(): void {
+    const sub = this.logosService.getAllLogos().subscribe({
+      next: (logos: Logo[]) => {
+        if (logos?.length > 0) {
+          this.logo = {
+            src: logos[0].url || './assets/lnu.logo.png',
+            alt: 'جامعة الأقصر الوطنية',
+            title: 'شعار الجامعة'
+          };
+        }
+      },
+      error: () => {}
+    });
+    this.subscription.add(sub);
+  }
 
   private loadTotalViews(): void {
     const sub = this.visitorsService.getTotalViews().subscribe({
@@ -122,6 +126,30 @@ private loadLogo(): void {
       error: () => {
         this.totalViews = 0;
         this.displayedViews = 0;
+      }
+    });
+    this.subscription.add(sub);
+  }
+
+  private loadTodayViews(): void {
+    const sub = this.visitorsService.getTodayViews().subscribe({
+      next: (data: VisitorsToday) => {
+        this.todayViews = data?.todayViews ?? 0;
+      },
+      error: () => {
+        this.todayViews = 0;
+      }
+    });
+    this.subscription.add(sub);
+  }
+
+  private loadMonthViews(): void {
+    const sub = this.visitorsService.getMonthViews().subscribe({
+      next: (data: VisitorsMonth) => {
+        this.monthViews = data?.monthViews ?? 0;
+      },
+      error: () => {
+        this.monthViews = 0;
       }
     });
     this.subscription.add(sub);
