@@ -3,7 +3,7 @@
     <!-- Page Header -->
     <div class="page-header fade-in">
       <h1>About the University</h1>
-      <p class="lead">Learn about the history, vision, and mission of our esteemed university</p>
+      <p class="lead">Discover the history, vision, and mission of our prestigious university</p>
     </div>
 
     <!-- Navigation Tabs -->
@@ -29,34 +29,48 @@
     <!-- Content Area -->
     <div class="content-container slide-up animate-delay-2">
       <div class="content-wrapper">
+
         <!-- Loading State -->
         <div *ngIf="isLoading" class="loading-container">
           <div class="loading-spinner"></div>
         </div>
 
-        <!-- Content Display -->
-        <div *ngIf="!isLoading && section" class="content-section fade-in">
-          <!-- Overview -->
-          <div *ngIf="isActiveTab('overview')" [innerHTML]="section?.content | cleanHtml"></div>
+        <!-- Two-column layout -->
+        <div *ngIf="!isLoading && section" class="content-split">
 
-          <!-- Vision -->
-          <div *ngIf="isActiveTab('vision')" [innerHTML]="section?.vision | cleanHtml"></div>
+          <!-- Left: text content -->
+          <div class="content-section fade-in">
+            <!-- Overview -->
+            <div *ngIf="isActiveTab('overview')" [innerHTML]="section?.content | cleanHtml"></div>
 
-          <!-- Mission -->
-          <div *ngIf="isActiveTab('mission')" [innerHTML]="section?.mission | cleanHtml"></div>
+            <!-- Vision -->
+            <div *ngIf="isActiveTab('vision')" [innerHTML]="section?.vision | cleanHtml"></div>
 
-          <!-- Goals -->
-          <div *ngIf="isActiveTab('goals')" class="goals-list">
-            <ul>
-              <li *ngFor="let goal of section?.goals">
-                <!-- <i class="pi pi-check-circle"></i> -->
-                {{ goal.goalName }}
-              </li>
-            </ul>
+            <!-- Mission -->
+            <div *ngIf="isActiveTab('mission')" [innerHTML]="section?.mission | cleanHtml"></div>
+
+            <!-- Goals -->
+            <div *ngIf="isActiveTab('goals')" class="goals-list">
+              <ul>
+                <li *ngFor="let goal of section?.goals">
+                  {{ goal.goalName }}
+                </li>
+              </ul>
+            </div>
+
+            <!-- History -->
+            <div *ngIf="isActiveTab('history')" [innerHTML]="section?.history | cleanHtml"></div>
           </div>
 
-          <!-- History -->
-          <div *ngIf="isActiveTab('history')" [innerHTML]="section?.history | cleanHtml"></div>
+          <!-- Right: gallery image -->
+          <div class="content-image-panel" *ngIf="activeTabImage">
+            <img
+              [src]="activeTabImage"
+              [alt]="activeTab"
+              class="tab-gallery-img"
+            />
+          </div>
+
         </div>
 
         <!-- No Content State -->
@@ -64,6 +78,7 @@
           <i class="pi pi-info-circle"></i>
           <p>No content available</p>
         </div>
+
       </div>
     </div>
   </div>

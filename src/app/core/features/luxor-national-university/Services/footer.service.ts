@@ -30,9 +30,10 @@ export class FooterService {
     if (contact?.facebook) {
       socialLinks.push({ platform: 'Facebook', url: contact.facebook, icon: 'fab fa-facebook-f' });
     }
-    if (contact?.whatsApp) {
-      socialLinks.push({ platform: 'WhatsApp', url: contact.whatsApp, icon: 'fab fa-whatsapp' });
-    }
+    // if (contact?.whatsApp) {
+    //   const waNumber = contact.whatsApp.replace(/\D/g, '');
+    //   socialLinks.push({ platform: 'WhatsApp', url: `https://wa.me/${waNumber}`, icon: 'fab fa-whatsapp' });
+    // }
 
     return {
       id: '1',
@@ -41,14 +42,14 @@ export class FooterService {
         alt: 'Luxor National University',
         title: 'University Logo'
       },
-      description: contact?.address || 'Luxor National University is committed to academic excellence, scientific research, and community service.',
+      description: 'Luxor National University - Providing distinguished higher education in Luxor',
       sections: [
         {
           title: 'Important Links',
           links: [
-            { label: 'About Us', url: '/about' },
+            { label: 'About the University', url: '/about' },
             { label: 'Faculties', url: '/faculties' },
-            { label: 'News and Events', url: '/news' },
+            { label: 'News & Events', url: '/news' },
             { label: 'Contact Us', url: '/contactInfo' }
           ]
         }

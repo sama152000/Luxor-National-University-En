@@ -18,8 +18,8 @@
   background-size: cover;
   background-position: center;
   opacity: 0;
-  transform: scale(1.15);
-  /* transition: opacity 1s ease, transform 7s ease; */
+  /* transform: scale(1.08); */
+  transition: opacity 1.2s ease, transform 7s ease;
 }
 
 .slide.active {
@@ -60,14 +60,26 @@
   margin-right: var(--spacing-sm);
 }
 
-/* .slide.active .motion-title span {
+.slide.animating .motion-title span {
   animation: titleReveal 0.9s ease forwards;
-} */
+}
 
 .slide-subtitle {
   font-size: clamp(1.2rem, 2.5vw, 1.5rem);
   opacity: 0;
   transform: translateY(30px);
+}
+
+.slide.animating .slide-subtitle {
+  animation: subtitleReveal 1s ease 0.6s forwards;
+}
+
+.slide-description {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.slide.animating .slide-description {
   animation: subtitleReveal 1s ease 1s forwards;
 }
 
@@ -152,9 +164,9 @@ p{
 .dot circle {
   fill: none;
   stroke: var(--secondary-color);
-  stroke-width: 3;
-  stroke-dasharray: 126;
-  stroke-dashoffset: 126;
+  stroke-width: 3.5;
+  stroke-dasharray: 125.66;
+  stroke-dashoffset: 125.66;
   transition: stroke-dashoffset 0.3s ease;
 }
 
@@ -171,7 +183,8 @@ p{
 /* Responsive */
 @media (max-width: 768px) {
   .hero-slider {
-    height: calc(100vh - 70px); /* navbar أصغر في الموبايل */
+    height: 70vh;
+    min-height: 380px;
   }
 
   .motion-title {
@@ -195,10 +208,5 @@ p{
   .dot svg {
     width: 36px;
     height: 36px;
-  }
-
-  .dot circle {
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
   }
 }

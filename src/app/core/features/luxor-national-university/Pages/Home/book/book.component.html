@@ -14,11 +14,11 @@
 
 <!-- Main Content - Show when data is loaded -->
 <section class="book-section" *ngIf="!isLoading && !hasError && deanSpeech">
-  <div class="container book animate-on-scroll book-closed">
+  <div class="container book animate-on-scroll">
 
     <!-- Left Page -->
     <div class="book-page left-page">
-      <div class="page-content" [innerHTML]="deanSpeech.speech|cleanHtml"></div>
+      <div class="page-content" [innerHTML]="deanSpeech.speech | cleanHtml"></div>
     </div>
 
     <!-- Right Page -->
@@ -29,50 +29,51 @@
           controls
           muted
           loop
-          playsinline  
+          playsinline
           class="video-element">
           <source [src]="deanSpeech.deanSpeechAttachments[0].url" type="video/mp4">
           Your browser does not support video playback.
         </video>
       </div>
     </div>
+
   </div>
 </section>
 
-
 <!-- Fallback - Show when no data but not loading/error -->
-<!-- <section class="book-section" *ngIf="!isLoading && !hasError && !deanSpeech">
-  <div class="container book animate-on-scroll book-closed"> -->
+<section class="book-section" *ngIf="!isLoading && !hasError && !deanSpeech">
+  <div class="container book animate-on-scroll">
 
-    <!-- الصفحة اليسرى -->
-    <!-- <div class="book-page left-page">
+    <!-- Left Page -->
+    <div class="book-page left-page">
       <div class="page-content">
-        <h3>رسالة ترحيب</h3>
+        <h3>Welcome Message</h3>
         <p>
-          جامعة الأقصر الوطنية تقف كمنارة للمعرفة متجذرة في التاريخ ومدفوعة بالتميز العلمي. نحن ملتزمون بتمكين قادة المستقبل من خلال الابتكار والبحث والنزاهة الأكاديمية.
+          Luxor National University stands as a beacon of knowledge, rooted in history and driven by academic excellence. We are committed to empowering future leaders through innovation, research, and academic integrity.
         </p>
         <p>
-          مهمتنا هي خلق بيئة تعليمية تلهم الإبداع والتفكير النقدي والانفتاح العالمي.
+          Our mission is to create a learning environment that inspires creativity, critical thinking, and global openness.
         </p>
-        <h4>الأستاذ الدكتور أحمد حسن</h4>
-        <span>رئيس جامعة الأقصر الوطنية</span>
+        <h4>Professor Dr. Ahmed Hassan</h4>
+        <span>President of Luxor National University</span>
       </div>
-    </div> -->
+    </div>
 
-    <!-- الصفحة اليمنى -->
-    <!-- <div class="book-page right-page">
-      <h3>اكتشف جامعتنا</h3>
+    <!-- Right Page -->
+    <div class="book-page right-page">
+      <h3>Discover Our University</h3>
       <div class="video-wrapper">
         <video
           controls
           muted
           loop
-          playsinline  
+          playsinline
           class="video-element">
           <source src="./assets/vid.mp4" type="video/mp4">
-          متصفحك لا يدعم تشغيل الفيديو.
+          Your browser does not support video playback.
         </video>
       </div>
     </div>
+
   </div>
-</section> -->
+</section>

@@ -2,8 +2,8 @@
   <div class="container-custom">
     <!-- Page Header -->
     <div class="page-header fade-in">
-      <h1>News and Events</h1>
-      <p class="lead">Follow the latest news, activities, and events at the university</p>
+      <h1>News & Events</h1>
+      <p class="lead">Stay updated with the latest news, activities, and events at the university</p>
     </div>
 
     <!-- Category Tabs -->
@@ -24,6 +24,29 @@
             <span>{{ category.name }}</span>
           </button>
         </div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-bar-container slide-up animate-delay-2">
+      <div class="search-input-wrapper">
+        <i class="pi pi-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search by news title..."
+          [ngModel]="searchTitle"
+          (ngModelChange)="onSearchChange($event)"
+          dir="ltr"
+          aria-label="Search by news title"
+        />
+        <button
+          *ngIf="searchTitle"
+          class="search-clear-btn"
+          (click)="onSearchChange('')"
+          aria-label="Clear search">
+          <i class="pi pi-times"></i>
+        </button>
       </div>
     </div>
 
@@ -67,9 +90,9 @@
             <div class="card-description" [innerHTML]="news.content | cleanHtml"></div>
             
             <div class="card-footer">
-              <button class="btn btn-primary" [routerLink]="['/news', news?.id]">
-                <i class="pi pi-arrow-left"></i>
-                Read More
+              <button class="read-more-btn" (click)="openNews(news)" type="button">
+                <span>Read More</span>
+                <i class="pi pi-arrow-right"></i>
               </button>
             </div>
           </div>
@@ -109,7 +132,7 @@
         
         <div class="pagination-info">
           Page {{ currentPage }} of {{ totalPages }}
-          ({{ totalItems }} News)
+          ({{ totalItems }} news)
         </div>
       </div>
     </div>

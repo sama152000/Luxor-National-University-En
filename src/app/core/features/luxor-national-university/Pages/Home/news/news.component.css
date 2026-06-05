@@ -28,7 +28,7 @@ text-align: center;
   overflow: hidden;
   box-shadow: var(--shadow-lg);
   transition: var(--transition-smooth);
-
+cursor: pointer;
 }
 
 .news-main img {
@@ -44,6 +44,10 @@ text-align: center;
 
 .news-main .news-content {
   padding: var(--spacing-xl);
+}
+
+.news-main:hover h3{
+  color: var(--primary-color);
 }
 
 .news-category {
@@ -68,6 +72,14 @@ text-align: center;
   border-radius: var(--radius-sm);
   margin-left: var(--spacing-sm);
   margin-bottom: var(--spacing-xs);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  cursor: default;
+}
+
+.news-views:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: scale(1.08);
 }
 
 .news-views i {

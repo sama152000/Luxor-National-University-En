@@ -2,7 +2,7 @@
   padding: var(--spacing-xxxl) 0;
   background-image: url("/assets/mag.PNG");
   background-size: cover;
-  background-attachment: fixed;
+  /* background-attachment: fixed; */
   min-height: 70vh;
   position: relative;
   display: flex;

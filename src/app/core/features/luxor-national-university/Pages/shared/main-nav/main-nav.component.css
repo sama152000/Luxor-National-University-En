@@ -116,7 +116,7 @@
 
 .menu-item.active {
   background: var(--primary-color);
-  color: var(--white);
+  color: var(--white)!important;
   box-shadow: var(--shadow-lg);
 }
 
@@ -143,25 +143,20 @@
 
 @media (max-width: 900px) {
   .nav-inner {
-    flex-direction: column;
-    gap: var(--spacing-md);
-    padding: var(--spacing-md) 0;
-  }
-
-  .circle-menu {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--spacing-sm);
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0;
+    padding: var(--spacing-sm) 0;
   }
 
   .logo-box {
-    width: 250px;
-    height: 85px;
+    width: 200px;
+    height: 70px;
   }
 
   .logo-img {
-    width: 160px;
-    height: 70px;
+    width: 140px;
+    height: 55px;
   }
 }
 
@@ -182,9 +177,8 @@
     
     color: var(--primary-color)!important;
 
-  }  */
+  } */
 
-  
   /* Mobile Dropdown Styles */
   .dropdown-menu {
     position: static;
@@ -296,5 +290,319 @@
 
 .dropdown-item i {
   font-size: 14px;
+  color: var(--primary-color);
+}
+
+/* ========================================
+   HAMBURGER BUTTON
+======================================== */
+.hamburger-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  background: var(--cream);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 8px;
+  box-shadow: var(--shadow-md);
+  transition: background 0.3s ease;
+  z-index: 1001;
+}
+
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--primary-color);
+  border-radius: 2px;
+  transition: all 0.35s ease;
+  transform-origin: center;
+}
+
+.hamburger-btn.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger-btn.is-open span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.hamburger-btn.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ========================================
+   MOBILE OVERLAY
+======================================== */
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1099;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.mobile-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ========================================
+   MOBILE DRAWER
+======================================== */
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -50vw;
+  width: 50vw;
+  height: 100dvh;
+  background: var(--white);
+  z-index: 1100;
+  box-shadow: -6px 0 30px rgba(0, 0, 0, 0.18);
+  transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-direction: column;
+}
+
+.mobile-drawer.open {
+  right: 0;
+}
+
+/* Drawer Header */
+.drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px;
+  border-bottom: 1px solid var(--cream);
+  background: linear-gradient(135deg, var(--cream), var(--secondary-light));
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.drawer-logo {
+  display: flex;
+  align-items: center;
+}
+
+.drawer-logo-img {
+  width: 120px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.drawer-close-btn {
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(0,0,0,0.07);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--primary-color);
+  font-size: 16px;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.drawer-close-btn:hover {
+  background: rgba(0,0,0,0.14);
+}
+
+/* Drawer Nav */
+.drawer-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  color: #3b352f;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: right;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.drawer-item i:first-child {
+  color: var(--primary-color);
+  font-size: 17px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.drawer-item span {
+  flex: 1;
+}
+
+.drawer-item:hover,
+.drawer-item.active {
+  background: var(--cream);
+  color: var(--primary-color);
+}
+
+/* Chevron icon for accordion */
+.drawer-item .chevron {
+  font-size: 12px !important;
+  color: #999;
+  transition: transform 0.3s ease;
+  margin-right: 0;
+  flex-shrink: 0;
+}
+
+.drawer-item .chevron.rotated {
+  transform: rotate(180deg);
+}
+
+/* Sub menu accordion */
+.drawer-sub-menu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  background: var(--cream);
+}
+
+.drawer-sub-menu.open {
+  max-height: 400px;
+}
+
+.drawer-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 32px;
+  color: #3b352f;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  transition: color 0.2s ease, padding-right 0.2s ease;
+}
+
+.drawer-sub-item i {
+  color: var(--primary-color);
+  font-size: 13px;
+  width: 16px;
+  text-align: center;
+}
+
+.drawer-sub-item:hover {
+  color: var(--primary-color);
+  padding-right: 38px;
+}
+
+/* ========================================
+   SHOW ON MOBILE
+======================================== */
+@media (max-width: 900px) {
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .circle-menu {
+    display: none;
+  }
+
+  .mobile-overlay {
+    display: block;
+  }
+
+  .mobile-drawer {
+    display: flex;
+  }
+
+  .nav-inner {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 1rem;
+    /* Force LTR so logo sits on physical left, hamburger on physical right */
+    direction: ltr;
+  }
+
+  /* Keep text inside children reading RTL */
+  .nav-inner .logo-box,
+  .nav-inner .hamburger-btn {
+    direction: rtl;
+  }
+
+  .logo-box {
+    width: 180px;
+    height: 65px;
+  }
+
+  .logo-img {
+    width: 130px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-drawer {
+    width: 75vw;
+    right: -75vw;
+  }
+}
+
+/* ========================================
+   DRAWER CONTACT FOOTER
+======================================== */
+.drawer-contact {
+  margin-top: auto;
+  padding: 16px 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(135deg, var(--cream), var(--secondary-light));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.drawer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3b352f;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: background 0.2s ease, color 0.2s ease;
+  word-break: break-all;
+}
+
+.drawer-contact-item i {
+  color: var(--primary-color);
+  font-size: 15px;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.drawer-contact-item:hover {
+  background: rgba(0, 0, 0, 0.06);
   color: var(--primary-color);
 }

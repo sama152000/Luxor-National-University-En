@@ -4,6 +4,7 @@
       *ngFor="let slide of slides; let i = index" 
       class="slide"
       [class.active]="i === currentSlideIndex"
+      [class.animating]="i === animatingIndex"
       [style.background-image]="'url(' + (slide.heroAttachments[0]?.url || '') + ')'"
     >
       <div class="slide-content">
@@ -22,7 +23,7 @@
           [class.active]="dot.active"
           (click)="switchSlide(j)"
         >
-          <svg>
+          <svg viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
             <circle cx="22" cy="22" r="20"></circle>
           </svg>
           <span>LNU</span>

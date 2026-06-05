@@ -34,6 +34,15 @@
   color: var(--secondary-color);
 }
 
+.top-info span a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.top-info span a:hover {
+  color: var(--secondary-color);
+}
+
 .top-lang {
   display: flex;
   gap: var(--spacing-sm);

@@ -32,6 +32,7 @@ export class FacultyDetailsComponent implements OnInit {
 
   // Programs
   programs: DepartmentProgram[] = [];
+  private programImagesMap: Map<string, string> = new Map();
   currentProgramsPage = 1;
   programsPerPage = 6;
   totalProgramsPages = 1;
@@ -50,12 +51,12 @@ export class FacultyDetailsComponent implements OnInit {
   selectedProgram: DepartmentProgram | null = null;
   selectedProgramDetails: Program | null = null;
   activeProgramTabId = 'overview';
-programTabs = [
-  { id: 'overview', title: 'About the Program', icon: 'pi pi-info-circle' },
-  { id: 'vision', title: 'Vision', icon: 'pi pi-eye' },
-  { id: 'mission', title: 'Mission', icon: 'pi pi-bullseye' },
-  { id: 'goals', title: 'Goals', icon: 'pi pi-check-circle' },
-];
+      programTabs = [
+        { id: 'overview', title: 'About the Program', icon: 'pi pi-info-circle' },
+        { id: 'vision', title: 'Vision', icon: 'pi pi-eye' },
+        { id: 'mission', title: 'Mission', icon: 'pi pi-bullseye' },
+        { id: 'goals', title: 'Goals', icon: 'pi pi-check-circle' },
+      ];
 
   showStaffModal = false;
   selectedStaff: DepartmentMember | null = null;
@@ -93,7 +94,8 @@ programTabs = [
         };
 
         // Tabs عن الكلية
-      this.aboutSections = [
+      // Tabs About the Department
+this.aboutSections = [
   { id: 'about', title: 'About the Department', icon: 'pi pi-info-circle', content: dep.about },
   { id: 'vision', title: 'Vision', icon: 'pi pi-eye', content: dep.vision },
   { id: 'mission', title: 'Mission', icon: 'pi pi-bullseye', content: dep.mission },
@@ -106,6 +108,17 @@ programTabs = [
         this.FacultyService.getDepartmentPrograms().subscribe(programs => {
           this.programs = programs.filter(p => p.departmentId === dep.id);
           this.updateProgramsPagination();
+
+          // preload program images
+          this.programs.forEach(prog => {
+            if (prog.programId) {
+              this.ProgramService.getProgramById(prog.programId).subscribe(fullProg => {
+                if (fullProg?.programAttachments?.length) {
+                  this.programImagesMap.set(prog.programId, fullProg.programAttachments[0].url);
+                }
+              });
+            }
+          });
         });
 
         // أعضاء القسم
@@ -301,6 +314,11 @@ programTabs = [
   // Navigation
   goBack(): void {
     this.router.navigate(['/faculties']);
+  }
+
+  /** Get program image URL by program ID */
+  getProgramImage(programId: string): string {
+    return this.programImagesMap.get(programId) || '';
   }
 
   /** Get member image URL by member ID */

@@ -1,49 +1,58 @@
 <footer class="site-footer" *ngIf="footerData">
-      <div class="container-custom footer-grid">
-        <!-- Column 1: Logo & About -->
-        <div class="footer-col">
-          <img [src]="logo.src" [alt]="logo.alt" [width]="250" [height]="80" class="footer-logo">
-          <p>{{ footerData.description }}</p>
-        </div>
-
-        <!-- Dynamic Columns -->
-        <div *ngFor="let section of footerData.sections" class="footer-col">
-          <h4>{{ section.title }}</h4>
-          <ul>
-            <li *ngFor="let link of section.links">
-              <a *ngIf="isInternalLink(link.url)" [routerLink]="link.url">{{ link.label }}</a>
-              <a *ngIf="!isInternalLink(link.url)" [href]="link.url" target="_blank">{{ link.label }}</a>
-            </li>
-          </ul>
-        </div>
-
-        <!-- Social Column -->
-        <div class="footer-col">
-          <h4>Follow Us</h4>
-          <div class="footer-social">
-            <a 
-              *ngFor="let social of footerData.socialLinks"
-              [href]="social.url"
-              [title]="social.platform"
-              class="hover-lift"
-            >
-              <i [class]="social.icon"></i>
-            </a>
-          </div>
-          <!-- View Count Card -->
-      <!-- <div class="total-views" [class.views-loaded]="animationDone">
-        <div class="views-icon">
-          <i class="fas fa-eye"></i>
-        </div>
-        <div class="views-content">
-          <span class="views-label">Visitors Counter</span>
-          <span class="views-count">{{ displayedViews | number }}</span>
-        </div>
-      </div> -->
+  <div class="container-custom footer-grid">
+    <!-- Column 1: Logo & About -->
+    <div class="footer-col">
+      <img routerLink="/home" [src]="logo.src" [alt]="logo.alt" [width]="250" [height]="80" class="footer-logo">
     </div>
+
+  
+    <!-- Dynamic Columns -->
+    <div *ngFor="let section of footerData.sections" class="footer-col">
+      <h4>{{ section.title }}</h4>
+      <ul>
+        <li *ngFor="let link of section.links">
+          <a *ngIf="isInternalLink(link.url)" [routerLink]="link.url">{{ link.label }}</a>
+          <a *ngIf="!isInternalLink(link.url)" [href]="link.url" target="_blank">{{ link.label }}</a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Social Column -->
+    <div class="footer-col">
+      <h4>Follow Us</h4>
+      <div class="footer-social">
+        <a
+          *ngFor="let social of footerData.socialLinks"
+          [href]="social.url"
+          [title]="social.platform"
+          class="hover-lift"
+        >
+          <i [class]="social.icon"></i>
+        </a>
+      </div>
+    </div>
+
+      <!-- Column: Address -->
+    <div class="footer-col">
+      <h4>Address</h4>
+      <p>{{ contact?.address }}</p>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.0258622713013!2d32.8040167!3d25.769709300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14491592597f70b1%3A0xccac387a294f12e5!2z2KzYp9mF2LnYqSDYp9mE2KPZgti12LE!5e0!3m2!1sar!2seg!4v1780312902049!5m2!1sar!2seg"
+        width="100%"
+        height="100"
+        style="border:0; border-radius: 8px; margin-top: 12px; display: block;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Luxor National University Location"
+      ></iframe>
+    </div>
+
+
+    
   </div>
 
-    <!-- Bottom Bar with Views Stats -->
+  <!-- Bottom Bar with Views Stats -->
   <div class="footer-bottom">
     <!-- View Count Cards -->
     <div class="views-container">
@@ -51,31 +60,30 @@
         <div class="views-icon">
           <i class="fas fa-eye"></i>
         </div>
-       <div class="views-content">
-  <span class="views-label">Total Visitors</span>
-  <span class="views-count">{{ displayedViews | number }}</span>
-</div>
-</div>
-<div class="total-views">
-  <div class="views-icon">
-    <i class="fas fa-calendar-day"></i>
-  </div>
-  <div class="views-content">
-    <span class="views-label">Today's Visitors</span>
-    <span class="views-count">{{ todayViews | number }}</span>
-  </div>
-</div>
-<div class="total-views">
-  <div class="views-icon">
-    <i class="fas fa-calendar-alt"></i>
-  </div>
-  <div class="views-content">
-    <span class="views-label">Monthly Visitors</span>
-    <span class="views-count">{{ monthViews | number }}</span>
-  </div>
-</div>
-</div>
-
+        <div class="views-content">
+          <span class="views-label">Total Site Visitors</span>
+          <span class="views-count">{{ displayedViews | number }}</span>
+        </div>
+      </div>
+      <div class="total-views" >
+        <div class="views-icon">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="views-content">
+          <span class="views-label">Today's Visitors</span>
+          <span class="views-count">{{ todayViews | number }}</span>
+        </div>
+      </div>
+      <div class="total-views" >
+        <div class="views-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="views-content">
+          <span class="views-label">Monthly Visitors</span>
+          <span class="views-count">{{ monthViews | number }}</span>
+        </div>
+      </div>
+    </div>
 
     <!-- Divider -->
     <div class="footer-divider"></div>

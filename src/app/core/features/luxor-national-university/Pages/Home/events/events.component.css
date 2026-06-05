@@ -129,6 +129,14 @@
   border-radius: var(--radius-sm);
   margin-left: var(--spacing-sm);
   margin-bottom: var(--spacing-md);
+  transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  cursor: default;
+}
+
+.event-card:hover .event-views {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: scale(1.08);
 }
 
 .event-views i {

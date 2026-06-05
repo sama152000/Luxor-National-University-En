@@ -4,6 +4,10 @@ import { GalleryService } from '../../../Services/gallery.service';
 import { GalleryAttachment } from '../../../model/gallery.model';
 import { Subscription } from 'rxjs';
 
+const IMAGES_PER_SLIDE_DESKTOP = 8;
+const IMAGES_PER_SLIDE_MOBILE  = 1;
+const MOBILE_BREAKPOINT = 768;
+
 @Component({
   selector: 'app-gallery',
   standalone: true,
@@ -13,14 +17,22 @@ import { Subscription } from 'rxjs';
 })
 export class GalleryComponent implements OnInit, OnDestroy {
   galleryItems: GalleryAttachment[] = [];
+  slides: GalleryAttachment[][] = [];
+  currentSlide: number = 0;
+  isAnimating: boolean = false;
+  slideDirection: 'next' | 'prev' = 'next';
+  isMobile: boolean = false;
+
   selectedImage: GalleryAttachment | null = null;
   currentImageIndex: number = 0;
   isLightboxOpen: boolean = false;
+
   private subscription = new Subscription();
 
   constructor(private galleryService: GalleryService) {}
 
   ngOnInit(): void {
+    this.isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
     this.loadGalleryImages();
   }
 
@@ -32,10 +44,7 @@ export class GalleryComponent implements OnInit, OnDestroy {
     const sub = this.galleryService.getAllGalleryAttachments().subscribe({
       next: (images) => {
         this.galleryItems = images;
-        // Add staggered animation delay
-        setTimeout(() => {
-          this.addStaggeredAnimation();
-        }, 100);
+        this.buildSlides();
       },
       error: (error) => {
         console.error('Error loading gallery images:', error);
@@ -44,13 +53,35 @@ export class GalleryComponent implements OnInit, OnDestroy {
     this.subscription.add(sub);
   }
 
-  private addStaggeredAnimation(): void {
-    const imageElements = document.querySelectorAll('.gallery-item');
-    imageElements.forEach((element, index) => {
-      setTimeout(() => {
-        element.classList.add('fade-in');
-      }, index * 100);
-    });
+  private buildSlides(): void {
+    const imagesPerSlide = this.isMobile ? IMAGES_PER_SLIDE_MOBILE : IMAGES_PER_SLIDE_DESKTOP;
+    this.slides = [];
+    for (let i = 0; i < this.galleryItems.length; i += imagesPerSlide) {
+      this.slides.push(this.galleryItems.slice(i, i + imagesPerSlide));
+    }
+    this.currentSlide = 0;
+  }
+
+  get totalSlides(): number {
+    return this.slides.length;
+  }
+
+  goToSlide(index: number): void {
+    if (this.isAnimating || index === this.currentSlide) return;
+    this.slideDirection = index > this.currentSlide ? 'next' : 'prev';
+    this.isAnimating = true;
+    this.currentSlide = index;
+    setTimeout(() => (this.isAnimating = false), 400);
+  }
+
+  prevSlide(): void {
+    const target = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+    this.goToSlide(target);
+  }
+
+  nextSlide(): void {
+    const target = (this.currentSlide + 1) % this.totalSlides;
+    this.goToSlide(target);
   }
 
   openLightbox(image: GalleryAttachment): void {
@@ -80,20 +111,28 @@ export class GalleryComponent implements OnInit, OnDestroy {
     }
   }
 
+  @HostListener('window:resize')
+  onResize(): void {
+    const wasMobile = this.isMobile;
+    this.isMobile = window.innerWidth <= MOBILE_BREAKPOINT;
+    if (wasMobile !== this.isMobile) {
+      this.buildSlides();
+    }
+  }
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent): void {
-    if (!this.isLightboxOpen) return;
-
-    switch (event.key) {
-      case 'Escape':
-        this.closeLightbox();
-        break;
-      case 'ArrowLeft':
-        this.previousImage();
-        break;
-      case 'ArrowRight':
-        this.nextImage();
-        break;
+    if (this.isLightboxOpen) {
+      switch (event.key) {
+        case 'Escape':   this.closeLightbox();   break;
+        case 'ArrowLeft':  this.previousImage(); break;
+        case 'ArrowRight': this.nextImage();     break;
+      }
+    } else {
+      switch (event.key) {
+        case 'ArrowLeft':  this.prevSlide(); break;
+        case 'ArrowRight': this.nextSlide(); break;
+      }
     }
   }
 

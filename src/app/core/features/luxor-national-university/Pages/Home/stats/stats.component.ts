@@ -17,6 +17,10 @@ export class StatsComponent implements OnInit, OnDestroy {
   private observer!: IntersectionObserver;
   private hasAnimated = false;
 
+  get hasNonZeroStats(): boolean {
+    return this.stats.length > 0 && this.stats.some(stat => Number(stat.value) !== 0);
+  }
+
   constructor(private statsService: StatsService) {}
 
   ngOnInit() {

@@ -18,12 +18,8 @@ export const routes: Routes = [
      children: [
        { path: '', redirectTo: 'home', pathMatch: 'full' },
        { path: 'home', component: HomeComponent },
-       { path: 'about', component: AboutUniversityComponent},
-       { path: 'about/overview', component: AboutUniversityComponent},
-       { path: 'about/vision', component: AboutUniversityComponent},
-       { path: 'about/mission', component: AboutUniversityComponent},
-       { path: 'about/goals', component: AboutUniversityComponent},
-       { path: 'about/history', component: AboutUniversityComponent},
+       { path: 'about', redirectTo: 'about/overview', pathMatch: 'full' },
+       { path: 'about/:tab', component: AboutUniversityComponent },
 
        {path: 'news', component: NewsComponent},
        {path: 'news/:id', component: NewsDetailsComponent},

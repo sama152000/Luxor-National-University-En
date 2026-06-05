@@ -25,7 +25,9 @@
   max-width: 250px;
   margin-bottom: var(--spacing-md);
   transition: var(--transition-smooth);
-  background-color: var(--white);
+  /* background-color: var(--white); */
+  cursor: pointer;
+  object-fit: contain;
 }
 
 .footer-logo:hover {

@@ -14,6 +14,7 @@ export class HeroComponent implements OnInit, OnDestroy {
   slides: HeroSection[] = [];
   dots: HeroDot[] = [];
   currentSlideIndex = 0;
+  animatingIndex = 0;
   slideInterval: any;
 
   constructor(private heroService: HeroSectionsService) {}
@@ -26,6 +27,7 @@ export class HeroComponent implements OnInit, OnDestroy {
           label: s.title,
           active: i === this.currentSlideIndex
         }));
+        this.animatingIndex = this.currentSlideIndex;
         this.startSlideShow();
       },
       error: (err) => console.error('Error fetching hero sections', err)
@@ -47,18 +49,29 @@ export class HeroComponent implements OnInit, OnDestroy {
   nextSlide() {
     if (this.slides.length > 0) {
       this.currentSlideIndex = (this.currentSlideIndex + 1) % this.slides.length;
+      this.triggerAnimation();
       this.updateDots();
     }
   }
 
   switchSlide(index: number) {
+    if (index === this.currentSlideIndex) return;
     this.currentSlideIndex = index;
+    this.triggerAnimation();
     this.updateDots();
 
     if (this.slideInterval) {
       clearInterval(this.slideInterval);
       this.startSlideShow();
     }
+  }
+
+  triggerAnimation() {
+    // Briefly remove the animating class so CSS animations replay on the new active slide
+    this.animatingIndex = -1;
+    setTimeout(() => {
+      this.animatingIndex = this.currentSlideIndex;
+    }, 50);
   }
 
   updateDots() {

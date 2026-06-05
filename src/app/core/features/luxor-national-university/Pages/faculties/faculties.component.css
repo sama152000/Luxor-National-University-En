@@ -65,8 +65,6 @@
   font-size: 1rem;
   transition: var(--transition-smooth);
   background: var(--light-gray);
-    text-align: left;
-  align-items: start;
 }
 
 .search-input:focus {
@@ -79,8 +77,6 @@
 .search-input::placeholder {
   color: var(--medium-gray);
   padding-bottom: 1rem;
-  text-align: left;
-  align-items: start;
 }
 
 /* Alphabetical Filter */
@@ -112,6 +108,7 @@
   border: 2px solid var(--soft-gray);
   border-radius: var(--radius-md);
   color: var(--medium-gray);
+  font-family: 'Almarai', sans-serif;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
@@ -172,7 +169,7 @@
 .card-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: fill;
   transition: var(--transition-smooth);
 }
 
@@ -241,24 +238,55 @@
 }
 
 .card-footer {
-  display: flex;
-  justify-content: flex-start;
+  margin-top: auto;
 }
 
-.card-footer .btn {
-  display: flex;
+/* Read More Button */
+.read-more-btn {
+  display: inline-flex;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.65rem 1.25rem;
+  background: var(--primary-color);
+  color: #ffffff;
   font-size: 0.95rem;
+  font-weight: 600;
+  font-family: inherit;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(44, 62, 80, 0.2);
 }
 
-.card-footer .btn i {
-  transition: var(--transition-smooth);
+.read-more-btn i {
+  font-size: 0.85rem;
+  transition: transform 0.25s ease;
 }
 
-.faculty-card:hover .card-footer .btn i {
+.read-more-btn:hover {
+  background: color-mix(in srgb, var(--primary-color) 85%, #000);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+  transform: translateY(-2px);
+}
+
+.read-more-btn:hover i {
   transform: translateX(-4px);
+}
+
+.read-more-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.2);
+}
+
+.read-more-btn:focus-visible {
+  outline: 3px solid rgba(44, 62, 80, 0.4);
+  outline-offset: 3px;
 }
 
 /* Loading State */

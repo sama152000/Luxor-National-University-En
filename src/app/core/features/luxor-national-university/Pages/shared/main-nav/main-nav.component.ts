@@ -5,6 +5,8 @@ import { NavigationService } from '../../../Services/navigation.service';
 import { NavigationItem } from '../../../model/navigation.model';
 import { LogosService } from '../../../Services/logos.service';
 import { Logo } from '../../../model/logo.model';
+import { ContactService } from '../../../Services/contact.service';
+import { Contact } from '../../../model/contact.model';
 
 @Component({
   selector: 'app-main-nav',
@@ -16,7 +18,9 @@ import { Logo } from '../../../model/logo.model';
 export class MainNavComponent implements OnInit, OnDestroy {
   navigationItems: NavigationItem[] = [];
   logos: Logo[] = [];
-  openDropdownId: string | null = null; // Track which dropdown is open
+  contactInfo: Contact | null = null;
+  openDropdownId: string | null = null;
+  isMobileMenuOpen = false;
 
   // Static icons mapping based on slug (from API)
   private iconMap: { [key: string]: string } = {
@@ -33,7 +37,8 @@ export class MainNavComponent implements OnInit, OnDestroy {
 
   constructor(
     private navigationService: NavigationService,
-    private logosService: LogosService
+    private logosService: LogosService,
+    private contactService: ContactService
   ) {}
 
   ngOnInit(): void {
@@ -57,12 +62,23 @@ export class MainNavComponent implements OnInit, OnDestroy {
       error: (err) => console.error('Error fetching logos', err)
     });
 
+    // ✅ جلب بيانات التواصل
+    this.contactService.getAllContacts().subscribe({
+      next: (contacts: Contact[]) => {
+        if (contacts && contacts.length > 0) {
+          this.contactInfo = contacts[0];
+        }
+      },
+      error: (err) => console.error('Error fetching contact info', err)
+    });
+
     // ✅ إغلاق الدروب داون عند الضغط خارج المنيو
     document.addEventListener('click', this.onDocumentClick.bind(this));
   }
 
   ngOnDestroy(): void {
     document.removeEventListener('click', this.onDocumentClick.bind(this));
+    document.body.style.overflow = '';
   }
 
   // Handle click outside to close dropdown
@@ -111,5 +127,23 @@ export class MainNavComponent implements OnInit, OnDestroy {
   // Close all dropdowns
   closeDropdown(): void {
     this.openDropdownId = null;
+  }
+
+  // Toggle mobile drawer
+  toggleMobileMenu(): void {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    document.body.style.overflow = this.isMobileMenuOpen ? 'hidden' : '';
+  }
+
+  // Close mobile drawer
+  closeMobileMenu(): void {
+    this.isMobileMenuOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  get whatsappLink(): string {
+    if (!this.contactInfo?.phone) return '#';
+    const number = this.contactInfo.phone.replace(/\D/g, '');
+    return `https://wa.me/${number}`;
   }
 }

@@ -39,7 +39,6 @@ export class BookComponent implements OnInit, AfterViewInit {
       next: (speech) => {
         this.deanSpeech = speech || null;
         this.isLoading = false;
-        console.log('Dean Speech loaded:', this.deanSpeech);
         
         // Add animation class after data loads
         setTimeout(() => this.triggerAnimation(), 100);

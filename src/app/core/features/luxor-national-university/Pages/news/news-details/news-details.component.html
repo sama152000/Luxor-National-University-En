@@ -19,7 +19,7 @@
       <!-- News Header -->
         <div class="news-header slide-up animate-delay-1">
         <div class="category-badge">{{ news.postCategories[0]?.categoryName }}</div>
-        <h2 class="news-title">{{ news.title }}</h2>
+        <h3 class="news-title">{{ news.title }}</h3>
         
          <div class="news-meta">
            <div class="meta-item">
@@ -71,6 +71,26 @@
               (click)="goToImage(i)"
             ></button>
           </div>
+        </div>
+
+        <!-- Thumbnail Strip -->
+        <div class="thumbnail-strip" *ngIf="hasMultipleImages()">
+          <button
+            *ngFor="let image of news.postAttachments; let i = index"
+            class="thumbnail-card"
+            [class.active]="i === currentImageIndex"
+            (click)="goToImage(i)"
+            [attr.aria-label]="'View image ' + (i + 1)"
+          >
+            <img
+              [src]="getFullImageUrl(image.url)"
+              [alt]="news.title + ' image ' + (i + 1)"
+              loading="lazy"
+            >
+            <div class="thumbnail-overlay">
+              <i class="pi pi-eye"></i>
+            </div>
+          </button>
         </div>
       </div>
       <!-- unchanged except alt text already dynamic -->

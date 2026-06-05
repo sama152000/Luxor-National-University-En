@@ -30,6 +30,12 @@ export class TopNavComponent implements OnInit {
     });
   }
 
+
+   get whatsappLink(): string {
+    if (!this.contactInfo?.phone) return '#';
+    const number = this.contactInfo.phone.replace(/\D/g, '');
+    return `https://wa.me/${number}`;
+  }
   switchLanguage(languageCode: string) {
     this.languages = this.languages.map(lang => ({
       ...lang,

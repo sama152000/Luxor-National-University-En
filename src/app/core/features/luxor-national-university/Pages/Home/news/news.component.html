@@ -4,7 +4,7 @@
 
     <div class="news-layout">
       <!-- Main News -->
-      <article class="news-main hover-lift" *ngIf="latestNews.length > 0">
+      <article class="news-main hover-lift" *ngIf="latestNews.length > 0" [routerLink]="['/news', latestNews[0].id]">
         <img [src]="latestNews[0].featuredImagePath" [alt]="latestNews[0].title">
         <div class="news-content">
 

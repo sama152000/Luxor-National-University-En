@@ -1,15 +1,18 @@
 <header class="main-header sticky-header">
   <div class="container-custom nav-inner">
-    <!-- Logo Box -->
-    <div routerLink="/home" class="logo-box hover-lift" *ngIf="logos.length > 0">
+ 
+
+          <!-- Logo Box -->
+    <a routerLink="/home" class="logo-box hover-lift" *ngIf="logos.length > 0">
       <img [src]="logos[0].url"
            [alt]="logos[0].fileName"
            [width]="200"
            [height]="60"
-           class="logo-img">
-    </div>
-
-    <!-- Navigation -->
+           class="logo-img"
+        >
+    </a>
+ 
+    <!-- Desktop Navigation -->
     <nav class="circle-menu">
       <a 
         *ngFor="let item of navigationItems"
@@ -38,5 +41,84 @@
         </div>
       </a>
     </nav>
+
+
+
+    <!-- Hamburger Button (mobile only) -->
+    <button class="hamburger-btn" (click)="toggleMobileMenu()" [class.is-open]="isMobileMenuOpen" aria-label="فتح القائمة">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </div>
 </header>
+
+<!-- Mobile Overlay -->
+<div class="mobile-overlay" [class.active]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
+
+<!-- Mobile Drawer -->
+<div class="mobile-drawer" [class.open]="isMobileMenuOpen" dir="ltr">
+  <!-- Drawer Header -->
+  <div class="drawer-header">
+    <a routerLink="/home" class="drawer-logo" *ngIf="logos.length > 0" (click)="closeMobileMenu()">
+      <img [src]="logos[0].url" [alt]="logos[0].fileName" class="drawer-logo-img">
+    </a>
+    <button class="drawer-close-btn" (click)="closeMobileMenu()" aria-label="إغلاق القائمة">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <!-- Drawer Nav Links -->
+  <nav class="drawer-nav">
+    <ng-container *ngFor="let item of navigationItems">
+      <!-- Item with children -->
+      <div *ngIf="hasChilds(item)" class="drawer-item-group">
+        <button
+          class="drawer-item has-children"
+          (click)="toggleDropdown($event, item)"
+          [class.active]="isDropdownOpen(item.id)"
+        >
+          <i [class]="getIcon(item.slug)"></i>
+          <span>{{ item.title }}</span>
+          <i class="fas fa-chevron-down chevron" [class.rotated]="isDropdownOpen(item.id)"></i>
+        </button>
+        <div class="drawer-sub-menu" [class.open]="isDropdownOpen(item.id)">
+          <a
+            *ngFor="let child of getChilds(item)"
+            [routerLink]="'/custom/' + child.slug"
+            class="drawer-sub-item"
+            (click)="closeMobileMenu(); closeDropdown()"
+          >
+            <i [class]="getIcon(child.slug)"></i>
+            <span>{{ child.title }}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Regular item -->
+      <a
+        *ngIf="!hasChilds(item)"
+        [routerLink]="'/' + item.slug"
+        [routerLinkActive]="'active'"
+        [routerLinkActiveOptions]="{ exact: item.slug === 'home' }"
+        class="drawer-item"
+        (click)="closeMobileMenu()"
+      >
+        <i [class]="getIcon(item.slug)"></i>
+        <span>{{ item.title }}</span>
+      </a>
+    </ng-container>
+  </nav>
+
+  <!-- Drawer Contact Footer -->
+  <div class="drawer-contact" *ngIf="contactInfo">
+    <a [href]="whatsappLink" target="_blank" rel="noopener noreferrer" class="drawer-contact-item">
+      <i class="fas fa-phone"></i>
+      <span>{{ contactInfo.phone }}</span>
+    </a>
+    <a [href]="'mailto:' + contactInfo.email" class="drawer-contact-item">
+      <i class="fas fa-envelope"></i>
+      <span>{{ contactInfo.email }}</span>
+    </a>
+  </div>
+</div>

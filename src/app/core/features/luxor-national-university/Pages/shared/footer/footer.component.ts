@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { FooterService } from '../../../Services/footer.service';
-import { LogosService } from '../../../Services/logos.service';
+import { AttachmentFileService } from '../../../Services/attachment-file.service';
 import { VisitorsService } from '../../../Services/visitors.service';
+import { ContactService } from '../../../Services/contact.service';
 import { FooterData } from '../../../model/footer.model';
 import { ImageAsset } from '../../../model/common.model';
-import { Logo } from '../../../model/logo.model';
+import { AttachmentFile } from '../../../model/attachment-file.model';
 import { VisitorsTotal, VisitorsToday, VisitorsMonth } from '../../../model/visitors.model';
+import { Contact } from '../../../model/contact.model';
 
 @Component({
   selector: 'app-footer',
@@ -19,6 +21,7 @@ import { VisitorsTotal, VisitorsToday, VisitorsMonth } from '../../../model/visi
 })
 export class FooterComponent implements OnInit, OnDestroy {
   footerData!: FooterData;
+  contact: Contact | null = null;
   logo: ImageAsset = {
     src: './assets/lnu.logo.png',
     alt: 'جامعة الأقصر الوطنية',
@@ -37,13 +40,15 @@ export class FooterComponent implements OnInit, OnDestroy {
 
   constructor(
     private footerService: FooterService,
-    private logosService: LogosService,
+    private attachmentFileService: AttachmentFileService,
     private visitorsService: VisitorsService,
+    private contactService: ContactService,
     private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
     this.loadFooterData();
+    this.loadContact();
     this.loadLogo();
     this.loadTotalViews();
     this.loadTodayViews();
@@ -61,8 +66,19 @@ export class FooterComponent implements OnInit, OnDestroy {
     return !url.startsWith('http://') && !url.startsWith('https://') && !url.startsWith('www.');
   }
 
-  private loadFooterData(): void {
-    const sub = this.footerService.getFooterData().subscribe({
+  private loadContact(): void {
+    const sub = this.contactService.getAllContacts().subscribe({
+      next: (contacts: Contact[]) => {
+        this.contact = contacts?.length > 0 ? contacts[0] : null;
+      },
+      error: () => {
+        this.contact = null;
+      }
+    });
+    this.subscription.add(sub);
+  }
+
+  private loadFooterData(): void {    const sub = this.footerService.getFooterData().subscribe({
       next: (data: FooterData) => {
         this.footerData = data;
       },
@@ -100,11 +116,11 @@ export class FooterComponent implements OnInit, OnDestroy {
   }
 
   private loadLogo(): void {
-    const sub = this.logosService.getAllLogos().subscribe({
-      next: (logos: Logo[]) => {
-        if (logos?.length > 0) {
+    const sub = this.attachmentFileService.getAll().subscribe({
+      next: (files: AttachmentFile[]) => {
+        if (files?.length > 0) {
           this.logo = {
-            src: logos[0].url || './assets/lnu.logo.png',
+            src: files[0].url || './assets/lnu.logo.png',
             alt: 'جامعة الأقصر الوطنية',
             title: 'شعار الجامعة'
           };

@@ -6,6 +6,7 @@ import { News } from '../../../model/news.model';
 import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 import { Meta, Title } from '@angular/platform-browser';
 import { environment } from '../../../../../../../environments/environment';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-news-details',
@@ -73,7 +74,7 @@ export class NewsDetailsComponent implements OnInit {
     this.meta.updateTag({ name: 'twitter:image:alt', content: news.title });
   }
 
-  private getFullImageUrl(url: string): string {
+  getFullImageUrl(url: string): string {
     if (url.startsWith('http')) {
       return url;
     }
@@ -94,16 +95,28 @@ export class NewsDetailsComponent implements OnInit {
   loadNewsDetails(id: string): void {
     this.isLoading = true;
 
-    this.newsService.getNewsById(id).subscribe(news => {
-      this.news = news || null;
+    // First call: records the view on the backend AND loads the post content.
+    // The backend increments the counter but returns the old value in this response.
+    this.newsService.getNewsById(id).pipe(
+      switchMap(news => {
+        // Show content immediately with the count from the first response
+        this.news = news || null;
+        if (this.news) {
+          this.loadRelatedNews(this.news.id);
+          this.loadNavigationNews(this.news.id);
+          this.updateMetaTags(this.news);
+        }
+        this.isLoading = false;
 
-      if (this.news) {
-        this.loadRelatedNews(this.news.id);
-        this.loadNavigationNews(this.news.id);
-        this.updateMetaTags(this.news);
+        // Second call: the backend has already incremented the counter,
+        // so this response contains the correct up-to-date count.
+        return this.newsService.getNewsById(id);
+      })
+    ).subscribe(updatedNews => {
+      if (this.news && updatedNews) {
+        // Only patch the view count — keep everything else as-is
+        this.news.totalViewCount = updatedNews.totalViewCount;
       }
-
-      this.isLoading = false;
     });
   }
 

@@ -7,65 +7,116 @@
       <div class="gallery-divider"></div>
     </div>
 
-    <!-- Gallery Grid -->
-    <div class="gallery-grid">
-      <div 
-        *ngFor="let image of galleryItems; let i = index" 
-        class="gallery-item"
-        [style.animation-delay.ms]="i * 100"
-        (click)="openLightbox(image)">
-        <div class="image-container">
-          <img 
-            [src]="image.url" 
-            [alt]="image.fileName"
-            class="gallery-image"
-            loading="lazy">
-          <div class="image-overlay">
-            <div class="overlay-content">
-              <i class="pi pi-search-plus overlay-icon" aria-hidden="true"></i>
-              <span class="sr-only">View image in full screen</span>
+    <!-- Slider -->
+    <div class="gallery-slider" *ngIf="slides.length > 0">
+
+      <!-- Prev Button -->
+      <button
+        class="slider-nav slider-prev"
+        (click)="prevSlide()"
+        [disabled]="isAnimating"
+        aria-label="Previous slide">
+        <i class="pi pi-chevron-right" aria-hidden="true"></i>
+      </button>
+
+      <!-- Slides Viewport -->
+      <div class="slider-viewport">
+        <div
+          *ngFor="let slide of slides; let i = index"
+          class="slide"
+          [class.active]="i === currentSlide"
+          [attr.aria-hidden]="i !== currentSlide">
+          <div class="gallery-grid">
+            <div
+              *ngFor="let image of slide; let j = index"
+              class="gallery-item"
+              [style.animation-delay.ms]="j * 60"
+              (click)="openLightbox(image)"
+              tabindex="0"
+              role="button"
+              [attr.aria-label]="'View ' + image.fileName">
+              <div class="image-container">
+                <img
+                  [src]="image.url"
+                  [alt]="image.fileName"
+                  class="gallery-image"
+                  loading="lazy">
+                <div class="image-overlay">
+                  <div class="overlay-content">
+                    <i class="pi pi-search-plus overlay-icon" aria-hidden="true"></i>
+                    <span class="sr-only">View image in fullscreen</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- Next Button -->
+      <button
+        class="slider-nav slider-next"
+        (click)="nextSlide()"
+        [disabled]="isAnimating"
+        aria-label="Next slide">
+        <i class="pi pi-chevron-left" aria-hidden="true"></i>
+      </button>
     </div>
+
+    <!-- Dot Indicators -->
+    <div class="slider-dots" *ngIf="slides.length > 1" role="tablist" aria-label="Gallery slides">
+      <button
+        *ngFor="let slide of slides; let i = index"
+        class="dot"
+        [class.active]="i === currentSlide"
+        (click)="goToSlide(i)"
+        role="tab"
+        [attr.aria-selected]="i === currentSlide"
+        [attr.aria-label]="'Slide ' + (i + 1)">
+      </button>
+    </div>
+
+    <!-- Slide Counter -->
+    <p class="slide-counter" *ngIf="slides.length > 1">
+      {{ currentSlide + 1 }} / {{ totalSlides }}
+    </p>
   </div>
 
   <!-- Lightbox Modal -->
-  <div 
+  <div
     class="lightbox-overlay"
     *ngIf="isLightboxOpen"
     [class.active]="isLightboxOpen"
     (click)="onLightboxBackgroundClick($event)">
-    
+
     <div class="lightbox-container">
       <!-- Close Button -->
-      <button 
-        class="lightbox-close" 
+      <button
+        class="lightbox-close"
         (click)="closeLightbox()"
-        aria-label="Close Gallery">
+        aria-label="Close gallery">
         <i class="pi pi-times" aria-hidden="true"></i>
       </button>
 
       <!-- Navigation Buttons -->
-      <button 
-        class="lightbox-nav lightbox-prev" 
+      <button
+        class="lightbox-nav lightbox-prev"
         (click)="previousImage()"
-        aria-label="Previous Image">
+        aria-label="Previous image">
         <i class="pi pi-chevron-right" aria-hidden="true"></i>
       </button>
 
-      <button 
-        class="lightbox-nav lightbox-next" 
+      <button
+        class="lightbox-nav lightbox-next"
         (click)="nextImage()"
-        aria-label="Next Image">
+        aria-label="Next image">
         <i class="pi pi-chevron-left" aria-hidden="true"></i>
       </button>
 
       <!-- Image -->
       <div class="lightbox-image-container" *ngIf="selectedImage">
-        <img 
-          [src]="selectedImage.url" 
+        <img
+          [src]="selectedImage.url"
           [alt]="selectedImage.fileName"
           class="lightbox-image">
       </div>
