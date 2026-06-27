@@ -133,3 +133,237 @@
     padding: 36px 24px;
   }
 }
+/**********/
+
+.video-section {
+  padding: 80px 60px;
+  background: #e9e0c6;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 50px;
+  align-items: center;
+
+
+}
+
+/* Text */
+.video-text h2 {
+  font-size: 2.6rem;
+  margin-bottom: 20px;
+  color: #2b2b2b;
+  animation: enterLeft 1s ease forwards;
+}
+
+.video-text p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 30px;
+  animation: enterLeft 1.2s ease forwards;
+}
+
+.video-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #c7b18b, #a08c6a);
+  color: #fff;
+  border-radius: 40px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.4s ease;
+}
+
+.video-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+}
+
+/* Video Frame */
+.video-frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+  animation: enterRight 1.2s ease forwards;
+}
+
+.video-frame .vid-element {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Animations */
+@keyframes enterLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes enterRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .video-text {
+    text-align: center;
+  }
+}
+
+
+/*******/
+
+
+/********/
+/* introduction section*/
+.president-benefits {
+  padding: 80px 60px;
+  background: linear-gradient(135deg, #f5f1e6, #eef4ff);
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+/* CARD */
+.benefit-card {
+  position: relative;
+  min-height: 220px;
+  padding: 30px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /*justify-content: flex-end;*/
+  transition: transform .5s ease, box-shadow .5s ease;
+}
+
+.benefit-card i {
+  font-size: 36px;
+  margin-bottom: 12px;
+  z-index: 2;
+  color: #fff;
+}
+
+.benefit-card h4,
+.benefit-card p {
+  z-index: 2;
+  color: #fff;
+}
+
+.benefit-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(0,0,0,.25);
+}
+
+/* DARK OVERLAY */
+.benefit-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,.2));
+  z-index: 1;
+}
+
+/* BACKGROUNDS */
+.bg-edu {
+  background-image: url("/assets/limg1.jpg");
+}
+
+.bg-research {
+  background-image: url("/assets/limg2.jpg");
+}
+
+.bg-global {
+  background-image: url("/assets/limg3.jpg");
+}
+
+.bg-heritage {
+  background-image: url("/assets/limg4.jpg");
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* PRESIDENT */
+.president-box {
+  background: #fff;
+  padding: 40px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+.president-box  img{
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 6px solid #d6c4a3;
+  margin-bottom: 20px;
+}
+
+.president-box h3 {
+  margin-bottom: 15px;
+  color: #1e3a5f;
+}
+
+.president-name {
+  display: block;
+  margin-top: 20px;
+  font-weight: 600;
+  color: #555;
+}
+
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .benefits-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,8 +1,14 @@
 .site-footer {
-  background: linear-gradient(180deg, var(--primary-darker) 0%, var(--primary-dark) 100%);
-  padding-top: var(--spacing-xxxl);
-  color: var(--primary-color);
+  
+  padding-top: var(--spacing-xxl);
   margin-top: auto;
+  background: linear-gradient(
+    135deg,
+    #398493,
+    #2e6f7b
+  );
+  color: #eaf6f7;
+  font-size: 15px;
 }
 
 .footer-grid {
@@ -333,7 +339,7 @@
 /* ─── Footer bottom ─────────────────────────────────────────────────── */
 
 .footer-bottom {
-  background: linear-gradient(180deg, var(--primary-darker) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(180deg, #327683 0%, #54a5b6 100%);
   text-align: center;
   padding: var(--spacing-xl) 0;
   border-top: 1px solid rgba(56, 131, 147, 0.2);

@@ -13,6 +13,8 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 })
 export class BookComponent implements OnInit, AfterViewInit {
   deanSpeech: DeanSpeech | null = null;
+  /* combinedSpeechHtml: string = ''; */
+
   isLoading = true;
   hasError = false;
 
@@ -38,6 +40,9 @@ export class BookComponent implements OnInit, AfterViewInit {
     this.deanSpeechService.getMainDeanSpeech().subscribe({
       next: (speech) => {
         this.deanSpeech = speech || null;
+        /* this.assembleSpeechContent(); */
+
+
         this.isLoading = false;
         
         // Add animation class after data loads
@@ -52,6 +57,31 @@ export class BookComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  /* private assembleSpeechContent(): void {
+    if (!this.deanSpeech) return;
+
+    const speechText = this.deanSpeech.speech || '';
+    // Safely pull the second attachment index [1] matching your template requirements
+    const imageUrl = this.deanSpeech.deanSpeechAttachments?.[1]?.url;
+
+    if (imageUrl) {
+      // Create a clean HTML wrapper string for the image
+      const imageMarkup = `
+        <div class="speech-image-container">
+          <img src="${imageUrl}" alt="University President" class="embedded-speech-img" />
+        </div>
+      `;
+
+      // Option A: Append the image below the speech text
+      this.combinedSpeechHtml = speechText + imageMarkup;
+      
+      // Option B: To put the image ABOVE the text instead, uncomment the line below:
+      // this.combinedSpeechHtml = imageMarkup + speechText;
+    } else {
+      this.combinedSpeechHtml = speechText; // Fallback if image index [1] doesn't exist
+    }
+  } */
 
   /** Trigger scroll animation */
   private triggerAnimation(): void {

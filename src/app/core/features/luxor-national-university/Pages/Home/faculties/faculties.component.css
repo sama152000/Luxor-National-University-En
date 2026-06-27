@@ -1,4 +1,4 @@
-.orbit-section {
+/**.orbit-section {
   padding: var(--spacing-xxxl) 0;
   background: linear-gradient(135deg, var(--primary-color), var(--primary-dark), var(--secondary-color));
   background-size: 300% 300%;
@@ -50,8 +50,9 @@
   box-shadow: 0 18px 45px rgba(0,0,0,0.35);
   transition: var(--transition-smooth);
 }
-
+**/
 /* Faculty item wrapper - stacks circle and name */
+/*
 .faculty-item-wrapper {
   display: flex;
   flex-direction: column;
@@ -60,8 +61,9 @@
   height: 260px;
   justify-content: flex-start;
 }
-
+*/
 /* Faculty name - displayed below the circle */
+/*
 .faculty-name {
   font-size: 1rem;
   font-weight: 600;
@@ -133,12 +135,13 @@
 .orbit-item .overlay {
   position: absolute;
   inset: 0;
-  /* background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(56, 131, 147, 0.3)); */
+/
   z-index: 1;
   transition: var(--transition-smooth);
 }
-
+*/
 /* Department Image as background */
+/*
 .orbit-item .dept-image {
   position: absolute;
   inset: 0;
@@ -149,7 +152,8 @@
   margin: auto;
   transition: transform 0.4s ease;
 }
-
+*/
+/*
 .orbit-item:hover {
   transform: scale(1);
   z-index: 10;
@@ -157,9 +161,9 @@
   /* box-shadow:
     0 0 0 4px rgba(255, 255, 255, 0.6),
     0 0 20px 6px rgba(255, 255, 255, 0.25),
-    0 20px 50px rgba(0, 0, 0, 0.5); */
-}
-
+    0 20px 50px rgba(0, 0, 0, 0.5); 
+}*/
+/*
 .orbit-item:hover .overlay {
   background: linear-gradient(
     to top,
@@ -177,16 +181,18 @@
 .orbit-item:hover i {
   transform: scale(1.2);
 }
-
+*/
 /* Lift the faculty name on hover via the parent wrapper */
+/*
 .faculty-item-wrapper:hover .faculty-name {
   transform: translateY(-4px);
   color: #fff;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.6), 1px 1px 2px rgba(0, 0, 0, 0.4);
   transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
-
+*/
 /* Positions - Grid layout handles positioning */
+/*
 .item-1, .item-2, .item-3, .item-4, .item-5, .item-6 {
   position: relative;
   top: auto;
@@ -196,8 +202,9 @@
   transform: none;
   animation: none;
 }
-
+*/
 /* Responsive */
+/*
 @media (max-width: 900px) {
   .orbit-wrapper {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -258,5 +265,224 @@
 
   .orbit-item i {
     font-size: 20px;
+  }
+}
+*/
+
+
+/**/
+/* Colleges Section */
+.colleges-section {
+  padding: 30px 40px;
+  background: #f5fbfa;
+  text-align: center;
+}
+
+.section-title {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  margin-bottom: var(--spacing-xxxl);
+  font-weight: 800;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  color: #398493;
+  margin-bottom: 60px;
+}
+
+/* Grid */
+.colleges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  margin: auto;
+  padding: 0 var(--spacing-sm);
+}
+
+/* Card */
+.college-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  height: 260px;
+  justify-content: flex-start;
+}
+
+/* Background image */
+.college-bg img{
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  width: 50%;
+  height: 50%;
+  object-fit: contain;
+  z-index: 0;
+  margin: auto;
+  transition: transform 0.4s ease;
+}
+
+/* Overlay split effect */
+.college-card::before,
+.college-card::after {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 50%;
+  left: -10%;
+  background: rgba(57, 132, 147, 0.92);
+  transition: 0.6s;
+  z-index: 1;
+}
+
+.college-card::before {
+  top: -50%;
+  transform: skewY(8deg);
+}
+
+.college-card::after {
+  bottom: -50%;
+  transform: skewY(-8deg);
+}
+
+/* Content */
+.college-content {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: #fff;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  transition: 0.5s;
+}
+
+.college-content h3 {
+   color: #fff;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.college-content p {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Hover effects */
+.college-card:hover .college-bg {
+  transform: scale(1.15);
+}
+
+.college-card:hover::before {
+  top: 0;
+}
+
+.college-card:hover::after {
+  bottom: 0;
+}
+
+.college-card:hover .college-content {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .colleges-section {
+    padding: 60px 25px;
+  }
+
+  .section-title {
+    font-size: 28px;
+  }
+
+  .college-card {
+    height: 320px;
+  }
+  /* Hover effects */
+.college-card:hover .college-bg {
+  transform: scale(1.15);
+}
+
+.college-card:hover::before {
+  top: 0;
+}
+
+.college-card:hover::after {
+  bottom: 0;
+}
+
+.college-card:hover .college-content {
+  opacity: 1;
+}
+}
+
+/**RESPONSIVE**/
+@media (max-width: 480px) { 
+  /* Hover effects */
+.college-card:hover .college-bg {
+  transform: scale(1.15);
+}
+
+.college-card:hover::before {
+  top: 0;
+}
+
+.college-card:hover::after {
+  bottom: 0;
+}
+
+.college-card:hover .college-content {
+  opacity: 1;
+}
+  .colleges-section {
+    padding: 40px 15px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    margin-bottom: 40px;
+  }
+
+  .college-card {
+    height: 280px;
+  }
+
+  .college-content h3 {
+    font-size: 20px;
+  }
+
+  .college-content p {
+    font-size: 14px;
+  }
+}
+@media (max-width: 360px) { 
+  .colleges-section {
+    padding: 30px 10px;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+
+  .college-card {
+    height: 240px;
+  }
+
+  .college-content h3 {
+    font-size: 18px;
+  }
+
+  .college-content p {
+    font-size: 13px;
   }
 }

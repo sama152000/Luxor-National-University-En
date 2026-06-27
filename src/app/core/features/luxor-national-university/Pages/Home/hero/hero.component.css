@@ -1,20 +1,30 @@
 .hero-slider {
   height: calc(92vh - 90px); /* يغطي الشاشة ناقص ارتفاع الـ navbar */
-  margin: 0;
-  padding: 0;
   position: relative;
+  width: 100%;
   overflow: hidden;
+  display: flex;
   min-height: 600px;
+  align-items: flex-end; 
+  padding: 0 80px;
 }
 
 .slides {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 100%;
+  z-index: 1; /* Keep it behind the pattern and text */
 }
 
 .slide {
   position: absolute;
   inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
   opacity: 0;
@@ -41,21 +51,26 @@
   text-align: center;
   color: var(--white);
   top: 50%;
-  transform: translateY(-50%);
-  padding: 0 var(--spacing-md);
+  /*transform: translateY(-50%);*/
+  padding: 0 var(--spacing-md) 10px 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  width: max-content;
 }
 
 .motion-title {
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 800;
   margin-bottom: var(--spacing-lg);
-  line-height: 1.1;
+  line-height: 1;
+  overflow: hidden;
 }
 
 .motion-title span {
   display: inline-block;
   letter-spacing: 2px;
   opacity: 0;
+   color: #ffd700;
   transform: translateY(60px);
   margin-right: var(--spacing-sm);
 }
@@ -82,6 +97,114 @@
 .slide.animating .slide-description {
   animation: subtitleReveal 1s ease 1s forwards;
 }
+
+.hero-btn-container {
+  width: 100%;
+  text-align: center;
+  margin-top: 30px; /* Gives spacing between text and button */
+}
+
+.hero-btn {
+  position: relative;
+  display: inline-block;
+  padding: 10px 42px;
+  background: #ffd700;
+  color: #002147;
+  font-weight: bold;
+  text-decoration: none;
+  overflow: hidden;
+  border-radius: 15px ;
+}
+
+.hero-btn span {
+  position: absolute;
+  right: -22px;
+  top: 0;
+  width: 44px;
+  height: 100%;
+  background: #ffd700;
+  transform: skewX(-25deg);
+}
+
+.hero-btn:hover {
+  background: #fff;
+}
+.hero-social {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hero-social a {
+  color: #fff;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.hero-social a:hover {
+  color: #ffd700;
+  transform: translateX(-6px);
+}
+/* ─── Main Content Box ─── */
+.hero-text-box {
+  background: rgba(0, 0, 0, 0.45); /* Soft, semi-transparent black background */
+ padding: var(--spacing-xs);
+  border-radius: 16px;
+  max-width: max-content;
+  margin: 0 auto;
+  
+  /* Glassmorphism: Blurs the image *behind* the box */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Smooth border highlight and drop shadow */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5); 
+}
+
+/* Ensure typography remains highly visible inside the card */
+.animated-title {
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); /* Crisp text isolation shadow */
+}
+
+.animated-text {
+  color: rgba(255, 255, 255, 0.95); /* High contrast white-off tone */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* ─── Social Icons Box ─── */
+.hero-social {
+  display: flex;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.6); /* Slightly darker backing for smaller circular targets */
+ padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: 30px;
+  width: fit-content;
+  
+  /* Isolation styling against bright backdrops */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Icons configuration */
+.hero-social a {
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease;
+}
+
+.hero-social a:hover {
+  transform: scale(1.15);
+}
+
+
 
 @keyframes titleReveal {
   to {
@@ -208,5 +331,269 @@ p{
   .dot svg {
     width: 36px;
     height: 36px;
+  }
+}
+/* ────────────────────────────────────────────────────────── */
+/* BASE / MOBILE STYLES (Default up to 599px)                 */
+/* ────────────────────────────────────────────────────────── */
+@media (max-width:599px){
+
+.slide-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  top:50%;
+}
+
+.hero-text-box {
+  background: rgba(0, 0, 0, 0.55); /* Slightly darker on mobile for better text contrast */
+  padding: var(--spacing-sm, 16px); /* Increased from xs so text isn't crammed on small screens */
+  border-radius: 12px; /* Slightly tighter radius for smaller screens */
+  max-width: 75%; /* Prevents the box from touching screen edges */
+  margin: 0 auto; 
+  backdrop-filter: blur(8px); /* Lower blur requires less processing power on mobile */
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); 
+}
+
+.motion-title {
+  color: #ffffff;
+  font-size: 1.5rem; /* Scaled down for mobile screens */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); 
+  margin-bottom: 8px;
+}
+
+.motion-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem; /* Clear legibility on mobile */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.slide-subtitle{
+  font-size: 1rem; /* Adjusted for mobile readability */
+  margin-bottom: 8px;
+}
+.hero-btn-container {
+  margin:0 10px; /* More breathing room between text and button */
+}
+.hero-btn {
+  padding: 8px 32px; /* Slightly smaller button for mobile */
+  font-size: 0.9rem; /* Adjusted for smaller screens */
+}
+.hero-social {
+  display: flex;
+  gap: 12px; /* Wider tap target spacing for thumbs on mobile */
+  background: rgba(0, 0, 0, 0.6);
+  padding: var(--spacing-xs) var(--spacing-xs);
+  border-radius: 30px;
+  width: fit-content;
+  margin: 12px auto 0 auto; /* Centers the social box beneath the text box */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.hero-social a {
+  color: #ffffff;
+  font-size: 1rem; /* Larger touch targets for mobile devices */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease;
+}
+
+.hero-social a:hover {
+  transform: scale(1.15);
+}
+
+}
+/* ────────────────────────────────────────────────────────── */
+/* SMALL TABLET RANGE (min-width: 600px)                      */
+/* ────────────────────────────────────────────────────────── */
+@media (min-width: 600px) {
+  .slide-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  top:70%;
+}
+
+.hero-text-box {
+  background: rgba(0, 0, 0, 0.55); /* Slightly darker on mobile for better text contrast */
+  padding: var(--spacing-sm, 16px); /* Increased from xs so text isn't crammed on small screens */
+  border-radius: 12px; /* Slightly tighter radius for smaller screens */
+  max-width: 75%; /* Prevents the box from touching screen edges */
+  margin: 0 auto; 
+  backdrop-filter: blur(8px); /* Lower blur requires less processing power on mobile */
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); 
+}
+
+.motion-title {
+  color: #ffffff;
+  font-size: 1.5rem; /* Scaled down for mobile screens */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); 
+  margin-bottom: 8px;
+}
+
+.motion-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem; /* Clear legibility on mobile */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.slide-subtitle{
+  font-size: 1rem; /* Adjusted for mobile readability */
+  margin-bottom: 8px;
+}
+.hero-btn-container {
+  margin:0 10px; /* More breathing room between text and button */
+}
+.hero-btn {
+  padding: 8px 32px; /* Slightly smaller button for mobile */
+  font-size: 0.9rem; /* Adjusted for smaller screens */
+}
+.hero-social {
+  display: flex;
+  gap: 12px; /* Wider tap target spacing for thumbs on mobile */
+  background: rgba(0, 0, 0, 0.6);
+  padding: var(--spacing-xs) var(--spacing-xs);
+  border-radius: 30px;
+  width: fit-content;
+  margin: 12px auto 0 auto; /* Centers the social box beneath the text box */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.hero-social a {
+  color: #ffffff;
+  font-size: 1rem; /* Larger touch targets for mobile devices */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease;
+}
+
+.hero-social a:hover {
+  transform: scale(1.15);
+}
+
+}
+
+
+/* ────────────────────────────────────────────────────────── */
+/* LARGE TABLET / MOBILE MAX (max-width: 768px)               */
+/* ────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+.slide-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  top:50%;
+}
+
+.hero-text-box {
+  background: rgba(0, 0, 0, 0.55); /* Slightly darker on mobile for better text contrast */
+  padding: var(--spacing-sm, 16px); /* Increased from xs so text isn't crammed on small screens */
+  border-radius: 12px; /* Slightly tighter radius for smaller screens */
+  max-width: 75%; /* Prevents the box from touching screen edges */
+  margin: 0 auto; 
+  backdrop-filter: blur(8px); /* Lower blur requires less processing power on mobile */
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4); 
+}
+
+.motion-title {
+  color: #ffffff;
+  font-size: 1.5rem; /* Scaled down for mobile screens */
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); 
+  margin-bottom: 8px;
+}
+
+.motion-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 1rem; /* Clear legibility on mobile */
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.slide-subtitle{
+  font-size: 1rem; /* Adjusted for mobile readability */
+  margin-bottom: 8px;
+}
+.hero-btn-container {
+  margin:0 10px; /* More breathing room between text and button */
+}
+.hero-btn {
+  padding: 8px 32px; /* Slightly smaller button for mobile */
+  font-size: 0.9rem; /* Adjusted for smaller screens */
+}
+.hero-social {
+  display: flex;
+  gap: 12px; /* Wider tap target spacing for thumbs on mobile */
+  background: rgba(0, 0, 0, 0.6);
+  padding: var(--spacing-xs) var(--spacing-xs);
+  border-radius: 30px;
+  width: fit-content;
+  margin: 12px auto 0 auto; /* Centers the social box beneath the text box */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.hero-social a {
+  color: #ffffff;
+  font-size: 1rem; /* Larger touch targets for mobile devices */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s ease;
+}
+
+.hero-social a:hover {
+  transform: scale(1.15);
+}
+  /* This block targets everything *under* desktop */
+  .hero-text-box {
+    text-align: center; /* Enforces center alignment for entire card on mobile/tablet viewports */
+  }
+  
+  .hero-social a {
+    padding: 4px; /* Creates invisible touch padding without altering layout geometry */
+  }
+}
+
+
+/* ────────────────────────────────────────────────────────── */
+/* DESKTOP STYLES (min-width: 900px)                          */
+/* ────────────────────────────────────────────────────────── */
+@media (min-width: 900px) {
+  .hero-text-box {
+    background: rgba(0, 0, 0, 0.45); /* Returns to original soft opacity */
+    padding: var(--spacing-xs); /* Original compact padding */
+    border-radius: 16px;
+    max-width: max-content; /* Allows content width to dictate box boundaries natively */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5); 
+  }
+
+  .animated-title {
+    font-size: 3rem; /* Dynamic layout emphasis for large viewports */
+  }
+
+  .animated-text {
+    font-size: 1.2rem;
+  }
+
+  .hero-social {
+    gap: 12px; /* Tighter layout desktop preference */
+    margin: 20px 0 0 0; /* Aligns to the left or relies on text-box parent bounds */
   }
 }

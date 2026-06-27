@@ -14,7 +14,10 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 })
 export class NewsComponent implements OnInit {
   latestNews: News[] = [];
+  currentIndex: number = 0;
   isLoading = true;
+  private autoSlideTimer: any;
+  private readonly SLIDE_DURATION = 5000;
 
   constructor(private newsService: NewsService) {}
 
@@ -25,16 +28,58 @@ export class NewsComponent implements OnInit {
   /** تحميل أحدث الأخبار */
   loadLatestNews(): void {
     this.isLoading = true;
-    this.newsService.getLatestNews(4).subscribe({
+    this.newsService.getLatestNews(10).subscribe({
       next: (news) => {
         this.latestNews = news;
         this.isLoading = false;
+        this.currentIndex = 0;
+        // Start auto-sliding only after data has successfully arrived
+        if (this.latestNews && this.latestNews.length > 0) {
+          this.startAutoSlide();
+        }
       },
       error: (err) => {
         console.error('Error fetching latest news', err);
         this.isLoading = false;
       }
     });
+  }
+
+
+/** Move to the PREVIOUS slide safely */
+  prevSlide(): void {
+    
+    if (!this.latestNews || this.latestNews.length === 0) return;
+    if (this.currentIndex === 0) {
+      // Loop back to the very last article in the fetched array
+      const totalNews = this.latestNews.length;
+  this.currentIndex = (this.currentIndex - 1 + totalNews) % totalNews;
+    } else {
+      this.currentIndex--;
+    }
+ 
+  }
+
+  /** Move to the NEXT slide safely */
+  nextSlide(): void {
+    // Safety check: Do nothing if the data hasn't loaded yet or is empty
+    if (!this.latestNews || this.latestNews.length === 0) return;
+
+    if (this.currentIndex === this.latestNews.length - 1) {
+      // Loop forward to the first article
+      const totalNews = this.latestNews.length;
+  this.currentIndex = (this.currentIndex + 1) % totalNews;
+    } else {
+      this.currentIndex++;
+    }
+  
+  }
+
+  startAutoSlide(): void {
+    
+    this.autoSlideTimer = setInterval(() => {
+      this.nextSlide();
+    }, this.SLIDE_DURATION);
   }
 
   /** تنسيق التاريخ */
@@ -46,3 +91,5 @@ export class NewsComponent implements OnInit {
     }).format(new Date(date));
   }
 }
+
+

@@ -1,24 +1,24 @@
-<section class="news-paper" dir="rtl">
+<!--<section class="news-paper" dir="rtl">
   <div class="container-custom">
     <h2 class="news-title">Latest News</h2>
 
     <div class="news-layout">
-      <!-- Main News -->
+      
       <article class="news-main hover-lift" *ngIf="latestNews.length > 0" [routerLink]="['/news', latestNews[0].id]">
         <img [src]="latestNews[0].featuredImagePath" [alt]="latestNews[0].title">
         <div class="news-content">
 
-          <!-- <span class="news-category">{{ latestNews[0].postCategories[0]?.categoryName }}</span> -->
+          
           <span class="news-date">{{ formatDate(latestNews[0].publishedDate) }}</span>
 
           <span class="news-views"><i class="fas fa-eye"></i> Visitors: {{ latestNews[0].totalViewCount }}</span>
           <h3>{{ latestNews[0].title }}</h3>
-          <!-- <p>{{ latestNews[0].content|cleanHtml|slice:50}}</p> -->
+          
           <a [routerLink]="['/news', latestNews[0].id]">Read More ←</a>
         </div>
       </article>
 
-      <!-- Side News -->
+      
       <div class="news-side">
         <article 
           *ngFor="let article of latestNews.slice(2)" 
@@ -36,4 +36,34 @@
       </div>
     </div>
   </div>
+</section>
+-->
+
+
+<!-- News Section -->
+<section class="news-section">
+
+  <!-- Section Header -->
+  <div class="news-header">
+    <h2>Latest News</h2>
+    <a  [routerLink]="['/news']" class="all-news-btn">All News</a>
+  </div>
+
+  <!-- Slider -->
+  <div class="news-slider-wrapper">
+
+    <button class="nav-btn prev" (click)="prevSlide()">&#10094;</button>
+
+    <div class="news-slider">
+      <article class="news-item" [style.background-image]=" 'url(' + article.featuredImagePath + ')' "  *ngFor="let article of latestNews" 
+          [routerLink]="['/news', article.id]">
+        <span class="news-date">{{ formatDate(article.publishedDate) }}</span>
+        <span class="news-views"><i class="fas fa-eye"></i> Visitors: {{ article.totalViewCount }}</span>
+        <a><h3>{{ article.title }}</h3></a>
+      </article>
+    </div>
+
+    <button class="nav-btn next" (click)="nextSlide()">&#10095;</button>
+  </div>
+
 </section>

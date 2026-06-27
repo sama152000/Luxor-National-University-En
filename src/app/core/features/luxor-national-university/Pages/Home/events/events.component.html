@@ -1,4 +1,4 @@
-<section class="events-parallax" *ngIf="!isLoading">
+<!--<section class="events-parallax" *ngIf="!isLoading">
   <div class="container-custom">
     <h2 class="section-title">Upcoming Events</h2>
 
@@ -14,6 +14,36 @@
         <h4>{{ event.title }}</h4>
         <p>{{ event.content | truncateHtml:100 | cleanHtml }}</p>
       </div>
+    </div>
+
+    <div class="events-btn">
+      <a [routerLink]="['/news']" class="btn-events">View All Events</a>
+    </div>
+  </div>
+</section>-->
+
+
+<!-- Events Timeline -->
+<section class="events-parallax" *ngIf="!isLoading">
+  <div class="parallax-bg"></div>
+
+  <div class="container">
+    <h2 class="event-section-title">Upcoming Events</h2>
+
+    <div class="timeline-horizontal">
+
+      <div class="event-card"  *ngFor="let event of latestEvents"
+        class="event-card hover-lift"
+        [routerLink]="['/news', event?.id]">
+        <span class="event-date">{{ formatDate(event.publishedDate) }}</span>
+        <span class="event-views"><i class="fas fa-eye"></i> Visitors: {{ event.totalViewCount }}</span>
+        <img [src]="event.featuredImagePath" [alt]="event.title">
+        <h4>{{ event.title }}</h4>
+        <p>{{ event.content | truncateHtml:100 | cleanHtml }}</p>
+      </div>
+
+      
+
     </div>
 
     <div class="events-btn">
