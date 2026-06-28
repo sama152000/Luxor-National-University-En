@@ -50,7 +50,7 @@
   z-index: 2;
   text-align: center;
   color: var(--white);
-  top: 50%;
+  top: 75%;
   /*transform: translateY(-50%);*/
   padding: 0 var(--spacing-md) 10px 0;
   max-width: 100%;
@@ -344,11 +344,11 @@ p{
   text-align: center;
   width: 100%;
   max-width: 100%;
-  top:50%;
+  top: 62%;
 }
 
 .hero-text-box {
-  background: rgba(0, 0, 0, 0.55); /* Slightly darker on mobile for better text contrast */
+  background: rgb(108 106 106 / 55% 55%); /* Slightly darker on mobile for better text contrast */
   padding: var(--spacing-sm, 16px); /* Increased from xs so text isn't crammed on small screens */
   border-radius: 12px; /* Slightly tighter radius for smaller screens */
   max-width: 75%; /* Prevents the box from touching screen edges */
@@ -361,20 +361,20 @@ p{
 
 .motion-title {
   color: #ffffff;
-  font-size: 1.5rem; /* Scaled down for mobile screens */
+  font-size: 1.2rem; /* Scaled down for mobile screens */
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); 
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 
 .motion-text {
   color: rgba(255, 255, 255, 0.95);
-  font-size: 1rem; /* Clear legibility on mobile */
+  font-size: 0.7rem; /* Clear legibility on mobile */
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .slide-subtitle{
-  font-size: 1rem; /* Adjusted for mobile readability */
-  margin-bottom: 8px;
+  font-size: 0.7rem; /* Adjusted for mobile readability */
+  margin-bottom: 5px;
 }
 .hero-btn-container {
   margin:0 10px; /* More breathing room between text and button */
@@ -412,18 +412,20 @@ p{
 /* ────────────────────────────────────────────────────────── */
 /* SMALL TABLET RANGE (min-width: 600px)                      */
 /* ────────────────────────────────────────────────────────── */
-@media (min-width: 600px) {
+@media (min-width: 1025px)  {
   .slide-content {
   position: relative;
   z-index: 2;
   text-align: center;
   width: 100%;
   max-width: 100%;
-  top:70%;
+  top:75%;
 }
 
 .hero-text-box {
-  background: rgba(0, 0, 0, 0.55); /* Slightly darker on mobile for better text contrast */
+  background: rgb(108 106 106 / 55%
+55%
+); /* Slightly darker on mobile for better text contrast */
   padding: var(--spacing-sm, 16px); /* Increased from xs so text isn't crammed on small screens */
   border-radius: 12px; /* Slightly tighter radius for smaller screens */
   max-width: 75%; /* Prevents the box from touching screen edges */
@@ -489,18 +491,18 @@ p{
 /* ────────────────────────────────────────────────────────── */
 /* LARGE TABLET / MOBILE MAX (max-width: 768px)               */
 /* ────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+@media (min-width: 600px) and (max-width: 1024px) {
 .slide-content {
   position: relative;
   z-index: 2;
   text-align: center;
   width: 100%;
   max-width: 100%;
-  top:50%;
+  top:75%;
 }
 
 .hero-text-box {
-  background: rgba(0, 0, 0, 0.55); /* Slightly darker on mobile for better text contrast */
+  background: rgb(108 106 106 / 55% 55%); /* Slightly darker on mobile for better text contrast */
   padding: var(--spacing-sm, 16px); /* Increased from xs so text isn't crammed on small screens */
   border-radius: 12px; /* Slightly tighter radius for smaller screens */
   max-width: 75%; /* Prevents the box from touching screen edges */
@@ -575,7 +577,7 @@ p{
 /* ────────────────────────────────────────────────────────── */
 @media (min-width: 900px) {
   .hero-text-box {
-    background: rgba(0, 0, 0, 0.45); /* Returns to original soft opacity */
+    background: rgb(108 106 106 / 45% 45%); /* Returns to original soft opacity */
     padding: var(--spacing-xs); /* Original compact padding */
     border-radius: 16px;
     max-width: max-content; /* Allows content width to dictate box boundaries natively */

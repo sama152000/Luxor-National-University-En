@@ -306,7 +306,6 @@
   border-radius: 12px;
   cursor: pointer;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -320,9 +319,9 @@
   position: absolute;
   inset: 0;
   background-position: center;
-  width: 50%;
-  height: 50%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   z-index: 0;
   margin: auto;
   transition: transform 0.4s ease;
@@ -353,17 +352,32 @@
 
 /* Content */
 .college-content {
-  position: absolute;
+  /* position: absolute;
   inset: 0;
   z-index: 2;
   color: #fff;
   padding: 30px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   text-align: center;
   opacity: 0;
-  transition: 0.5s;
+  transition: 0.5s; */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  color: #fff;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Keeps text stacked at the bottom edge */
+  text-align: center;
+  
+  /* Semi-transparent dark background gradient so text stays readable */
+  background: linear-gradient(to top, rgba(0, 33, 71, 0.95) 0%, rgba(0, 33, 71, 0.6) 70%, transparent 100%);
+  transition: all 0.4s ease-in-out;
 }
 
 .college-content h3 {
@@ -376,7 +390,23 @@
   font-size: 15px;
   line-height: 1.6;
 }
+.college-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease, padding 0.3s ease;
+}
 
+/* Hover Actions: Uncollapse the Description */
+.college-card:hover .college-desc {
+  opacity: 1;
+  max-height: 150px; /* Allows the description space to open up smoothly */
+  padding-top: 12px;  /* Spacing between Title and Description */
+}
 /* Hover effects */
 .college-card:hover .college-bg {
   transform: scale(1.15);

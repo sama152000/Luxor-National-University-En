@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+/* import { Component, OnInit,ChangeDetectorRef,ElementRef ,ViewChild,AfterViewInit } from '@angular/core'; */
+import { Component, OnInit,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NewsService } from '../../../Services/news.service';
@@ -18,11 +19,21 @@ export class NewsComponent implements OnInit {
   isLoading = true;
   private autoSlideTimer: any;
   private readonly SLIDE_DURATION = 5000;
+/* 
+@ViewChild('sliderContainer') sliderContainer!: ElementRef<HTMLDivElement>; */
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: NewsService,private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadLatestNews();
+  }
+
+
+getCurrentNews(): any {
+    if (this.latestNews && this.latestNews.length > 0) {
+      return this.latestNews[this.currentIndex];
+    }
+    return null;
   }
 
   /** تحميل أحدث الأخبار */
@@ -35,44 +46,59 @@ export class NewsComponent implements OnInit {
         this.currentIndex = 0;
         // Start auto-sliding only after data has successfully arrived
         if (this.latestNews && this.latestNews.length > 0) {
-          this.startAutoSlide();
+          
         }
+        this.cdr.detectChanges(); // إجبار التحديث
       },
       error: (err) => {
         console.error('Error fetching latest news', err);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
 
+  /* private updateSliderPosition(): void {
+    const slider = this.sliderContainer?.nativeElement;
+    if (slider && this.latestNews.length > 0) {
+      const translateValue = -this.currentIndex * 100;
+      slider.style.transform = `translateX(${translateValue}%)`;
+      console.log('Slider moved to:', translateValue);
+    }
+  } */
+
 
 /** Move to the PREVIOUS slide safely */
   prevSlide(): void {
+    console.log('prevSlide called, currentIndex:', this.currentIndex);
     
-    if (!this.latestNews || this.latestNews.length === 0) return;
-    if (this.currentIndex === 0) {
-      // Loop back to the very last article in the fetched array
-      const totalNews = this.latestNews.length;
-  this.currentIndex = (this.currentIndex - 1 + totalNews) % totalNews;
-    } else {
-      this.currentIndex--;
+    if (!this.latestNews?.length) {
+      console.warn('No news available');
+      return;
     }
- 
+    
+    this.currentIndex = (this.currentIndex - 1 + this.latestNews.length) % this.latestNews.length;
+    console.log('New index:', this.currentIndex);
+    console.log('Current news:', this.getCurrentNews());
+    
+    this.cdr.detectChanges(); // إجبار التحديث
+    
   }
 
-  /** Move to the NEXT slide safely */
   nextSlide(): void {
-    // Safety check: Do nothing if the data hasn't loaded yet or is empty
-    if (!this.latestNews || this.latestNews.length === 0) return;
-
-    if (this.currentIndex === this.latestNews.length - 1) {
-      // Loop forward to the first article
-      const totalNews = this.latestNews.length;
-  this.currentIndex = (this.currentIndex + 1) % totalNews;
-    } else {
-      this.currentIndex++;
+    console.log('nextSlide called, currentIndex:', this.currentIndex);
+    
+    if (!this.latestNews?.length) {
+      console.warn('No news available');
+      return;
     }
-  
+    
+    this.currentIndex = (this.currentIndex + 1) % this.latestNews.length;
+    console.log('New index:', this.currentIndex);
+    console.log('Current news:', this.getCurrentNews());
+    
+    this.cdr.detectChanges(); // إجبار التحديث
+    
   }
 
   startAutoSlide(): void {

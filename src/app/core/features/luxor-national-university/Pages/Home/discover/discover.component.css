@@ -1,13 +1,13 @@
 .video-section {
-  padding: var(--spacing-xxxl) 0;
+  padding: var(--spacing-md) 0;
   background-image: url("/assets/mag.PNG");
   background-size: cover;
-  /* background-attachment: fixed; */
+  background-attachment: fixed; 
   min-height: 70vh;
   position: relative;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: right;
+  align-items: right;
 }
 
 .video-section::before {
@@ -28,17 +28,17 @@
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: var(--spacing-xxl);
-  align-items: center;
+  align-items: flex-end;
   height: 100%;
   direction: rtl;
 }
 /* ─── Main Content Box ─── */
 .hero-text-box {
-  background: rgba(157, 156, 156, 0.45); /* Soft, semi-transparent black background */
+  background: rgb(220 208 186); /* Soft, semi-transparent black background */
  padding: var(--spacing-xs);
   border-radius: 16px;
   max-width: max-content;
-  margin: 0 auto;
+  margin: 0;
   
   /* Glassmorphism: Blurs the image *behind* the box */
   backdrop-filter: blur(12px);
@@ -60,8 +60,8 @@
 }
 
 .video-text h2 {
-  font-size: clamp(2rem, 4vw, 1.8rem);
-  margin-bottom: var(--spacing-sm);
+  font-size: clamp(1rem, 4vw, 1.1rem);
+  margin-bottom: 0;
   color: var(--text-dark);
   font-weight: 700;
   
@@ -69,13 +69,13 @@
 
 .video-text p {
   font-size: 1.125rem;
-  line-height: 1.8;
+  line-height: 1.1;
   color: var(--text-dark);
   margin-bottom: 0;
 }
 
 .video-text .download-btn {
-  margin-top: var(--spacing-md);
+  margin-top: var(--spacing-xs);
   display: inline-flex;
   align-self: center; /* push button to the right edge of the .video-text column */
   padding: 0.55rem 1rem;

@@ -45,11 +45,15 @@
           [src]="department.departmentAttachments[0]?.url"
           [alt]="department.name"
         ></div>
+      
       <div class="college-content">
         <h3 >{{ department.name }}</h3>
-
+        <p class="college-desc" *ngIf="department.subTitle">
+          {{ department.subTitle }}
+        </p>
       </div>
-    </div>
 
+    </div>
+    
   </div>
 </section>

@@ -3,6 +3,7 @@
   background: linear-gradient(135deg, var(--white) 0%, var(--cream) 100%);
   position: relative;
   overflow: hidden;
+  padding: var(--spacing-md) 0;
 }
 
 .gallery-section::before {
