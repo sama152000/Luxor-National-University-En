@@ -3,24 +3,11 @@
     <!-- Column 1: Logo & About -->
     <div class="footer-col">
       <img routerLink="/home" [src]="logo.src" [alt]="logo.alt" [width]="250" [height]="80" class="footer-logo">
-    </div>
-
-  
-    <!-- Dynamic Columns -->
-    <div *ngFor="let section of footerData.sections" class="footer-col">
-      <h4>{{ section.title }}</h4>
-      <ul>
-        <li *ngFor="let link of section.links">
-          <a *ngIf="isInternalLink(link.url)" [routerLink]="link.url">{{ link.label }}</a>
-          <a *ngIf="!isInternalLink(link.url)" [href]="link.url" target="_blank">{{ link.label }}</a>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Social Column -->
-    <div class="footer-col">
-      <h4>Follow Us</h4>
-      <div class="footer-social">
+      <p>
+        Luxor National University is committed to excellence in education,
+        research, and innovation inspired by Egypt’s rich heritage.
+      </p>
+       <div class="footer-social">
         <a
           *ngFor="let social of footerData.socialLinks"
           [href]="social.url"
@@ -32,10 +19,34 @@
       </div>
     </div>
 
+  
+    <!-- Dynamic Columns -->
+     <!--
+    <div *ngFor="let section of footerData.sections" class="footer-col">
+      <h4>{{ section.title }}</h4>
+      <ul>
+        <li *ngFor="let link of section.links">
+          <a *ngIf="isInternalLink(link.url)" [routerLink]="link.url">{{ link.label }}</a>
+          <a *ngIf="!isInternalLink(link.url)" [href]="link.url" target="_blank">{{ link.label }}</a>
+        </li>
+      </ul>
+    </div>-->
+
+    <!-- Social Column -->
+    <div class="footer-col">
+      <h4>Contact Us</h4>
+      <p>✉️ info.lun@luxor.edu.eg</p>
+      <p>📞 +01149265811 (Mr. Gamal)</p>
+      <p>📞 +01152715515 (Mr.Mohamed)</p>
+      <p>📞 +01140116223 (Mr. Mohamed)</p>
+      <p>📞 +01151676342 (Mr. Seham)</p>
+      
+    </div>
+
       <!-- Column: Address -->
     <div class="footer-col">
       <h4>Address</h4>
-      <p>{{ contact?.address }}</p>
+      <p>📍{{ contact?.address }}</p>
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.0258622713013!2d32.8040167!3d25.769709300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14491592597f70b1%3A0xccac387a294f12e5!2z2KzYp9mF2LnYqSDYp9mE2KPZgti12LE!5e0!3m2!1sar!2seg!4v1780312902049!5m2!1sar!2seg"
         width="100%"

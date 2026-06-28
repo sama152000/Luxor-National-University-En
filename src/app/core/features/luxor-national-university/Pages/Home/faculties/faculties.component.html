@@ -1,7 +1,7 @@
-<section class="orbit-section">
-  <h2 class="orbit-title">Faculties</h2>
+<!--<section class="orbit-section">
+  <h2 class="orbit-title">Faculties & Programs</h2>
 
-  <div class="orbit-wrapper">
+  <div class="orbit-wrapper">-->
     <!-- Center -->
     <!-- <a href="#" class="orbit-center hover-scale">
       <span>{{ section.centerButton.text }}</span>
@@ -9,6 +9,7 @@
     </a> -->
 
     <!-- Orbit Items - Grid in single row -->
+     <!--
     <div 
       *ngFor="let department of departments; let i = index"
       class="faculty-item-wrapper"
@@ -28,5 +29,31 @@
       </div>
       <span class="faculty-name">{{ department.name }}</span>
     </div>
+  </div>
+</section>
+-->
+
+<section class="colleges-section">
+  <h2 class="section-title">Colleges & Programs</h2>
+
+  <div class="colleges-grid"  >
+
+    <div class="college-card" *ngFor="let department of departments; let i = index"
+      (click)="viewFacultyDetails(department.slug)" [class]="'item-' + (i + 1)">
+      <div class="college-bg" ><img 
+          *ngIf="department.departmentAttachments && department.departmentAttachments.length > 0"
+          [src]="department.departmentAttachments[0]?.url"
+          [alt]="department.name"
+        ></div>
+      
+      <div class="college-content">
+        <h3 >{{ department.name }}</h3>
+        <p class="college-desc" *ngIf="department.subTitle">
+          {{ department.subTitle }}
+        </p>
+      </div>
+
+    </div>
+    
   </div>
 </section>

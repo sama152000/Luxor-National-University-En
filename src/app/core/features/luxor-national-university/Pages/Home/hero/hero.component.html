@@ -8,14 +8,28 @@
       [style.background-image]="'url(' + (slide.heroAttachments[0]?.url || '') + ')'"
     >
       <div class="slide-content">
-        <h1 class="motion-title">
-          {{ slide.title }}
-        </h1>
-        <p class="slide-subtitle">{{ slide.subTitle }}</p>
-        <p class="slide-description">{{ slide.description }}</p>
-      </div>
+        <div class="hero-text-box">
+          <h1 class="motion-title">
+            {{ slide.title }}
+          </h1>
+          <p class="slide-subtitle">{{ slide.subTitle }}</p>
+          <p class="slide-description">{{ slide.description }}</p>
 
-      <!-- نقاط التقدم -->
+          <div class="hero-btn-container">
+            <a href="https://lnu.luxor.edu.eg/apply" class="hero-btn">
+              Join Now
+                <span></span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="hero-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <!-- نقاط التقدم 
       <div class="slider-dots">
         <div 
           *ngFor="let dot of dots; let j = index" 
@@ -28,7 +42,7 @@
           </svg>
           <span>LNU</span>
         </div>
-      </div>
+      </div>-->
     </div>
   </div>
 </section>

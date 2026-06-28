@@ -1,8 +1,6 @@
 <header class="main-header sticky-header">
-  <div class="container-custom nav-inner">
- 
-
-          <!-- Logo Box -->
+       <!-- Logo Box -->
+  <div class="logo">
     <a routerLink="/home" class="logo-box hover-lift" *ngIf="logos.length > 0">
       <img [src]="logos[0].url"
            [alt]="logos[0].fileName"
@@ -11,6 +9,8 @@
            class="logo-img"
         >
     </a>
+  </div>
+    
  
     <!-- Desktop Navigation -->
     <nav class="circle-menu">
@@ -50,7 +50,6 @@
       <span></span>
       <span></span>
     </button>
-  </div>
 </header>
 
 <!-- Mobile Overlay -->

@@ -12,16 +12,19 @@
   </div>
 </section>
 
+
+
 <!-- Main Content - Show when data is loaded -->
+ <!--
 <section class="book-section" *ngIf="!isLoading && !hasError && deanSpeech">
   <div class="container book animate-on-scroll">
-
-    <!-- Left Page -->
+-->
+    <!-- Left Page 
     <div class="book-page left-page">
       <div class="page-content" [innerHTML]="deanSpeech.speech | cleanHtml"></div>
     </div>
-
-    <!-- Right Page -->
+-->
+    <!-- Right Page 
     <div class="book-page right-page">
       <h3>Discover Our University</h3>
       <div class="video-wrapper" *ngIf="deanSpeech.deanSpeechAttachments && deanSpeech.deanSpeechAttachments.length > 0">
@@ -39,7 +42,7 @@
 
   </div>
 </section>
-
+-->
 <!-- Fallback - Show when no data but not loading/error -->
 <section class="book-section" *ngIf="!isLoading && !hasError && !deanSpeech">
   <div class="container book animate-on-scroll">
@@ -73,6 +76,98 @@
           Your browser does not support video playback.
         </video>
       </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!--Introduction Section-->
+<section class="president-benefits"  *ngIf="!isLoading && !hasError && deanSpeech">
+  <div class="container two-column">
+
+    <!-- LEFT: BENEFITS -->
+   <div class="benefits-grid">
+
+  <div class="benefit-card bg-edu">
+    <div class="overlay"></div>
+    <i class="fa-solid fa-graduation-cap"></i>
+    <h4>Quality Education</h4>
+    <p>International academic standards and modern curricula.</p>
+  </div>
+
+  <div class="benefit-card bg-research">
+    <div class="overlay"></div>
+    <i class="fa-solid fa-microscope"></i>
+    <h4>Modern Facilities</h4>
+    <p>A learning environment equipped with the latest technology and equipment.</p>
+  </div>
+
+  <div class="benefit-card bg-global">
+    <div class="overlay"></div>
+    <i class="fa-solid fa-globe"></i>
+    <h4>Distinguished Faculty</h4>
+    <p>Highly qualified academic staff with extensive national and international experience.</p>
+  </div>
+
+  <div class="benefit-card bg-heritage">
+    <div class="overlay"></div>
+    <i class="fa-solid fa-landmark"></i>
+    <h4>Global Outlook Jobs</h4>
+    <p>International partnerships and exchange opportunities for students.</p>
+  </div>
+
+</div>
+
+
+    <!-- RIGHT: PRESIDENT WORD -->
+    <div class="president-box" >
+      <img [src]="deanSpeech.deanSpeechAttachments[1]?.url" alt="University President">
+     <div [innerHTML]="deanSpeech.speech | cleanHtml"></div> 
+      
+     <!--  <h3>President's Welcome</h3>
+      <p>
+        {{deanSpeech.speech}}
+      </p> -->
+
+      <!-- <span class="president-name">
+        Prof. Dr. Sadi ElGhol<br>
+        <small>President of Luxor National University</small>
+      </span> -->
+    </div>
+
+  </div>
+</section>
+
+
+<section class="video-section">
+  <div class="container">
+
+    <div class="video-grid">
+
+      <!-- Text -->
+      <div class="video-text">
+        <h2>Discover Luxor National University</h2>
+        <p>
+          Explore our academic environment, modern facilities, and rich cultural
+          heritage through this short introduction video.
+        </p>
+       
+      </div>
+
+      <!-- Video -->
+      <div class="video-frame">
+        <video
+          controls
+          muted
+          loop
+          playsinline
+          class="vid-element">
+          <source src="./assets/vid.mp4" type="video/mp4" allowfullscreen>
+          Your browser does not support video playback.
+        </video>
+      </div>
+
     </div>
 
   </div>

@@ -25,11 +25,13 @@ export class MainNavComponent implements OnInit, OnDestroy {
   // Static icons mapping based on slug (from API)
   private iconMap: { [key: string]: string } = {
     'home': 'fas fa-home',
-    'about': 'fas fa-university',
+    'about': 'fas fa-info-circle',
     'faculties': 'fas fa-graduation-cap',
     'services': 'fas fa-handshake',
     'news': 'fas fa-newspaper',
-    'contactInfo': 'fas fa-phone-alt',
+    'contactInfo': 'fas fa-envelope',
+    'student housing': 'fas fa-bed',
+    'transportation services': 'fas fa-bus',
     'custom': 'fas fa-file-alt',
     'first-page': 'fas fa-file',
     'second': 'fas fa-file'
